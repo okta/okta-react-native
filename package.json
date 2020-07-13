@@ -5,14 +5,14 @@
   "description": "Okta OIDC for React Native",
   "main": "index.js",
   "podname": "OktaSdkBridgeReactNative",
-  "homepage": "https://github.com/okta/okta-oidc-js/tree/master/packages/okta-react-native",
+  "homepage": "https://github.com/okta/okta-react-native",
   "scripts": {
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/okta/okta-oidc-js.git"
+    "url": "git+https://github.com/okta/okta-react-native.git"
   },
   "files": [
     "index.js",
