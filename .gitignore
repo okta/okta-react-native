@@ -1,6 +1,8 @@
 node_modules
 npm-debug.log
 
+.watchmanconfig
+
 # android/ios related for react native
 .gradle/
 gradle/
