@@ -7,7 +7,7 @@
   "podname": "OktaSdkBridgeReactNative",
   "homepage": "https://github.com/okta/okta-oidc-js/tree/master/packages/okta-react-native",
   "scripts": {
-    "test": "node_modules/.bin/jest",
+    "test": "jest",
     "test:debug": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand"
   },
   "repository": {

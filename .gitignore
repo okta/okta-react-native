@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+
+# android/ios related for react native
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+build/
+local.properties
+*.iml
+xcuserdata/
