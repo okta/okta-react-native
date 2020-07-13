@@ -11,7 +11,5 @@
 if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
   yarn global add snyk
   snyk auth $SNYK_API_TOKEN
-  do
-    echo "snyk monitor --org=$SNYK_ORG_ID"
-  done
+  echo "snyk monitor --org=$SNYK_ORG_ID"
 fi
