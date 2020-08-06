@@ -2,13 +2,12 @@
   "private": true,
   "name": "@okta/okta-react-native",
   "title": "React Native Okta Sdk Bridge",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Okta OIDC for React Native",
   "main": "index.js",
   "podname": "OktaSdkBridgeReactNative",
   "homepage": "https://github.com/okta/okta-react-native",
   "scripts": {
-    "prepare": "yarn build",
     "build": "node ./scripts/build.js",
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand"
@@ -48,7 +47,8 @@
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "^0.55.0",
     "react": "^16.5.0",
-    "react-native": "^0.60.0"
+    "react-native": "^0.60.0",
+    "shelljs": "^0.8.4"
   },
   "dependencies": {
     "@okta/configuration-validation": "^0.3.0",
