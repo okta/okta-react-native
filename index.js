@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { NativeModules, Platform, DeviceEventEmitter, NativeEventEmitter } from 'react-native';
+import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
 import { assertIssuer, assertClientId, assertRedirectUri } from '@okta/configuration-validation';
 import jwt from 'jwt-lite';
 import OktaAuth from '@okta/okta-auth-js';
@@ -73,7 +73,7 @@ export const createConfig = async({
     userAgentTemplate,
     requireHardwareBackedKeyStore
   );
-} 
+}; 
 
 export const getAuthClient = () => {
   if (!authClient) {
@@ -83,7 +83,7 @@ export const getAuthClient = () => {
     );
   }
   return authClient;
-}
+};
 
 export const signIn = async(options) => {
   // Custom sign in
@@ -110,23 +110,23 @@ export const signIn = async(options) => {
 
   // Browser sign in
   return NativeModules.OktaSdkBridge.signIn();
-}
+};
 
 export const signOut = async() => {
   return NativeModules.OktaSdkBridge.signOut();
-}
+};
 
 export const authenticate = async({sessionToken}) => {
   return NativeModules.OktaSdkBridge.authenticate(sessionToken);
-}
+};
 
 export const getAccessToken = async() => {
   return NativeModules.OktaSdkBridge.getAccessToken();
-}
+};
 
 export const getIdToken = async() => {
   return NativeModules.OktaSdkBridge.getIdToken();
-}
+};
 
 export const getUser = async() => {
   return NativeModules.OktaSdkBridge.getUser()
@@ -141,47 +141,47 @@ export const getUser = async() => {
 
       return data;
     });
-}
+};
 
 export const getUserFromIdToken = async() => {
   let idTokenResponse = await getIdToken();
   return jwt.decode(idTokenResponse.id_token).claimsSet;
-}
+};
 
 export const isAuthenticated = async() => {
   return NativeModules.OktaSdkBridge.isAuthenticated();
-}
+};
 
 export const revokeAccessToken = async() => {
   return NativeModules.OktaSdkBridge.revokeAccessToken();
-}
+};
 
 export const revokeIdToken = async() => {
   return NativeModules.OktaSdkBridge.revokeIdToken();
-}
+};
 
 export const revokeRefreshToken = async() => {
   return NativeModules.OktaSdkBridge.revokeRefreshToken();
-}
+};
 
 export const introspectAccessToken = async() => {
   return NativeModules.OktaSdkBridge.introspectAccessToken(); 
-}
+};
 
 export const introspectIdToken = async() => {
   return NativeModules.OktaSdkBridge.introspectIdToken(); 
-}
+};
 
 export const introspectRefreshToken = async() => {
   return NativeModules.OktaSdkBridge.introspectRefreshToken(); 
-}
+};
 
 export const refreshTokens = async() => {
   return NativeModules.OktaSdkBridge.refreshTokens(); 
-}
+};
 
 export const clearTokens = async() => {
   return NativeModules.OktaSdkBridge.clearTokens(); 
-}
+};
 
 export const EventEmitter = new NativeEventEmitter(NativeModules.OktaSdkBridge);

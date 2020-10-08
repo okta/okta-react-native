@@ -4,11 +4,14 @@
   "title": "React Native Okta Sdk Bridge",
   "version": "1.4.2",
   "description": "Okta OIDC for React Native",
-  "main": "index.js",
+  "main": "dist/index.js",
   "podname": "OktaSdkBridgeReactNative",
   "homepage": "https://github.com/okta/okta-react-native",
   "scripts": {
     "build": "node ./scripts/build.js",
+    "lint": "eslint .",
+    "lint:report": "eslint -f checkstyle -o ./test-reports/lint/eslint-checkstyle-result.xml .",
+    "prepare": "yarn build",
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand"
   },
@@ -42,9 +45,15 @@
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",
+    "@babel/eslint-parser": "^7.11.5",
     "@babel/preset-env": "^7.5.4",
     "babel-jest": "^24.8.0",
+    "chalk": "^4.1.0",
+    "eslint": "^7.10.0",
+    "eslint-plugin-jest": "^24.1.0",
+    "eslint-plugin-node": "^11.1.0",
     "jest": "^24.8.0",
+    "jest-junit": "^12.0.0",
     "metro-react-native-babel-preset": "^0.55.0",
     "react": "^16.5.0",
     "react-native": "^0.60.0",
@@ -57,10 +66,28 @@
     "url-parse": "^1.4.7"
   },
   "jest": {
+    "coverageDirectory": "<rootDir>/test-reports/coverage",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/*.test.js"
+    ],
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
+    "roots": [
+      "./"
+    ],
+    "restoreMocks": true,
     "automock": false,
     "preset": "react-native",
     "setupFiles": [
       "./setupJest.js"
     ]
+  },
+  "jest-junit": {
+    "outputDirectory": "./test-reports/unit/",
+    "outputName": "junit-result.xml"
   }
 }

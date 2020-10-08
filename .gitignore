@@ -1,3 +1,5 @@
+/test-reports
+/dist
 node_modules
 npm-debug.log
 
