@@ -1,3 +1,7 @@
+# 1.4.2
+
+- [#10](https://github.com/okta/okta-react-native/pull/10) Upgrades [okta-oidc-android](https://github.com/okta/okta-oidc-android) dependency
+
 # 1.4.1
 
 ### Bug fix
