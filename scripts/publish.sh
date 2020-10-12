@@ -3,7 +3,7 @@
 source $OKTA_HOME/$REPO/scripts/setup.sh
 
 export TEST_SUITE_TYPE="build"
-export REGISTRY="${ARTIFACTORY_URL}/api/npm/npm-okta"
+export REGISTRY="${ARTIFACTORY_URL}/api/npm/npm-topic"
 
 # Install required dependencies
 export PATH="${PATH}:$(yarn global bin)"
