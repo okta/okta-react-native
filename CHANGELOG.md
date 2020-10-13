@@ -1,5 +1,5 @@
 # 1.4.3
-- [#11](https://github.com/okta/okta-react-native/pull/12) Points Cocoa Pod for iOS OIDC library to 3.8.0 because 3.9.0 introduces a conflict with Google AppAuth library
+- [#11](https://github.com/okta/okta-react-native/pull/12) Pins Cocoa Pod for iOS OIDC library to 3.8.0 because 3.9.0 introduces a conflict with Google AppAuth library
 
 # 1.4.2
 
