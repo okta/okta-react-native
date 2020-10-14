@@ -1,7 +1,16 @@
+# 1.4.4
+
+### Bug Fix
+
+- [#16](https://github.com/okta/okta-react-native/pull/16) Points to OIDC 3.9.2 (iOS)
+
+# 1.4.3
+
+- [#11](https://github.com/okta/okta-react-native/pull/12) Pins Cocoa Pod for iOS OIDC library to 3.8.0 because 3.9.0 introduces a conflict with Google AppAuth library
+
 # 1.4.2
 
 - [#10](https://github.com/okta/okta-react-native/pull/10) Upgrades [okta-oidc-android](https://github.com/okta/okta-oidc-android) dependency
-- [#11](https://github.com/okta/okta-react-native/pull/12) Pins Cocoa Pod for iOS OIDC library to 3.8.0 because 3.9.0 introduces a conflict with Google AppAuth library
 
 # 1.4.1
 
