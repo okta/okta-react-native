@@ -184,6 +184,8 @@ This method will create a configured client on the native modules. Resolves `tru
 
 **Note**: `issuer` is an optional field in config, for more information please refer to [About the Issuer](https://github.com/okta/okta-auth-js/tree/master#about-the-issuer)
 
+**Note**: `androidChromeTabColor` is an optional field in config, and is used only by Android for the Chrome Custom Tabs color for the OIDC flow.
+
 ```javascript
 await createConfig({
   issuer: "https://{yourOktaDomain}/oauth2/default", // optional
@@ -192,7 +194,8 @@ await createConfig({
   endSessionRedirectUri: "{endSessionRedirectUri}",
   discoveryUri: "https://{yourOktaDomain}",
   scopes: ["openid", "profile", "offline_access"],
-  requireHardwareBackedKeyStore: true
+  requireHardwareBackedKeyStore: true,
+  androidChromeTabColor: "#FF00AA"
 });
 ``` 
 

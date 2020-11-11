@@ -35,7 +35,8 @@ export const createConfig = async({
   endSessionRedirectUri, 
   discoveryUri,
   scopes,
-  requireHardwareBackedKeyStore
+  requireHardwareBackedKeyStore,
+  androidChromeTabColor,
 }) => {
 
   assertIssuer(discoveryUri);
@@ -71,7 +72,8 @@ export const createConfig = async({
     discoveryUri,
     scopes,
     userAgentTemplate,
-    requireHardwareBackedKeyStore
+    requireHardwareBackedKeyStore,
+    androidChromeTabColor,
   );
 }; 
 
