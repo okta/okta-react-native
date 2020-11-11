@@ -14,6 +14,7 @@ package com.oktareactnative;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -70,6 +71,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                              ReadableArray scopes,
                              String userAgentTemplate,
                              Boolean requireHardwareBackedKeyStore,
+                             String androidChromeTabColor,
                              Promise promise
     ) {
 
@@ -88,13 +90,23 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                     .discoveryUri(discoveryUri)
                     .create();
 
-            this.webClient = new Okta.WebAuthBuilder()
+            Okta.WebAuthBuilder webAuthBuilder = new Okta.WebAuthBuilder()
                     .withConfig(config)
                     .withContext(reactContext)
                     .withStorage(new SharedPreferenceStorage(reactContext))
                     .withOktaHttpClient(new HttpClientImpl(userAgentTemplate))
-                    .setRequireHardwareBackedKeyStore(requireHardwareBackedKeyStore)
-                    .create();
+                    .setRequireHardwareBackedKeyStore(requireHardwareBackedKeyStore);
+
+            if (androidChromeTabColor != null) {
+                try {
+                    webAuthBuilder.withTabColor(Color.parseColor(androidChromeTabColor));
+                } catch (IllegalArgumentException e) {
+                    // The color wasn't in the right format.
+                    promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
+                }
+            }
+
+            this.webClient = webAuthBuilder.create();
 
             this.authClient = new Okta.AuthBuilder()
                     .withConfig(config)
