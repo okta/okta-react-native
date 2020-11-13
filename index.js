@@ -28,6 +28,14 @@ class OktaAuthError extends Error {
   }
 }
 
+class OktaStatusError extends Error {
+  constructor(message, status) {
+    super(message);
+
+    this.status = status;
+  }
+}
+
 export const createConfig = async({
   issuer,
   clientId,
@@ -92,7 +100,7 @@ export const signIn = async(options) => {
       .then((transaction) => {
         const { status, sessionToken } = transaction;
         if (status !== 'SUCCESS') {
-          throw new Error('Transaction status other than "SUCCESS" has been return, please handle it properly by calling "authClient.tx.resume()"');
+          throw new OktaStatusError('Transaction status other than "SUCCESS" has been return, please handle it properly by calling "authClient.tx.resume()"', status);
         } 
         return authenticate({ sessionToken });
       })
