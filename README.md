@@ -224,6 +224,7 @@ signIn({ username: "{username}", password: "{password}" })
     // consume accessToken from token.access_token
   })
   .catch(error => {
+    // { code: "", message: "", detail: { message: "", status: "" } }
     // handle error
   })
 ```
