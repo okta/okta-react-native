@@ -186,6 +186,8 @@ This method will create a configured client on the native modules. Resolves `tru
 
 **Note**: `androidChromeTabColor` is an optional field in config, and is used only by Android for the Chrome Custom Tabs color for the OIDC flow.
 
+**Note**: `httpConnectionTimeoutMs` and `httpReadTimeoutMs` are optional fields in config. These are used for HTTP requests performed by the SDK. Timeouts are in milliseconds.
+
 ```javascript
 await createConfig({
   issuer: "https://{yourOktaDomain}/oauth2/default", // optional
@@ -195,7 +197,9 @@ await createConfig({
   discoveryUri: "https://{yourOktaDomain}",
   scopes: ["openid", "profile", "offline_access"],
   requireHardwareBackedKeyStore: true,
-  androidChromeTabColor: "#FF00AA"
+  androidChromeTabColor: "#FF00AA",
+  httpConnectionTimeoutMs: 15000,
+  httpReadTimeoutMs: 10000,
 });
 ``` 
 

@@ -108,7 +108,8 @@ describe('OktaReactNative', () => {
         config.scopes,
         `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
-        undefined
+        undefined,
+        {},
       );
     });
 
@@ -127,6 +128,26 @@ describe('OktaReactNative', () => {
           `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
           config.requireHardwareBackedKeyStore,
           '#FF00AA',
+          {},
+      );
+    });
+
+    it('passes in correct parameters on android device with timeouts', () => {
+      Platform.OS = 'android';
+      Platform.Version = '1.0.0';
+
+      const configWithColor = Object.assign({}, config, { httpConnectionTimeoutMs: 12345, httpReadTimeoutMs: 56789 });
+      createConfig(configWithColor);
+      expect(mockCreateConfig).toHaveBeenLastCalledWith(
+        config.clientId,
+        config.redirectUri,
+        config.endSessionRedirectUri,
+        config.discoveryUri,
+        config.scopes,
+        `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
+        config.requireHardwareBackedKeyStore,
+        undefined,
+        { httpConnectionTimeoutMs: 12345, httpReadTimeoutMs: 56789 }
       );
     });
   });
