@@ -118,8 +118,15 @@ export const signIn = async(options) => {
       });
   }
 
-  // Browser sign in
-  return NativeModules.OktaSdkBridge.signIn();
+  // Browser sign in - Legacy support for non breaking.
+  return signInWithBrowser();
+};
+
+export const signInWithBrowser = async(options = {}) => {
+  if (Platform.OS === 'ios') {
+    return NativeModules.OktaSdkBridge.signIn();
+  }
+  return NativeModules.OktaSdkBridge.signIn(options);
 };
 
 export const signOut = async() => {

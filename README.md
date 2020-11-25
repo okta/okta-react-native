@@ -217,7 +217,13 @@ This async method will automatically redirect users to your Okta organziation fo
 `browser-sign-in` leverages device's native browser to automatically redirect users to your Okta organziation for authentication. By providing no argument, this method will trigger the `browser-sign-in` flow. It will emit an event once a user successfully signs in. Make sure your event listeners are mounted and unmounted. **Note**: on iOS there isn't a `onCancelled` event. If the sign in process is cancelled, `onError` will be triggered.
 
 ```javascript
-signIn();
+signInWithBrowser();
+```
+
+**Note**: IDP can be passed by specifying an argument with the idp parameter.
+
+```javascript
+signInWithBrowser({ idp: 'your_idp_here' });
 ```
 
 #### `custom-sign-in`
