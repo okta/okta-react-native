@@ -216,6 +216,12 @@ This async method will automatically redirect users to your Okta organziation fo
 signIn();
 ```
 
+**Note**: IDP can be passed into browser sign in by specifying a second argument with the idp parameter.
+
+```javascript
+signIn(undefined, { idp: 'your_idp_here' });
+```
+
 #### `custom-sign-in`
 `custom-sign-in` provides the way to authenticate the user within the native application. By providing `options` object with username and password fields, this method will retrieve `sessionToken` then exchange it for `accessToken`. 
 Both `Promise` and `Event listeners` are supported. This method is leveraging `@okta/okta-auth-js` SDK to perform authentication API request. For more information, please checkout [Okta AuthJs signIn options](https://github.com/okta/okta-auth-js#signinoptions) section.

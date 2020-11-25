@@ -87,7 +87,7 @@ export const getAuthClient = () => {
   return authClient;
 };
 
-export const signIn = async(options) => {
+export const signIn = async(options, browserSignInOptions = {}) => {
   // Custom sign in
   if (options && typeof options === 'object') {
     return authClient.signIn(options)
@@ -111,7 +111,7 @@ export const signIn = async(options) => {
   }
 
   // Browser sign in
-  return NativeModules.OktaSdkBridge.signIn();
+  return NativeModules.OktaSdkBridge.signIn(browserSignInOptions);
 };
 
 export const signOut = async() => {

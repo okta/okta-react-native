@@ -136,11 +136,19 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockSignIn = require('react-native').NativeModules.OktaSdkBridge.signIn;
+      mockSignIn.mockClear();
     });
 
     it('calls native sign in method', () => {
       signIn();
       expect(mockSignIn).toHaveBeenCalledTimes(1);
+      expect(mockSignIn).toHaveBeenLastCalledWith({});
+    });
+
+    it('calls native sign in method with idp', () => {
+      signIn(undefined, {idp: 'test-idp'});
+      expect(mockSignIn).toHaveBeenCalledTimes(1);
+      expect(mockSignIn).toHaveBeenLastCalledWith({idp: 'test-idp'});
     });
   });
 

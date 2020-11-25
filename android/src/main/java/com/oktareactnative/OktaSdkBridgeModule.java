@@ -27,8 +27,10 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
+import com.okta.oidc.AuthenticationPayload;
 import com.okta.oidc.AuthorizationStatus;
 import com.okta.oidc.OIDCConfig;
 import com.okta.oidc.Okta;
@@ -123,7 +125,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     }
 
     @ReactMethod
-    public void signIn() {
+    public void signIn(ReadableMap options) {
         Activity currentActivity = getCurrentActivity();
 
         if (currentActivity == null) {
@@ -142,7 +144,11 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             return;
         }
 
-        webClient.signIn(currentActivity, null);
+        AuthenticationPayload.Builder payloadBuilder = new AuthenticationPayload.Builder();
+        if (options.hasKey("idp")) {
+            payloadBuilder.setIdp(options.getString("idp"));
+        }
+        webClient.signIn(currentActivity, payloadBuilder.build());
     }
 
     @ReactMethod
