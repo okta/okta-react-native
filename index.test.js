@@ -13,6 +13,7 @@
 const {
   createConfig,
   signIn,
+  signInWithBrowser,
   signOut,
   authenticate,
   getAccessToken,
@@ -146,9 +147,18 @@ describe('OktaReactNative', () => {
     });
 
     it('calls native sign in method with idp', () => {
-      signIn(undefined, {idp: 'test-idp'});
+      Platform.OS = 'android';
+      signInWithBrowser({idp: 'test-idp'});
       expect(mockSignIn).toHaveBeenCalledTimes(1);
       expect(mockSignIn).toHaveBeenLastCalledWith({idp: 'test-idp'});
+    });
+
+    it('calls native sign in method with idp for iOS', () => {
+      Platform.OS = 'ios';
+      signInWithBrowser({idp: 'test-idp'});
+      expect(mockSignIn).toHaveBeenCalledTimes(1);
+      // iOS hasn't implemented this yet. But when it does it should pass this through.
+      expect(mockSignIn).toHaveBeenLastCalledWith();
     });
   });
 
