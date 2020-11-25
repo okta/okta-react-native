@@ -79,8 +79,8 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     ) {
 
         try {
-            int connectTimeout = resolveTimeout(timeouts, "httpConnectionTimeoutMs", 15_000);
-            int readTimeout = resolveTimeout(timeouts, "httpReadTimeoutMs", 10_000);
+            int connectTimeout = 1000 * resolveTimeout(timeouts, "httpConnectionTimeout", 15);
+            int readTimeout = 1000 * resolveTimeout(timeouts, "httpReadTimeout", 10);
 
             String[] scopeArray = new String[scopes.size()];
 

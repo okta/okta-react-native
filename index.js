@@ -37,8 +37,8 @@ export const createConfig = async({
   scopes,
   requireHardwareBackedKeyStore,
   androidChromeTabColor,
-  httpConnectionTimeoutMs,
-  httpReadTimeoutMs,
+  httpConnectionTimeout,
+  httpReadTimeout,
 }) => {
 
   assertIssuer(discoveryUri);
@@ -68,8 +68,8 @@ export const createConfig = async({
   }
 
   const timeouts = {
-    httpConnectionTimeoutMs,
-    httpReadTimeoutMs,
+    httpConnectionTimeout,
+    httpReadTimeout,
   };
     
   return NativeModules.OktaSdkBridge.createConfig(
