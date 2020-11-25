@@ -17,7 +17,6 @@ import android.net.Uri;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
 
 import com.okta.oidc.BuildConfig;
 import com.okta.oidc.net.ConnectionParameters;
@@ -39,11 +38,16 @@ import javax.net.ssl.HttpsURLConnection;
 import static com.okta.oidc.net.ConnectionParameters.USER_AGENT;
 
 public class HttpClientImpl implements OktaHttpClient {
-    private HttpURLConnection mUrlConnection;
-    private String userAgentTemplate;
+    private final String userAgentTemplate;
+    private final int connectTimeoutMs;
+    private final int readTimeoutMs;
 
-    HttpClientImpl(String userAgentTemplate) {
+    private HttpURLConnection mUrlConnection;
+
+    HttpClientImpl(String userAgentTemplate, int connectTimeoutMs, int readTimeoutMs) {
         this.userAgentTemplate = userAgentTemplate;
+        this.connectTimeoutMs = connectTimeoutMs;
+        this.readTimeoutMs = readTimeoutMs;
     }
 
     /*
@@ -74,17 +78,15 @@ public class HttpClientImpl implements OktaHttpClient {
             enableTlsV1_2(mUrlConnection);
         }
 
-        conn.setConnectTimeout(params.connectionTimeoutMs());
-        conn.setReadTimeout(params.readTimeOutMs());
+        conn.setConnectTimeout(connectTimeoutMs);
+        conn.setReadTimeout(readTimeoutMs);
         conn.setInstanceFollowRedirects(false);
 
         Map<String, String> requestProperties = params.requestProperties();
         String userAgent = getUserAgent();
         requestProperties.put(USER_AGENT, userAgent);
-        if (requestProperties != null) {
-            for (String property : requestProperties.keySet()) {
-                conn.setRequestProperty(property, requestProperties.get(property));
-            }
+        for (String property : requestProperties.keySet()) {
+            conn.setRequestProperty(property, requestProperties.get(property));
         }
 
         ConnectionParameters.RequestMethod requestMethod = params.requestMethod();

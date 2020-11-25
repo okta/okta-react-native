@@ -27,11 +27,13 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 import com.okta.oidc.AuthorizationStatus;
 import com.okta.oidc.OIDCConfig;
 import com.okta.oidc.Okta;
+import com.okta.oidc.OktaBuilder;
 import com.okta.oidc.RequestCallback;
 import com.okta.oidc.ResultCallback;
 import com.okta.oidc.Tokens;
@@ -45,7 +47,7 @@ import com.okta.oidc.net.response.UserInfo;
 import com.okta.oidc.storage.SharedPreferenceStorage;
 import com.okta.oidc.util.AuthorizationException;
 
-public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements ActivityEventListener{
+public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements ActivityEventListener {
 
     private final ReactApplicationContext reactContext;
     private OIDCConfig config;
@@ -65,17 +67,21 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
     @ReactMethod
     public void createConfig(String clientId,
-                             String redirectUri,
-                             String endSessionRedirectUri,
-                             String discoveryUri,
-                             ReadableArray scopes,
-                             String userAgentTemplate,
-                             Boolean requireHardwareBackedKeyStore,
-                             String androidChromeTabColor,
-                             Promise promise
+            String redirectUri,
+            String endSessionRedirectUri,
+            String discoveryUri,
+            ReadableArray scopes,
+            String userAgentTemplate,
+            Boolean requireHardwareBackedKeyStore,
+            String androidChromeTabColor,
+            ReadableMap timeouts,
+            Promise promise
     ) {
 
         try {
+            int connectTimeout = 1000 * resolveTimeout(timeouts, "httpConnectionTimeout", 15);
+            int readTimeout = 1000 * resolveTimeout(timeouts, "httpReadTimeout", 10);
+
             String[] scopeArray = new String[scopes.size()];
 
             for (int i = 0; i < scopes.size(); i++) {
@@ -90,12 +96,8 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                     .discoveryUri(discoveryUri)
                     .create();
 
-            Okta.WebAuthBuilder webAuthBuilder = new Okta.WebAuthBuilder()
-                    .withConfig(config)
-                    .withContext(reactContext)
-                    .withStorage(new SharedPreferenceStorage(reactContext))
-                    .withOktaHttpClient(new HttpClientImpl(userAgentTemplate))
-                    .setRequireHardwareBackedKeyStore(requireHardwareBackedKeyStore);
+            Okta.WebAuthBuilder webAuthBuilder = new Okta.WebAuthBuilder();
+            configureBuilder(webAuthBuilder, userAgentTemplate, requireHardwareBackedKeyStore, connectTimeout, readTimeout);
 
             if (androidChromeTabColor != null) {
                 try {
@@ -108,18 +110,42 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
             this.webClient = webAuthBuilder.create();
 
-            this.authClient = new Okta.AuthBuilder()
-                    .withConfig(config)
-                    .withContext(reactContext)
-                    .withStorage(new SharedPreferenceStorage(reactContext))
-                    .withOktaHttpClient(new HttpClientImpl(userAgentTemplate))
-                    .setRequireHardwareBackedKeyStore(requireHardwareBackedKeyStore)
-                    .create();
+            Okta.AuthBuilder authClientBuilder = new Okta.AuthBuilder();
+            configureBuilder(authClientBuilder, userAgentTemplate, requireHardwareBackedKeyStore, connectTimeout, readTimeout);
+            this.authClient = authClientBuilder.create();
 
             promise.resolve(true);
         } catch (Exception e) {
             promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
         }
+    }
+
+    private int resolveTimeout(ReadableMap timeouts, String key, int defaultValue) {
+        if (!timeouts.hasKey(key)) {
+            return defaultValue;
+        } else {
+            int timeout = timeouts.getInt(key);
+
+            if (timeout < 0) {
+                return defaultValue;
+            }
+
+            return timeout;
+        }
+    }
+
+    private <T extends OktaBuilder<?, T>> void configureBuilder(
+            T builder,
+            String userAgentTemplate,
+            boolean requireHardwareBackedKeyStore,
+            int connectTimeoutMs,
+            int readTimeoutMs
+    ) {
+        builder.withConfig(config)
+                .withOktaHttpClient(new HttpClientImpl(userAgentTemplate, connectTimeoutMs, readTimeoutMs))
+                .withContext(reactContext)
+                .withStorage(new SharedPreferenceStorage(reactContext))
+                .setRequireHardwareBackedKeyStore(requireHardwareBackedKeyStore);
     }
 
     @ReactMethod
@@ -146,7 +172,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     }
 
     @ReactMethod
-    public void authenticate(String sessionToken,  final Promise promise) {
+    public void authenticate(String sessionToken, final Promise promise) {
         if (authClient == null) {
             final WritableMap params = Arguments.createMap();
             params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.NOT_CONFIGURED.getErrorCode());
@@ -220,7 +246,6 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
             params.putString(OktaSdkConstant.ACCESS_TOKEN_KEY, tokens.getAccessToken());
             promise.resolve(params);
-
         } catch (Exception e) {
             promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
         }
@@ -401,11 +426,13 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
     }
 
-    /** ================= Private Methods ================= **/
+    /**
+     * ================= Private Methods =================
+     **/
 
     private void sendEvent(ReactContext reactContext,
-                           String eventName,
-                           @Nullable WritableMap params) {
+            String eventName,
+            @Nullable WritableMap params) {
         reactContext
                 .getJSModule(RCTNativeAppEventEmitter.class)
                 .emit(eventName, params);
@@ -487,6 +514,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                         public void onSuccess(@NonNull Boolean result) {
                             promise.resolve(result);
                         }
+
                         @Override
                         public void onError(String msg, AuthorizationException error) {
                             promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), error.getLocalizedMessage(), error);
