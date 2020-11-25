@@ -136,7 +136,7 @@ describe('OktaReactNative', () => {
       Platform.OS = 'android';
       Platform.Version = '1.0.0';
 
-      const configWithColor = Object.assign({}, config, { httpConnectionTimeoutMs: 12345, httpReadTimeoutMs: 56789 });
+      const configWithColor = Object.assign({}, config, { httpConnectionTimeout: 12, httpReadTimeout: 34 });
       createConfig(configWithColor);
       expect(mockCreateConfig).toHaveBeenLastCalledWith(
         config.clientId,
@@ -147,7 +147,7 @@ describe('OktaReactNative', () => {
         `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
         undefined,
-        { httpConnectionTimeoutMs: 12345, httpReadTimeoutMs: 56789 }
+        { httpConnectionTimeout: 12, httpReadTimeout: 34 }
       );
     });
   });
