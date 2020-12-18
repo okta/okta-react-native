@@ -1,3 +1,15 @@
+# 1.5.0
+
+### Features
+
+- [#24](https://github.com/okta/okta-react-native/pull/24) Supports setting a Chrome tab color on Android
+- [#29](https://github.com/okta/okta-react-native/pull/29) Adds support for HTTP timeouts on Android
+- [#30](https://github.com/okta/okta-react-native/pull/30) Adds support for "idp" parameter
+  
+### Other
+
+- [#20](https://github.com/okta/okta-react-native/pull/20) Updates minimum Android SDK version to 21
+  
 # 1.4.4
 
 ### Bug Fix
