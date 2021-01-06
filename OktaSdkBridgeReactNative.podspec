@@ -19,5 +19,5 @@ Pod::Spec.new do |s|
   s.source_files  = 'ios/**/*.{h,m,swift}',  'packages/okta-react-native/ios/**/*.{h,m,swift}'
 
   s.dependency 'React'
-  s.dependency 'OktaOidc', '3.9.2'
+  s.dependency 'OktaOidc', '3.10.0'
 end

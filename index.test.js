@@ -178,8 +178,7 @@ describe('OktaReactNative', () => {
       Platform.OS = 'ios';
       signInWithBrowser({idp: 'test-idp'});
       expect(mockSignIn).toHaveBeenCalledTimes(1);
-      // iOS hasn't implemented this yet. But when it does it should pass this through.
-      expect(mockSignIn).toHaveBeenLastCalledWith();
+      expect(mockSignIn).toHaveBeenLastCalledWith({idp: 'test-idp'});
     });
   });
 
