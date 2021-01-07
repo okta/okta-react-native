@@ -47,7 +47,7 @@ class OktaSdkBridge: RCTEventEmitter {
     }
     
     @objc
-    func signIn() {
+    func signIn(_ options: [String:String] = [:]) {
         guard let currOktaOidc = oktaOidc else {
             let error = OktaReactNativeError.notConfigured
             let errorDic = [
@@ -68,7 +68,7 @@ class OktaSdkBridge: RCTEventEmitter {
             return
         }
         
-        currOktaOidc.signInWithBrowser(from: view) { stateManager, error in
+        currOktaOidc.signInWithBrowser(from: view, additionalParameters: options) { stateManager, error in
             if let error = error {
                 let errorDic = [
                     OktaSdkConstant.ERROR_CODE_KEY: OktaReactNativeError.oktaOidcError.errorCode,

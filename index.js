@@ -123,9 +123,6 @@ export const signIn = async(options) => {
 };
 
 export const signInWithBrowser = async(options = {}) => {
-  if (Platform.OS === 'ios') {
-    return NativeModules.OktaSdkBridge.signIn();
-  }
   return NativeModules.OktaSdkBridge.signIn(options);
 };
 
