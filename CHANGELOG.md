@@ -1,3 +1,9 @@
+# 1.7.0
+
+### Features
+
+- [#26](https://github.com/okta/okta-react-native/pull/26) Adds transaction failure status when transaction status is not "SUCCESS" in [signIn](https://github.com/okta/okta-react-native#custom-sign-in)
+
 # 1.6.0
 
 ### Features
@@ -19,7 +25,6 @@
 ### Other
 
 - [#20](https://github.com/okta/okta-react-native/pull/20) Updates minimum Android SDK version to 21
-  
 # 1.4.4
 
 ### Bug Fix
