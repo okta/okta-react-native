@@ -110,7 +110,7 @@ export const signIn = async(options) => {
       .then((transaction) => {
         const { status, sessionToken } = transaction;
         if (status !== 'SUCCESS') {
-          throw new OktaStatusError('Transaction status other than "SUCCESS" has been return, please handle it properly by calling "authClient.tx.resume()"', status);
+          throw new OktaStatusError('Transaction status other than "SUCCESS" has been returned. Check transaction.status and handle accordingly.', status);
         } 
         return authenticate({ sessionToken });
       })
