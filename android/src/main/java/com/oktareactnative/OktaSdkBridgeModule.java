@@ -536,11 +536,17 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
         try {
             if (webClient == null) {
                 promise.reject(OktaSdkError.NOT_CONFIGURED.getErrorCode(), OktaSdkError.NOT_CONFIGURED.getErrorMessage());
+                return;
             }
 
             final SessionClient sessionClient = webClient.getSessionClient();
             Tokens tokens = sessionClient.getTokens();
             String token;
+
+            if (tokens == null) {
+                promise.reject(OktaSdkError.ERROR_TOKEN_TYPE.getErrorCode(), OktaSdkError.ERROR_TOKEN_TYPE.getErrorMessage());
+                return;
+            }
 
             switch (tokenName) {
                 case TokenTypeHint.ACCESS_TOKEN:
