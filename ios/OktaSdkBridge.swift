@@ -19,6 +19,8 @@ class OktaSdkBridge: RCTEventEmitter {
     var oktaOidc: OktaOidc?
     var config: OktaOidcConfig?
     
+    override var methodQueue: DispatchQueue { .main }
+    
     @objc
     func createConfig(_ clientId: String,
                       redirectUrl: String,
@@ -474,7 +476,7 @@ class OktaSdkBridge: RCTEventEmitter {
     
     override
     static func requiresMainQueueSetup() -> Bool {
-        return true;
+        return true
     }
     
     override func supportedEvents() -> [String]! {
