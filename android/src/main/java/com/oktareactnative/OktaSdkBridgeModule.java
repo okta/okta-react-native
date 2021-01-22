@@ -544,7 +544,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             String token;
 
             if (tokens == null) {
-                promise.reject(OktaSdkError.ERROR_TOKEN_TYPE.getErrorCode(), OktaSdkError.ERROR_TOKEN_TYPE.getErrorMessage());
+                promise.reject(OktaSdkError.NO_TOKENS.getErrorCode(), OktaSdkError.NO_TOKENS.getErrorMessage());
                 return;
             }
 
