@@ -1,3 +1,11 @@
+# 1.8.0
+
+### Bug Fixes
+
+- [#62](https://github.com/okta/okta-react-native/pull/62) Fixes getAccessToken promise rejection
+- [#60](https://github.com/okta/okta-react-native/pull/60) Sanity check in introspecttoken
+- [#57](https://github.com/okta/okta-react-native/pull/57) Fixes ios background thread exception
+
 # 1.7.0
 
 ### Features
@@ -9,11 +17,11 @@
 ### Features
 
 - [#48](https://github.com/okta/okta-react-native/pull/48) Adds support for "idp" parameter on iOS
-  
+
 ### Bug Fix
 
 - [#46](https://github.com/okta/okta-react-native/pull/46) Fix a null pointer exception in OktaSdkBridgeModule#onActivityResult
-  
+
 # 1.5.0
 
 ### Features
@@ -21,7 +29,7 @@
 - [#24](https://github.com/okta/okta-react-native/pull/24) Supports setting a Chrome tab color on Android
 - [#29](https://github.com/okta/okta-react-native/pull/29) Adds support for HTTP timeouts on Android
 - [#30](https://github.com/okta/okta-react-native/pull/30) Adds support for "idp" parameter on Android
-  
+
 ### Other
 
 - [#20](https://github.com/okta/okta-react-native/pull/20) Updates minimum Android SDK version to 21
