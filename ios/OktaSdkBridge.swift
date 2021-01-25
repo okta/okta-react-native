@@ -215,8 +215,14 @@ class OktaSdkBridge: RCTEventEmitter {
             return
         }
         
+        guard let accessToken = stateManager.accessToken else {
+            let error = OktaReactNativeError.noAccessToken
+            promiseRejecter(error.errorCode, error.errorDescription, error)
+            return
+        }
+        
         let dic = [
-            OktaSdkConstant.ACCESS_TOKEN_KEY: stateManager.accessToken
+            OktaSdkConstant.ACCESS_TOKEN_KEY: accessToken
         ]
         
         promiseResolver(dic)
