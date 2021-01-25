@@ -59,9 +59,9 @@ Perform the following Manual installation steps if you're not using `react-nativ
 
 ##### iOS
 
-1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
+1. In Xcode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
 2. Go to `node_modules` ➜ `@okta/okta-react-native` and add `ReactNativeOktaSdkBridge.xcodeproj`
-3. In XCode, in the project navigator, select your project. Add `libReactNativeOktaSdkBridge.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
+3. In Xcode, in the project navigator, select your project. Add `libReactNativeOktaSdkBridge.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
 4. Run your project (`Cmd+R`)<
 
 ##### Android
@@ -125,19 +125,6 @@ You can currently add Okta OIDC iOS through CocoaPods:
    Then run `carthage update --platform iOS`.
 
    Open project settings and choose your application target. Then open `Build Phases` and add `OktaOidc.framework` from `ios/Carthage/Build/iOS` into `Embed Frameworks` section
-   
-#### Swift Configuration
-Since React Native uses Objective-C, and Okta React Native library is a Swift wrapper, you will need to have at least one Swift file in your iOS project for the project to compile. To add a dummy Swift file, follow the following steps:
-
-1. Right click on your project, then `New file`.
-2. Select `Swift file`, enter a title, and save.
-3. If prompted for a header file, it is not required to create one.
-4. Go to `Build Settings`, look for `Swift Compiler - Language`, set `Swift Language Version` to `4.2`.
-
-If you're getting Swift linker issues, try adding this line to your project's library search path:
-```
-  $(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)
-```
 
 ### Android Setup
 
