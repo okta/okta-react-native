@@ -19,6 +19,7 @@ const {
   getAccessToken,
   getIdToken,
   getUser,
+  getAuthClient,
   getUserFromIdToken,
   isAuthenticated,
   revokeAccessToken,
@@ -29,10 +30,19 @@ const {
   introspectRefreshToken,
   refreshTokens,
   clearTokens,
-} = jest.requireActual('./');
+} = jest.requireActual('../');
 
 import { Platform } from 'react-native';
-import { version } from './package.json';
+import { version } from '../package.json';
+import OktaAuth from '@okta/okta-auth-js';
+
+let mockSignInOktaAuth = jest.fn();
+
+jest.mock('@okta/okta-auth-js', () => { 
+  return jest.fn().mockImplementation(() => {
+    return {signIn: mockSignInOktaAuth};
+  });
+});
 
 jest.mock('react-native', () => {
   return ({
@@ -80,6 +90,16 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockCreateConfig = require('react-native').NativeModules.OktaSdkBridge.createConfig;
+      mockCreateConfig.mockReset();
+      OktaAuth.mockClear();
+    });
+
+    it('authClient returns the error', () => {
+      expect(() => { getAuthClient(); })
+        .toThrowError({ 
+          code: '-100', 
+          message: 'OktaOidc client isn\'t configured, check if you have created a configuration with createConfig'
+        });
     });
     
     it('passes in correct parameters on ios device', () => {
@@ -87,6 +107,7 @@ describe('OktaReactNative', () => {
       Platform.Version = '1.0.0';
       const processedScope = config.scopes.join(' ');
       createConfig(config);
+      expect(mockCreateConfig).toHaveBeenCalledTimes(1);
       expect(mockCreateConfig).toHaveBeenCalledWith(
         config.clientId,
         config.redirectUri,
@@ -101,6 +122,7 @@ describe('OktaReactNative', () => {
       Platform.OS = 'android';
       Platform.Version = '1.0.0';
       createConfig(config);
+      expect(mockCreateConfig).toHaveBeenCalledTimes(1);
       expect(mockCreateConfig).toHaveBeenCalledWith(
         config.clientId,
         config.redirectUri,
@@ -120,16 +142,17 @@ describe('OktaReactNative', () => {
 
       const configWithColor = Object.assign({}, config, { androidChromeTabColor: '#FF00AA' });
       createConfig(configWithColor);
+      expect(mockCreateConfig).toHaveBeenCalledTimes(1);
       expect(mockCreateConfig).toHaveBeenLastCalledWith(
-          config.clientId,
-          config.redirectUri,
-          config.endSessionRedirectUri,
-          config.discoveryUri,
-          config.scopes,
-          `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
-          config.requireHardwareBackedKeyStore,
-          '#FF00AA',
-          {},
+        config.clientId,
+        config.redirectUri,
+        config.endSessionRedirectUri,
+        config.discoveryUri,
+        config.scopes,
+        `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
+        config.requireHardwareBackedKeyStore,
+        '#FF00AA',
+        {},
       );
     });
 
@@ -139,6 +162,7 @@ describe('OktaReactNative', () => {
 
       const configWithColor = Object.assign({}, config, { httpConnectionTimeout: 12, httpReadTimeout: 34 });
       createConfig(configWithColor);
+      expect(mockCreateConfig).toHaveBeenCalledTimes(1);
       expect(mockCreateConfig).toHaveBeenLastCalledWith(
         config.clientId,
         config.redirectUri,
@@ -158,7 +182,7 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockSignIn = require('react-native').NativeModules.OktaSdkBridge.signIn;
-      mockSignIn.mockClear();
+      mockSignIn.mockReset();
     });
 
     it('calls native sign in method', () => {
@@ -166,19 +190,104 @@ describe('OktaReactNative', () => {
       expect(mockSignIn).toHaveBeenCalledTimes(1);
       expect(mockSignIn).toHaveBeenLastCalledWith({});
     });
+  });
 
-    it('calls native sign in method with idp', () => {
-      Platform.OS = 'android';
-      signInWithBrowser({idp: 'test-idp'});
-      expect(mockSignIn).toHaveBeenCalledTimes(1);
-      expect(mockSignIn).toHaveBeenLastCalledWith({idp: 'test-idp'});
+  describe('signInTest with credentials', () => {
+    let mockAuthenticate;
+    const signInCredentials = { username: 'okta.user', password: 'secure-pass-123!' };
+    const sessionToken = 'Dummy-Session-token-1234';
+    const authToken = 'Dummy-Auth-Token-6789';
+
+    beforeEach(() => {
+      mockAuthenticate = require('react-native').NativeModules.OktaSdkBridge.authenticate;
+      mockAuthenticate.mockReset();
+      mockSignInOktaAuth.mockReset();
     });
 
-    it('calls native sign in method with idp for iOS', () => {
-      Platform.OS = 'ios';
+    it('sign-in succeed, authentication succeed', async () => {
+      mockSignInOktaAuth.mockImplementation().mockResolvedValueOnce({ status: 'SUCCESS', sessionToken: sessionToken });
+      mockAuthenticate.mockResolvedValueOnce(authToken);
+      
+      await expect(signIn(signInCredentials)).resolves.toEqual(authToken);
+      
+      expect(mockSignInOktaAuth).toHaveBeenCalledTimes(1);
+      expect(mockSignInOktaAuth).toHaveBeenLastCalledWith(signInCredentials);
+      expect(mockAuthenticate).toHaveBeenCalledTimes(1);
+      expect(mockAuthenticate).toHaveBeenLastCalledWith(sessionToken);
+    });
+
+    it('sign-in method fails', () => {
+      mockSignInOktaAuth.mockImplementation().mockRejectedValueOnce('Error occured during sign-in method call.');
+      
+      return signIn(signInCredentials).catch(givenError => {
+        expect(mockSignInOktaAuth).toHaveBeenCalledTimes(1);
+        expect(mockSignInOktaAuth).toHaveBeenLastCalledWith(signInCredentials);
+        expect(mockAuthenticate).toHaveBeenCalledTimes(0);
+        expect(givenError.code).toEqual('-1000');
+        expect(givenError.message).toEqual('Sign in was not authorized');
+        expect(givenError.detail).not.toBeUndefined();
+        expect(givenError.detail).not.toBeNull();
+      });
+    });
+
+    it('sign-in method succeed, authentication fails', () => {
+      mockSignInOktaAuth.mockImplementation().mockResolvedValueOnce({ status: 'SUCCESS', sessionToken: sessionToken });
+      mockAuthenticate.mockRejectedValue(new Error('Auth failed.'));
+      
+      return signIn(signInCredentials).catch(authError => {
+        expect(mockSignInOktaAuth).toHaveBeenCalledTimes(1);
+        expect(mockSignInOktaAuth).toHaveBeenLastCalledWith(signInCredentials);
+        expect(mockAuthenticate).toHaveBeenCalledTimes(1);
+        expect(authError.code).toEqual('-1000');
+        expect(authError.message).toEqual('Sign in was not authorized');
+        expect(authError.detail).not.toBeUndefined();
+        expect(authError.detail).not.toBeNull();
+      });
+    });
+
+    it('sign-in method succeed, authentication succeed but token null', () => {
+      mockSignInOktaAuth.mockImplementation().mockResolvedValueOnce({ status: 'SUCCESS', sessionToken: sessionToken });
+      mockAuthenticate.mockResolvedValueOnce(null);
+      
+      return signIn(signInCredentials).catch(authError => {
+        expect(mockSignInOktaAuth).toHaveBeenCalledTimes(1);
+        expect(mockSignInOktaAuth).toHaveBeenLastCalledWith(signInCredentials);
+        expect(mockAuthenticate).toHaveBeenCalledTimes(1);
+        expect(authError.code).toEqual('-1000');
+        expect(authError.message).toEqual('Sign in was not authorized');
+        expect(authError.detail).not.toBeUndefined();
+        expect(authError.detail).not.toBeNull();
+      });
+    });
+
+    it('sign-in method succeed, authentication succeed, status not SUCCESS', () => {
+      mockSignInOktaAuth.mockImplementation().mockResolvedValueOnce({ status: 'LOCKED_OUT', sessionToken: sessionToken });
+      mockAuthenticate.mockResolvedValueOnce(authToken);
+
+      return signIn(signInCredentials).catch(statusError => {
+        expect(mockSignInOktaAuth).toHaveBeenCalledTimes(1);
+        expect(mockSignInOktaAuth).toHaveBeenLastCalledWith(signInCredentials);
+        expect(mockAuthenticate).toHaveBeenCalledTimes(0);
+        expect(statusError.message).toEqual('Sign in was not authorized');
+        expect(statusError.detail).not.toBeUndefined();
+        expect(statusError.detail).not.toBeNull();
+        expect(statusError.detail.status).toEqual('LOCKED_OUT');
+      });
+    });
+  });
+  
+  describe('signInWithBrowser', () => {
+    let mockSignInWithBrowser;
+
+    beforeEach(() => {
+      mockSignInWithBrowser = require('react-native').NativeModules.OktaSdkBridge.signIn;
+      mockSignInWithBrowser.mockReset();
+    });
+
+    it('calls native sign in method with idp on iOS', () => {
       signInWithBrowser({idp: 'test-idp'});
-      expect(mockSignIn).toHaveBeenCalledTimes(1);
-      expect(mockSignIn).toHaveBeenLastCalledWith({idp: 'test-idp'});
+      expect(mockSignInWithBrowser).toHaveBeenCalledTimes(1);
+      expect(mockSignInWithBrowser).toHaveBeenLastCalledWith({idp: 'test-idp'});
     });
   });
 
@@ -187,11 +296,13 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockAuthenticate = require('react-native').NativeModules.OktaSdkBridge.authenticate;
+      mockAuthenticate.mockReset();
     });
 
     it('calls native authenticate method', () => {
       authenticate({sessionToken: 'sessionToken'});
       expect(mockAuthenticate).toHaveBeenCalledTimes(1);
+      expect(mockAuthenticate).toHaveBeenLastCalledWith('sessionToken');
     });
   });
 
@@ -217,9 +328,8 @@ describe('OktaReactNative', () => {
 
     it('gets access token successfully', async () => {
       mockGetAccessToken.mockReturnValueOnce('dummy_access_token');
-      expect.assertions(1);
-      const data = await getAccessToken();
-      expect(data).toEqual('dummy_access_token');
+
+      await expect(getAccessToken()).resolves.toEqual('dummy_access_token');
     });
   });
 
@@ -228,13 +338,13 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockGetIdToken = require('react-native').NativeModules.OktaSdkBridge.getIdToken;
+      mockGetIdToken.mockReset();
     });
 
     it('gets id token successfully', async () => {
       mockGetIdToken.mockReturnValueOnce('dummy_id_token');
-      expect.assertions(1);
-      const data = await getIdToken();
-      expect(data).toEqual('dummy_id_token');
+
+      await expect(getIdToken()).resolves.toEqual('dummy_id_token');
     });
   });
 
@@ -243,28 +353,38 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockGetUser = require('react-native').NativeModules.OktaSdkBridge.getUser;
+      mockGetUser.mockReset();
     });
 
     it('gets id token successfully', async () => {
-      mockGetUser.mockResolvedValue({
+      mockGetUser.mockResolvedValueOnce({
         'name': 'Joe Doe',
         'sub': '00uid4BxXw6I6TV4m0g3',
       });
-      expect.assertions(1);
-      const data = await getUser();
-      expect(data).toEqual({
+
+      await expect(getUser()).resolves.toEqual({
         'name': 'Joe Doe',
         'sub': '00uid4BxXw6I6TV4m0g3',
       });
     });
 
     it('gets id token successfully from json string result', async () => {
-      mockGetUser.mockResolvedValue("{\"name\":\"Joe Doe\",\"sub\":\"00uid4BxXw6I6TV4m0g3\"}");
-      expect.assertions(1);
-      const data = await getUser();
-      expect(data).toEqual({
+      mockGetUser.mockResolvedValueOnce('{"name":"Joe Doe","sub":"00uid4BxXw6I6TV4m0g3"}');
+      
+      await expect(getUser()).resolves.toEqual({
         'name': 'Joe Doe',
         'sub': '00uid4BxXw6I6TV4m0g3',
+      });
+    });
+
+    it('gets parsing error', () => {
+      mockGetUser.mockResolvedValueOnce('{ ; }');
+
+      return getUser().catch(error => {
+        expect(error.code).toEqual('-600');
+        expect(error.message).toEqual('Okta Oidc error');
+        expect(error.detail).not.toBeUndefined();
+        expect(error.detail).not.toBeNull();
       });
     });
   });
@@ -275,15 +395,15 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockGetIdToken = require('react-native').NativeModules.OktaSdkBridge.getIdToken;
+      mockGetIdToken.mockReset();
     });
 
     it('gets user from id token successfully', async () => {
       mockGetIdToken.mockReturnValueOnce({
         'id_token': token,
       });
-      expect.assertions(1);
-      const data = await getUserFromIdToken();
-      expect(data).toEqual({
+      
+      await expect(getUserFromIdToken()).resolves.toEqual({
         a: 'b',
       });
     });
@@ -294,13 +414,13 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockIsAuthenticated = require('react-native').NativeModules.OktaSdkBridge.isAuthenticated;
+      mockIsAuthenticated.mockReset();
     });
 
     it('is authenticated', async () => {
       mockIsAuthenticated.mockReturnValueOnce(true);
-      expect.assertions(1);
-      const data = await isAuthenticated();
-      expect(data).toEqual(true);
+      
+      await expect(isAuthenticated()).resolves.toEqual(true);
     });
   });
 
@@ -309,13 +429,13 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockRevokeAccessToken = require('react-native').NativeModules.OktaSdkBridge.revokeAccessToken;
+      mockRevokeAccessToken.mockReset();
     });
 
     it('successfully revokes access token', async () => {
       mockRevokeAccessToken.mockReturnValueOnce(true);
-      expect.assertions(1);
-      const data = await revokeAccessToken();
-      expect(data).toEqual(true);
+      
+      await expect(revokeAccessToken()).resolves.toEqual(true);
     });
   });
 
@@ -324,13 +444,13 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockRevokeIdToken = require('react-native').NativeModules.OktaSdkBridge.revokeIdToken;
+      mockRevokeIdToken.mockReset();
     });
 
     it('successfully revokes id token', async () => {
       mockRevokeIdToken.mockReturnValueOnce(true);
-      expect.assertions(1);
-      const data = await revokeIdToken();
-      expect(data).toEqual(true);
+      
+      await expect(revokeIdToken()).resolves.toEqual(true);
     });
   });
 
@@ -339,13 +459,13 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockRevokeIdToken = require('react-native').NativeModules.OktaSdkBridge.revokeRefreshToken;
+      mockRevokeIdToken.mockReset();
     });
 
     it('successfully revokes id token', async () => {
       mockRevokeIdToken.mockReturnValueOnce(true);
-      expect.assertions(1);
-      const data = await revokeRefreshToken();
-      expect(data).toEqual(true);
+      
+      await expect(revokeRefreshToken()).resolves.toEqual(true);
     });
   });
 
@@ -354,6 +474,7 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockIntrospectAccessToken = require('react-native').NativeModules.OktaSdkBridge.introspectAccessToken;
+      mockIntrospectAccessToken.mockReset();
     });
 
     it('introspects the access token', async () => {
@@ -362,9 +483,9 @@ describe('OktaReactNative', () => {
         'token_type': 'Bearer',
         'client_id': 'dummy_client_id'
       });
-      expect.assertions(1);
-      const data = await introspectAccessToken();
-      expect(data).toEqual({
+
+      
+      await expect(introspectAccessToken()).resolves.toEqual({
         'active': true,
         'token_type': 'Bearer',
         'client_id': 'dummy_client_id'
@@ -377,6 +498,7 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockIntrospectIdToken = require('react-native').NativeModules.OktaSdkBridge.introspectIdToken;
+      mockIntrospectIdToken.mockReset();
     });
 
     it('introspects the id token', async () => {
@@ -384,9 +506,8 @@ describe('OktaReactNative', () => {
         'active': true,
         'client_id': 'dummy_client_id'
       });
-      expect.assertions(1);
-      const data = await introspectIdToken();
-      expect(data).toEqual({
+      
+      await expect(introspectIdToken()).resolves.toEqual({
         'active': true,
         'client_id': 'dummy_client_id'
       });
@@ -398,6 +519,7 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockIntrospectRefreshToken = require('react-native').NativeModules.OktaSdkBridge.introspectRefreshToken;
+      mockIntrospectRefreshToken.mockReset();
     });
 
     it('introspects the refresh token', async () => {
@@ -405,9 +527,8 @@ describe('OktaReactNative', () => {
         'active': true,
         'client_id': 'dummy_client_id'
       });
-      expect.assertions(1);
-      const data = await introspectRefreshToken();
-      expect(data).toEqual({
+      
+      await expect(introspectRefreshToken()).resolves.toEqual({
         'active': true,
         'client_id': 'dummy_client_id'
       });
@@ -419,13 +540,13 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockRefreshTokens = require('react-native').NativeModules.OktaSdkBridge.refreshTokens;
+      mockRefreshTokens.mockReset();
     });
 
     it('refreshes tokens', async () => {
       mockRefreshTokens.mockReturnValueOnce(true);
-      expect.assertions(1);
-      const data = await refreshTokens();
-      expect(data).toEqual(true);
+      
+      await expect(refreshTokens()).resolves.toEqual(true);
     });
   });
 
@@ -434,13 +555,13 @@ describe('OktaReactNative', () => {
 
     beforeEach(() => {
       mockClearTokens = require('react-native').NativeModules.OktaSdkBridge.clearTokens;
+      mockClearTokens.mockReset();
     });
 
     it('refreshes tokens', async () => {
       mockClearTokens.mockReturnValueOnce(true);
-      expect.assertions(1);
-      const data = await clearTokens();
-      expect(data).toEqual(true);
+      
+      await expect(clearTokens()).resolves.toEqual(true);
     });
   });
 });

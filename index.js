@@ -55,7 +55,7 @@ export const createConfig = async({
   assertRedirectUri(endSessionRedirectUri);
 
   const userAgentTemplate = `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} ${Platform.OS}/${Platform.Version}`;
-  const { origin } = Url(discoveryUri);
+  const { origin } = new Url(discoveryUri);
   authClient = new OktaAuth({ 
     issuer: issuer || origin,
     userAgent: {
@@ -106,12 +106,16 @@ export const getAuthClient = () => {
 export const signIn = async(options) => {
   // Custom sign in
   if (options && typeof options === 'object') {
-    return authClient.signIn(options)
+    return getAuthClient().signIn(options)
       .then((transaction) => {
         const { status, sessionToken } = transaction;
         if (status !== 'SUCCESS') {
-          throw new OktaStatusError('Transaction status other than "SUCCESS" has been returned. Check transaction.status and handle accordingly.', status);
+          throw new OktaStatusError(
+            'Transaction status other than "SUCCESS" has been returned. Check transaction.status and handle accordingly.', 
+            status
+          );
         } 
+
         return authenticate({ sessionToken });
       })
       .then(token => {

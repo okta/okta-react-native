@@ -1,9 +1,14 @@
+.DS_Store
 /test-reports
 /dist
 node_modules
 npm-debug.log
+yarn-error.*
 
 .watchmanconfig
+
+.vscode
+!.vscode/launch.json
 
 # android/ios related for react native
 .gradle/

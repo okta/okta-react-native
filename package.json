@@ -81,7 +81,7 @@
     ],
     "restoreMocks": true,
     "automock": false,
-    "preset": "react-native",
+    "preset": "./scripts/build.js",
     "setupFiles": [
       "./setupJest.js"
     ]
