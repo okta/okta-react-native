@@ -1,3 +1,9 @@
+# 1.9.0
+
+### Bug Fix
+
+- [#66](https://github.com/okta/okta-react-native/pull/66) Reject getAccessToken promise if expired
+
 # 1.8.0
 
 ### Bug Fixes
