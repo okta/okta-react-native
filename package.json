@@ -2,7 +2,7 @@
   "private": true,
   "name": "@okta/okta-react-native",
   "title": "React Native Okta Sdk Bridge",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "Okta OIDC for React Native",
   "main": "dist/index.js",
   "podname": "OktaSdkBridgeReactNative",
