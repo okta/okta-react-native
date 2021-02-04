@@ -173,6 +173,8 @@ This method will create a configured client on the native modules. Resolves `tru
 
 **Note**: `androidChromeTabColor` is an optional field in config, and is used only by Android for the Chrome Custom Tabs color for the OIDC flow.
 
+**Note**: `browserMatchAll` is an optional field in config, and is used only by Android to match all Chrome Custom Tabs browsers.
+
 **Note**: `httpConnectionTimeout` and `httpReadTimeout` are optional fields in config. These are used for HTTP requests performed by the SDK. Timeouts are in seconds.
 
 ```javascript
