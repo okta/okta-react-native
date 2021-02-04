@@ -185,6 +185,7 @@ await createConfig({
   scopes: ["openid", "profile", "offline_access"],
   requireHardwareBackedKeyStore: true,
   androidChromeTabColor: "#FF00AA",
+  browserMatchAll: true,
   httpConnectionTimeout: 15,
   httpReadTimeout: 10,
 });
