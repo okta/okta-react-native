@@ -45,6 +45,7 @@ export const createConfig = async({
   scopes,
   requireHardwareBackedKeyStore,
   androidChromeTabColor,
+  browserMatchAll,
   httpConnectionTimeout,
   httpReadTimeout,
 }) => {
@@ -89,6 +90,7 @@ export const createConfig = async({
     userAgentTemplate,
     requireHardwareBackedKeyStore,
     androidChromeTabColor,
+    browserMatchAll,
     timeouts,
   );
 }; 
