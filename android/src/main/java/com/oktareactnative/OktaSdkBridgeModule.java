@@ -75,8 +75,8 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             String userAgentTemplate,
             Boolean requireHardwareBackedKeyStore,
             String androidChromeTabColor,
-            Boolean browserMatchAll,
             ReadableMap timeouts,
+            Boolean browserMatchAll,
             Promise promise
     ) {
 

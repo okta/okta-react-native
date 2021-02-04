@@ -133,6 +133,7 @@ describe('OktaReactNative', () => {
         config.requireHardwareBackedKeyStore,
         undefined,
         {},
+        undefined,
       );
     });
 
@@ -153,6 +154,7 @@ describe('OktaReactNative', () => {
         config.requireHardwareBackedKeyStore,
         '#FF00AA',
         {},
+        undefined,
       );
     });
     
@@ -171,8 +173,9 @@ describe('OktaReactNative', () => {
         config.scopes,
         `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
-        true,
+        undefined,
         {},
+        true,
       );
     });
 
@@ -192,7 +195,8 @@ describe('OktaReactNative', () => {
         `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
         undefined,
-        { httpConnectionTimeout: 12, httpReadTimeout: 34 }
+        { httpConnectionTimeout: 12, httpReadTimeout: 34 },
+        undefined,
       );
     });
   });
