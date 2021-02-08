@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Okta, Inc. and/or its affiliates. All rights reserved.
+ * Copyright (c) 2019-Present, Okta, Inc. and/or its affiliates. All rights reserved.
  * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the "License.")
  *
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
@@ -9,6 +9,8 @@
  *
  * See the License for the specific language governing permissions and limitations under the License.
  */
+
+/* eslint-disable camelcase */
 
 const {
   createConfig,
@@ -217,7 +219,11 @@ describe('OktaReactNative', () => {
     });
 
     it('sign-in method fails', () => {
-      mockSignInOktaAuth.mockImplementation().mockRejectedValueOnce('Error occured during sign-in method call.');
+      mockSignInOktaAuth.mockImplementation().mockRejectedValueOnce(
+        { 
+          error_code: '1001', 
+          error_message: 'Error occured during sign-in method call.' 
+        });
       
       return signIn(signInCredentials).catch(givenError => {
         expect(mockSignInOktaAuth).toHaveBeenCalledTimes(1);
@@ -225,14 +231,17 @@ describe('OktaReactNative', () => {
         expect(mockAuthenticate).toHaveBeenCalledTimes(0);
         expect(givenError.code).toEqual('-1000');
         expect(givenError.message).toEqual('Sign in was not authorized');
-        expect(givenError.detail).not.toBeUndefined();
-        expect(givenError.detail).not.toBeNull();
+        expect(typeof givenError.detail.error_code).toBe('string');
+        expect(typeof givenError.detail.error_message).toEqual('string');
       });
     });
 
     it('sign-in method succeed, authentication fails', () => {
       mockSignInOktaAuth.mockImplementation().mockResolvedValueOnce({ status: 'SUCCESS', sessionToken: sessionToken });
-      mockAuthenticate.mockRejectedValue(new Error('Auth failed.'));
+      mockAuthenticate.mockRejectedValue({ 
+        error_code: '1001', 
+        error_message: 'Error occured during sign-in method call.' 
+      });
       
       return signIn(signInCredentials).catch(authError => {
         expect(mockSignInOktaAuth).toHaveBeenCalledTimes(1);
@@ -240,8 +249,8 @@ describe('OktaReactNative', () => {
         expect(mockAuthenticate).toHaveBeenCalledTimes(1);
         expect(authError.code).toEqual('-1000');
         expect(authError.message).toEqual('Sign in was not authorized');
-        expect(authError.detail).not.toBeUndefined();
-        expect(authError.detail).not.toBeNull();
+        expect(typeof authError.detail.error_code).toBe('string');
+        expect(typeof authError.detail.error_message).toBe('string');
       });
     });
 
@@ -269,8 +278,6 @@ describe('OktaReactNative', () => {
         expect(mockSignInOktaAuth).toHaveBeenLastCalledWith(signInCredentials);
         expect(mockAuthenticate).toHaveBeenCalledTimes(0);
         expect(statusError.message).toEqual('Sign in was not authorized');
-        expect(statusError.detail).not.toBeUndefined();
-        expect(statusError.detail).not.toBeNull();
         expect(statusError.detail.status).toEqual('LOCKED_OUT');
       });
     });
@@ -342,9 +349,9 @@ describe('OktaReactNative', () => {
     });
 
     it('gets id token successfully', async () => {
-      mockGetIdToken.mockReturnValueOnce('dummy_id_token');
+      mockGetIdToken.mockReturnValueOnce({'id_token': 'dummy_id_token'});
 
-      await expect(getIdToken()).resolves.toEqual('dummy_id_token');
+      await expect(getIdToken()).resolves.toEqual({'id_token': 'dummy_id_token'});
     });
   });
 

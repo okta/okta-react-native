@@ -3,7 +3,7 @@
   "name": "@okta/okta-react-native",
   "title": "React Native Okta Sdk Bridge",
   "version": "1.9.0",
-  "types": "./index.d.ts",
+  "types": "types",
   "description": "Okta OIDC for React Native",
   "main": "dist/index.js",
   "podname": "OktaSdkBridgeReactNative",
@@ -14,6 +14,7 @@
     "lint:report": "eslint -f checkstyle -o ./test-reports/lint/eslint-checkstyle-result.xml .",
     "prepare": "yarn build",
     "test": "jest",
+    "dtslint": "dtslint ./types",
     "test:debug": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand"
   },
   "repository": {
@@ -56,6 +57,7 @@
     "@typescript-eslint/parser": "^4.14.2",
     "babel-jest": "^24.8.0",
     "chalk": "^4.1.0",
+    "dtslint": "^4.0.6",
     "eslint": "^7.10.0",
     "eslint-plugin-jest": "^24.1.0",
     "eslint-plugin-node": "^11.1.0",

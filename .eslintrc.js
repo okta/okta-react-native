@@ -1,6 +1,8 @@
 // https://eslint.org/docs/user-guide/configuring
 
 module.exports = {
+  tsconfigRootDir: './types',
+  ignorePatterns: ['node_modules/', 'dist/'],
   extends: [
     'eslint:recommended',
     'plugin:node/recommended-script',
@@ -43,7 +45,6 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
       extends: [
-        'eslint:recommended',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended'
       ],
