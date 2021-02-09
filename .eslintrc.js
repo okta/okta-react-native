@@ -1,7 +1,6 @@
 // https://eslint.org/docs/user-guide/configuring
 
 module.exports = {
-  tsconfigRootDir: './types',
   ignorePatterns: ['node_modules/', 'dist/'],
   extends: [
     'eslint:recommended',
@@ -53,7 +52,7 @@ module.exports = {
         ecmaVersion: 2020,
         ecmaFeatures: { 'jsx': true },
         sourceType: 'module',
-        project: './tsconfig.json'
+        project: 'types/tsconfig.json'
       },
       env: {
         es6: true,
