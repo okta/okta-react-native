@@ -289,7 +289,7 @@ await clearTokens();
 
 ### `isAuthenticated`
 
-Returns a promise that resolves to `true` if there is a valid access token or ID token. Otherwise `false`.
+Returns a promise that resolves to `true` if there is a valid Access token and ID token. Otherwise `false`.
 
 ```javascript
 await isAuthenticated();
