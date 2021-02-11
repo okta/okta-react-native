@@ -1,14 +1,11 @@
 // https://eslint.org/docs/user-guide/configuring
 
 module.exports = {
+  ignorePatterns: ['node_modules/', 'dist/'],
   extends: [
     'eslint:recommended',
     'plugin:node/recommended-script',
-    'plugin:jest/recommended'
-  ],
-  plugins: [
-    'node',
-    'jest'
+    'plugin:jest/recommended',
   ],
   rules: {
     'semi': ['error', 'always'],
@@ -45,10 +42,37 @@ module.exports = {
   },
   overrides: [
     {
+      files: ['*.ts', '*.tsx'],
+      extends: [
+        'plugin:@typescript-eslint/eslint-recommended',
+        'plugin:@typescript-eslint/recommended'
+      ],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        ecmaVersion: 2020,
+        ecmaFeatures: { 'jsx': true },
+        sourceType: 'module',
+        project: 'types/tsconfig.json'
+      },
+      env: {
+        es6: true,
+        node: false
+      },
+      plugins: ['@typescript-eslint'],
+      rules: {
+        'node/no-unsupported-features/es-syntax': 0,
+        'node/no-unsupported-features/node-builtins': 0
+      }
+    },
+    {
       // ES6 processed by Babel
       files: [
-        'index.js',
-        'index.test.js'
+        '*.js',
+        '*.test.js'
+      ],
+      plugins: [
+        'node',
+        'jest',
       ],
       parser: '@babel/eslint-parser',
       parserOptions: {
@@ -66,7 +90,11 @@ module.exports = {
     },
     {
       // Jest specs
-      files: ['index.test.js'],
+      files: ['*.test.js'],
+      plugins: [
+        'node',
+        'jest',
+      ],
       env: {
         jest: true
       }

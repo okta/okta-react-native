@@ -12,6 +12,8 @@ jdk:
   - default-jdk
 
 script:
+- yarn eslint
+- yarn dtslint
 - yarn test
 - bash ./scripts/snyk.sh
 
