@@ -310,11 +310,15 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
             final WritableMap params = Arguments.createMap();
             SessionClient sessionClient = webClient.getSessionClient();
-            if (sessionClient.isAuthenticated()) {
-                params.putBoolean(OktaSdkConstant.AUTHENTICATED_KEY, true);
-            } else {
+            Tokens tokens = sessionClient.getTokens();
+            if (tokens == null) {
                 params.putBoolean(OktaSdkConstant.AUTHENTICATED_KEY, false);
+                promise.resolve(params);
+                return;
             }
+            boolean isAccessTokenAvailable = tokens.getAccessToken() != null && !tokens.isAccessTokenExpired();
+            boolean isAuthenticated = isAccessTokenAvailable && isIdTokenNotExpired(tokens.getIdToken());
+            params.putBoolean(OktaSdkConstant.AUTHENTICATED_KEY, isAuthenticated);
             promise.resolve(params);
         } catch (Exception e) {
             promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
@@ -593,6 +597,19 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             );
         } catch (AuthorizationException e) {
             promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
+        }
+    }
+
+    private boolean isIdTokenNotExpired(@Nullable String idToken) {
+        if (idToken == null) {
+            return false;
+        }
+        try {
+            OktaIdToken oktaIdToken = OktaIdToken.parseIdToken(idToken);
+            long nowInSeconds = System.currentTimeMillis() / 1000L;
+            return oktaIdToken.getClaims().exp > nowInSeconds;
+        } catch (IllegalArgumentException e) {
+            return false;
         }
     }
 }
