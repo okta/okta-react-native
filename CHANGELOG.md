@@ -1,3 +1,19 @@
+# 1.9.0
+
+### Features
+
+- [#77](https://github.com/okta/okta-react-native/pull/77) Adds support for typescript
+
+### Bug Fixes
+
+- [#76](https://github.com/okta/okta-react-native/pull/76) Returns true for `isAuthenticated` only if both Access **and** ID Tokens are valid (ios)
+- [#78](https://github.com/okta/okta-react-native/pull/78) Fixes npe for unauthorized token request
+- [#79](https://github.com/okta/okta-react-native/pull/79) Returns true for `isAuthenticated` only if both Access **and** ID Tokens are valid (android)
+
+### Other
+
+- [#71](https://github.com/okta/okta-react-native/pull/71) Upgrades outdated dependencies
+
 # 1.8.1
 
 ### Bug Fix
