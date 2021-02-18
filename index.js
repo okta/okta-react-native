@@ -47,7 +47,6 @@ export const createConfig = async({
   androidChromeTabColor,
   httpConnectionTimeout,
   httpReadTimeout,
-  browserMatchAll,
 }) => {
 
   assertIssuer(discoveryUri);
@@ -91,7 +90,6 @@ export const createConfig = async({
     requireHardwareBackedKeyStore,
     androidChromeTabColor,
     timeouts,
-    browserMatchAll,
   );
 }; 
 
