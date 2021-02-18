@@ -1,3 +1,9 @@
+# 1.9.1
+
+### Other
+
+- [#82](https://github.com/okta/okta-react-native/pull/82) Fixes java import at BridgeModule
+
 # 1.9.0
 
 ### Features
