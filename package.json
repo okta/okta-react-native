@@ -23,6 +23,7 @@
   },
   "files": [
     "index.js",
+    "types/index.d.ts",
     "android",
     "ios",
     "LICENSE",

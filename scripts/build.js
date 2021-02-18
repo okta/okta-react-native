@@ -7,6 +7,7 @@ const fs = require('fs');
 const NPM_DIR = `dist`;
 const FILES_TO_COPY = [
   'index.js',
+  'types/index.d.ts',
   'android',
   'ios',
   'LICENSE',
