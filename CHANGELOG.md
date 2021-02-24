@@ -1,3 +1,9 @@
+# 1.9.2
+
+### Other
+
+- [#91](https://github.com/okta/okta-react-native/pull/91) Fixes "types" parameter in package.json
+
 # 1.9.1
 
 ### Other
