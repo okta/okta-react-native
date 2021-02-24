@@ -26,6 +26,7 @@ OktaSDK.createConfig({
   androidChromeTabColor: '#00000',
   httpConnectionTimeout: 15,
   httpReadTimeout: 10,
+  browserMatchAll: false,
 });
 
 // $ExpectType StringAnyMap

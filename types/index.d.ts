@@ -66,6 +66,7 @@ export namespace Okta {
     androidChromeTabColor?: string;
     httpConnectionTimeout?: number;
     httpReadTimeout?: number;
+    browserMatchAll?: boolean;
   }
 
   interface AuthenticationResponse {
