@@ -19,8 +19,8 @@ const FILES_TO_COPY = [
 
 shell.echo(`Start building...`);
 
+shell.mkdir(`-p`, `${NPM_DIR}`);
 shell.rm(`-Rf`, `${NPM_DIR}/*`);
-shell.mkdir(`${NPM_DIR}`);
 
 FILES_TO_COPY.forEach(function(filePath) {
   const parentDir = path.join(NPM_DIR, path.dirname(filePath));
