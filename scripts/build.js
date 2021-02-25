@@ -1,6 +1,7 @@
 'use strict';
 
 const shell = require('shelljs');
+const path = require('path');
 const chalk = require('chalk');
 const fs = require('fs');
 
@@ -18,9 +19,18 @@ const FILES_TO_COPY = [
 
 shell.echo(`Start building...`);
 
-shell.mkdir(`${NPM_DIR}`);
 shell.rm(`-Rf`, `${NPM_DIR}/*`);
-shell.cp(`-Rf`, FILES_TO_COPY, `${NPM_DIR}`);
+shell.mkdir(`${NPM_DIR}`);
+
+FILES_TO_COPY.forEach(function(filePath) {
+  const parentDir = path.join(NPM_DIR, path.dirname(filePath));
+  if (parentDir != NPM_DIR) {
+    shell.mkdir(`-p`, parentDir);
+  }
+  
+  shell.cp(`-Rf`, filePath, parentDir);
+});
+
 
 shell.echo(`Modifying final package.json`);
 let packageJSON = JSON.parse(fs.readFileSync(`./${NPM_DIR}/package.json`));
