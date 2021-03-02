@@ -1,3 +1,9 @@
+# 1.10.0
+
+###Other
+
+- [#96](https://github.com/okta/okta-react-native/pull/96) Updates okta-oidc-android dependency to 1.0.17
+
 # 1.9.1
 
 ### Other
