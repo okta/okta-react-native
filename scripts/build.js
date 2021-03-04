@@ -29,7 +29,7 @@ if ((folderSize && folderSize > 0) || (folderContents && folderContents != '')) 
   shell.rm(`-Rf`, `${NPM_DIR}/*`);
 }
 
-// Create folders 
+// Create the nested folders to mirror files structure.
 FILES_TO_COPY.forEach(function(filePath) {
   const parentDir = path.join(NPM_DIR, path.dirname(filePath));
   if (parentDir != NPM_DIR) {
