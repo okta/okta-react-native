@@ -1,3 +1,9 @@
+# 1.9.3
+
+### Other
+
+- [#94](https://github.com/okta/okta-react-native/pull/94) Fixes a build script to add support of file copying
+
 # 1.9.2
 
 ### Other
