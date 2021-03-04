@@ -21,7 +21,7 @@ shell.echo(`Start building...`);
 
 shell.mkdir(`-p`, `${NPM_DIR}`);
 
-// Check whether build folder is empty. If so delete any contents. 
+// Check whether a build folder isn't empty. If so, then delete any contents there. 
 const folderSize =  parseInt(shell.exec(`du -s ${NPM_DIR} | cut -f1`).stdout);
 const folderContents =  shell.exec(`ls -A ${NPM_DIR}`).stdout;
 if ((folderSize && folderSize > 0) || (folderContents && folderContents != '')) {
