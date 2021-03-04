@@ -77,6 +77,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             Boolean requireHardwareBackedKeyStore,
             String androidChromeTabColor,
             ReadableMap timeouts,
+            Boolean browserMatchAll,
             Promise promise
     ) {
 
@@ -108,6 +109,10 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                     // The color wasn't in the right format.
                     promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
                 }
+            }
+
+            if (browserMatchAll != null && browserMatchAll) {
+                webAuthBuilder.browserMatchAll(true);
             }
 
             this.webClient = webAuthBuilder.create();
