@@ -20,8 +20,16 @@ const FILES_TO_COPY = [
 shell.echo(`Start building...`);
 
 shell.mkdir(`-p`, `${NPM_DIR}`);
-shell.rm(`-Rf`, `${NPM_DIR}/*`);
 
+// Check whether build folder is empty. If so delete any contents. 
+const folderSize =  parseInt(shell.exec(`du -s ${NPM_DIR} | cut -f1`).stdout);
+const folderContents =  shell.exec(`ls -A ${NPM_DIR}`).stdout;
+if ((folderSize && folderSize > 0) || (folderContents && folderContents != '')) {
+  shell.echo(`Removing contents of build folder...`);
+  shell.rm(`-Rf`, `${NPM_DIR}/*`);
+}
+
+// Create folders 
 FILES_TO_COPY.forEach(function(filePath) {
   const parentDir = path.join(NPM_DIR, path.dirname(filePath));
   if (parentDir != NPM_DIR) {
