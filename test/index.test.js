@@ -135,7 +135,7 @@ describe('OktaReactNative', () => {
         config.requireHardwareBackedKeyStore,
         undefined,
         {},
-        undefined,
+        false,
       );
     });
 
@@ -156,7 +156,7 @@ describe('OktaReactNative', () => {
         config.requireHardwareBackedKeyStore,
         '#FF00AA',
         {},
-        undefined,
+        false,
       );
     });
     
@@ -198,7 +198,7 @@ describe('OktaReactNative', () => {
         config.requireHardwareBackedKeyStore,
         undefined,
         { httpConnectionTimeout: 12, httpReadTimeout: 34 },
-        undefined,
+        false,
       );
     });
   });

@@ -47,7 +47,7 @@ export const createConfig = async({
   androidChromeTabColor,
   httpConnectionTimeout,
   httpReadTimeout,
-  browserMatchAll,
+  browserMatchAll = false,
 }) => {
 
   assertIssuer(discoveryUri);
