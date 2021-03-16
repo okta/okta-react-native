@@ -3,7 +3,7 @@
   "name": "@okta/okta-react-native",
   "title": "React Native Okta Sdk Bridge",
   "version": "1.10.0",
-  "types": "types",
+  "types": "dist/types/index.d.ts",
   "description": "Okta OIDC for React Native",
   "main": "dist/index.js",
   "podname": "OktaSdkBridgeReactNative",
@@ -23,6 +23,7 @@
   },
   "files": [
     "index.js",
+    "types/index.d.ts",
     "android",
     "ios",
     "LICENSE",

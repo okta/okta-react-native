@@ -1,8 +1,20 @@
 # 1.10.0
 
-###Other
+### Other
 
 - [#96](https://github.com/okta/okta-react-native/pull/96) Updates okta-oidc-android dependency to 1.0.17
+
+# 1.9.3
+
+### Other
+
+- [#94](https://github.com/okta/okta-react-native/pull/94) Fixes a build script to add support of file copying
+
+# 1.9.2
+
+### Other
+
+- [#91](https://github.com/okta/okta-react-native/pull/91) Fixes "types" parameter in package.json
 
 # 1.9.1
 
