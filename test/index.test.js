@@ -36,14 +36,16 @@ const {
 
 import { Platform } from 'react-native';
 import { version } from '../package.json';
-import OktaAuth from '@okta/okta-auth-js';
+import { OktaAuth } from '@okta/okta-auth-js';
 
 let mockSignInOktaAuth = jest.fn();
 
 jest.mock('@okta/okta-auth-js', () => { 
-  return jest.fn().mockImplementation(() => {
-    return {signIn: mockSignInOktaAuth};
-  });
+  return {
+    OktaAuth: jest.fn().mockImplementation(() => {
+      return {signIn: mockSignInOktaAuth};
+    })
+  };
 });
 
 jest.mock('react-native', () => {

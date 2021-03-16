@@ -13,7 +13,7 @@
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
 import { assertIssuer, assertClientId, assertRedirectUri } from '@okta/configuration-validation';
 import jwt from 'jwt-lite';
-import OktaAuth from '@okta/okta-auth-js';
+import { OktaAuth } from '@okta/okta-auth-js';
 import Url from 'url-parse';
 import { version } from './package.json';
 

@@ -1,5 +1,9 @@
 # 1.10.0
 
+### Bug Fixes
+
+- [#103](https://github.com/okta/okta-react-native/pull/103) Fixes hermes engine support
+
 ### Other
 
 - [#96](https://github.com/okta/okta-react-native/pull/96) Updates okta-oidc-android dependency to 1.0.17
