@@ -50,34 +50,7 @@ This library is available through [npm](https://www.npmjs.com/package/@okta/okta
 
 ```
 $ npm install @okta/okta-react-native --save
-$ react-native link @okta/okta-react-native
 ```
-
-Perform the following Manual installation steps if you're not using `react-native link`.
-
-#### Manual installation (Optional)
-
-##### iOS
-
-1. In Xcode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `@okta/okta-react-native` and add `ReactNativeOktaSdkBridge.xcodeproj`
-3. In Xcode, in the project navigator, select your project. Add `libReactNativeOktaSdkBridge.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. Run your project (`Cmd+R`)<
-
-##### Android
-
-1. Open up `android/app/src/main/java/[...]/MainApplication.java`
-  - Add `import com.oktareactnative.OktaSdkBridgePackage;` to the imports at the top of the file
-  - Add `new OktaSdkBridgePackage()` to the list returned by the `getPackages()` method
-2. Append the following lines to `android/settings.gradle`:
-    ```
-    include ':@okta/okta-react-native'
-    project(':@okta/okta-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/@okta/okta-react-native/android')
-    ```
-3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
-    ```
-    compile project(':@okta_okta-react-native')
-    ```
 
 ### iOS Setup
 
