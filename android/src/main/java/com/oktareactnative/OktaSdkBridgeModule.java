@@ -433,8 +433,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         if (webClient != null) {
             webClient.handleActivityResult(requestCode & 0xffff, resultCode, data);
-            Activity currentActivity = getCurrentActivity();
-            registerCallback(currentActivity);
+            registerCallback(activity);
         }
     }
 
