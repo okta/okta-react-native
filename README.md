@@ -267,6 +267,8 @@ await clearTokens();
 
 Returns a promise that resolves to `true` if there is a valid Access token and ID token. Otherwise `false`.
 
+**Note**: This does not mean that the Access and the ID tokens are fresh - just that they were valid the last time they were used. You should introspect the tokens to get know whether they are valid at the time being.
+
 ```javascript
 await isAuthenticated();
 ```
