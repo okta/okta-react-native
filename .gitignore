@@ -10,7 +10,7 @@ yarn-error.*
 .vscode
 !.vscode/launch.json
 
-# android/ios related for react native
+# Android/iOS related for react native
 .gradle/
 gradle/
 gradlew
@@ -19,3 +19,30 @@ build/
 local.properties
 *.iml
 xcuserdata/
+
+# General
+*.swp
+*.swo
+*.rbo
+*.gem
+.DS_Store
+.rbenv-version
+xcuserdata
+*.xcworkspace/
+ReactNativeOktaSdkBridge.xcworkspace
+DerivedData
+/.build
+
+# Xcode
+*.xccheckout
+
+## Obj-C/Swift specific
+*.hmap
+
+## App packaging
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# CocoaPods
+Pods/
