@@ -45,6 +45,9 @@ OktaSDK.signInWithBrowser();
 OktaSDK.signInWithBrowser({ idp: '{idp}' });
 
 // $ExpectType Promise<AuthenticationResponse>
+OktaSDK.signInWithBrowser({ noSSO: 'true' });
+
+// $ExpectType Promise<AuthenticationResponse>
 OktaSDK.authenticate('{sessionToken}');
 
 // $ExpectType Promise<{ resolve_type: string; }>
