@@ -23,9 +23,9 @@ export function signIn(
   credentials?: Okta.Credentials
 ): Promise<Okta.AuthenticationResponse>;
 
-export function signInWithBrowser(options?: {
-  idp: string;
-}): Promise<Okta.AuthenticationResponse>;
+export function signInWithBrowser(
+  options?: Okta.BrowserOptions
+): Promise<Okta.AuthenticationResponse>;
 
 export function authenticate(
   sessionToken: string
@@ -83,6 +83,11 @@ export namespace Okta {
   interface Credentials {
     username: string;
     password: string;
+  }
+
+  interface BrowserOptions {
+    idp?: string;
+    noSSO?: string;
   }
 
   interface StringAnyMap {
