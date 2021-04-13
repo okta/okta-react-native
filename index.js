@@ -137,6 +137,10 @@ export const signIn = async(options) => {
 };
 
 export const signInWithBrowser = async(options = {}) => {
+  if (typeof options.noSSO === 'boolean') { 
+    options.noSSO = options.noSSO.toString(); 
+  }
+
   return NativeModules.OktaSdkBridge.signIn(options);
 };
 

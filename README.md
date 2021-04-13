@@ -193,7 +193,7 @@ signInWithBrowser({ idp: 'your_idp_here' });
 **Note**: If you want to get rid of the system sign in and sign out alert on iOS, then pass the `noSSO` parameter when calling `signInWithBrowser`. The cookies will not be retained by the browser, so after logging out the user will be prompted to re-authenticate.
 
 ```javascript
-signInWithBrowser({ noSSO: 'true' });
+signInWithBrowser({ noSSO: true });
 ```
 
 #### `custom-sign-in`
