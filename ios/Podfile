@@ -12,3 +12,12 @@ target 'ReactNativeOktaSdkBridge' do
 
   pod 'OktaOidc'
 end
+
+target 'Tests' do
+  config = use_native_modules!
+  use_react_native!(:path => config["reactNativePath"])
+
+  use_native_modules!
+
+  pod 'OktaOidc'
+end

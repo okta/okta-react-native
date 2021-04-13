@@ -13,10 +13,29 @@
 import Foundation
 import OktaOidc
 
+protocol OktaOidcProtocol: class {
+    
+    func signInWithBrowser(from presenter: UIViewController,
+                           additionalParameters: [String : String],
+                           callback: @escaping ((OktaOidcStateManager?, Error?) -> Void))
+    
+    func signOutOfOkta(_ authStateManager: OktaOidcStateManager,
+                                    from presenter: UIViewController,
+                                    callback: @escaping ((Error?) -> Void))
+    
+    func authenticate(withSessionToken sessionToken: String,
+                                   callback: @escaping ((OktaOidcStateManager?, Error?) -> Void))
+}
+
+extension OktaOidc: OktaOidcProtocol {
+    
+    
+}
+
 @objc(OktaSdkBridge)
 class OktaSdkBridge: RCTEventEmitter {
     
-    private var oktaOidc: OktaOidc?
+    private var oktaOidc: OktaOidcProtocol?
     private var config: OktaOidcConfig?
     
     override var methodQueue: DispatchQueue { .main }
@@ -29,7 +48,7 @@ class OktaSdkBridge: RCTEventEmitter {
                       scopes: String,
                       userAgentTemplate: String,
                       promiseResolver: RCTPromiseResolveBlock,
-                      promiseRejecter: RCTPromiseRejectBlock) -> Void {
+                      promiseRejecter: RCTPromiseRejectBlock) {
         do {
             let uaVersion = OktaUserAgent.userAgentVersion()
             let userAgent = userAgentTemplate.replacingOccurrences(of: "$UPSTREAM_SDK", with: "okta-oidc-ios/\(uaVersion)")
