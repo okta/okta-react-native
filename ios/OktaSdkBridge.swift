@@ -15,6 +15,8 @@ import OktaOidc
 
 protocol OktaOidcProtocol: class {
     
+    var configuration: OktaOidcConfig { get }
+    
     func signInWithBrowser(from presenter: UIViewController,
                            additionalParameters: [String : String],
                            callback: @escaping ((OktaOidcStateManager?, Error?) -> Void))
@@ -35,10 +37,26 @@ extension OktaOidc: OktaOidcProtocol {
 @objc(OktaSdkBridge)
 class OktaSdkBridge: RCTEventEmitter {
     
-    private var oktaOidc: OktaOidcProtocol?
-    private var config: OktaOidcConfig?
+    private(set) var oktaOidc: OktaOidcProtocol?
+    var config: OktaOidcConfig? {
+        oktaOidc?.configuration
+    }
     
     override var methodQueue: DispatchQueue { .main }
+    
+    init(oidc: OktaOidcProtocol? = nil) {
+        self.oktaOidc = oidc
+    }
+    
+    func presentedViewController() -> UIViewController? {
+        RCTPresentedViewController()
+    }
+    
+    func readStateManager() -> OktaOidcStateManager? {
+        config.flatMap {
+            OktaOidcStateManager.readFromSecureStorage(for: $0)
+        }
+    }
     
     @objc
     func createConfig(_ clientId: String,
@@ -53,7 +71,7 @@ class OktaSdkBridge: RCTEventEmitter {
             let uaVersion = OktaUserAgent.userAgentVersion()
             let userAgent = userAgentTemplate.replacingOccurrences(of: "$UPSTREAM_SDK", with: "okta-oidc-ios/\(uaVersion)")
             OktaOidcConfig.setUserAgent(value: userAgent)
-            config = try OktaOidcConfig(with: [
+            let config = try OktaOidcConfig(with: [
                 "issuer": discoveryUri,
                 "clientId": clientId,
                 "redirectUri": redirectUrl,
@@ -79,7 +97,7 @@ class OktaSdkBridge: RCTEventEmitter {
             return
         }
         
-        guard let view = RCTPresentedViewController() else {
+        guard let view = presentedViewController() else {
             let error = OktaReactNativeError.noView
             let errorDic = [
                 OktaSdkConstant.ERROR_CODE_KEY: error.errorCode,
@@ -126,7 +144,7 @@ class OktaSdkBridge: RCTEventEmitter {
     
     @objc
     func signOut() {
-        guard let oidcConfig = config, let currOktaOidc = oktaOidc else {
+        guard let currOktaOidc = oktaOidc else {
             let error = OktaReactNativeError.notConfigured
             let errorDic = [
                 OktaSdkConstant.ERROR_CODE_KEY: error.errorCode,
@@ -136,7 +154,7 @@ class OktaSdkBridge: RCTEventEmitter {
             return
         }
         
-        guard let view = RCTPresentedViewController() else {
+        guard let view = presentedViewController() else {
             let error = OktaReactNativeError.noView
             let errorDic = [
                 OktaSdkConstant.ERROR_CODE_KEY: error.errorCode,
@@ -146,7 +164,7 @@ class OktaSdkBridge: RCTEventEmitter {
             return
         }
         
-        guard let stateManager = OktaOidcStateManager.readFromSecureStorage(for: oidcConfig) else {
+        guard let stateManager = readStateManager() else {
             let error = OktaReactNativeError.unauthenticated
             let errorDic = [
                 OktaSdkConstant.ERROR_CODE_KEY: error.errorCode,
@@ -179,7 +197,7 @@ class OktaSdkBridge: RCTEventEmitter {
     func authenticate(_ sessionToken: String,
                       promiseResolver: @escaping RCTPromiseResolveBlock,
                       promiseRejecter: @escaping RCTPromiseRejectBlock) {
-        guard let _ = config, let currOktaOidc = oktaOidc else {
+        guard config != nil, let currOktaOidc = oktaOidc else {
             let error = OktaReactNativeError.notConfigured
             let errorDic = [
                 OktaSdkConstant.ERROR_CODE_KEY: error.errorCode,
@@ -228,13 +246,7 @@ class OktaSdkBridge: RCTEventEmitter {
     
     @objc(getAccessToken:promiseRejecter:)
     func getAccessToken(promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
-        guard let oidcConfig = config else {
-            let error = OktaReactNativeError.notConfigured
-            promiseRejecter(error.errorCode, error.errorDescription, error)
-            return
-        }
-        
-        guard let stateManager = OktaOidcStateManager.readFromSecureStorage(for: oidcConfig) else {
+        guard let stateManager = readStateManager() else {
             let error = OktaReactNativeError.unauthenticated
             promiseRejecter(error.errorCode, error.errorDescription, error)
             return
@@ -254,14 +266,8 @@ class OktaSdkBridge: RCTEventEmitter {
     }
     
     @objc(getIdToken:promiseRejecter:)
-    func getIdToken(promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
-        guard let oidcConfig = config else {
-            let error = OktaReactNativeError.notConfigured
-            promiseRejecter(error.errorCode, error.errorDescription, error)
-            return
-        }
-        
-        guard let stateManager = OktaOidcStateManager.readFromSecureStorage(for: oidcConfig) else {
+    func getIdToken(promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {        
+        guard let stateManager = readStateManager() else {
             let error = OktaReactNativeError.unauthenticated
             promiseRejecter(error.errorCode, error.errorDescription, error)
             return
@@ -372,7 +378,7 @@ class OktaSdkBridge: RCTEventEmitter {
             promiseRejecter(error.errorCode, error.errorDescription, error)
             return
         }
-        
+
         stateManager.renew { newAccessToken, error in
             if let error = error {
                 promiseRejecter(OktaReactNativeError.oktaOidcError.errorCode, error.localizedDescription, error)
