@@ -324,7 +324,7 @@ describe('OktaReactNative', () => {
     });
 
     it('calls native sign in method with noSSO on iOS', () => {
-      signInWithBrowser({ noSSO: 'true'});
+      signInWithBrowser({ noSSO: true});
       expect(mockSignInWithBrowser).toHaveBeenCalledTimes(1);
       expect(mockSignInWithBrowser).toHaveBeenLastCalledWith({noSSO: 'true'});
     });

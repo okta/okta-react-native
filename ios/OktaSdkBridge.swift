@@ -61,7 +61,7 @@ class OktaSdkBridge: RCTEventEmitter {
     }
     
     private(set) var oktaOidc: OktaOidcProtocol?
-
+    
     override var methodQueue: DispatchQueue { .main }
     
     init(oidc: OktaOidcProtocol? = nil) {
