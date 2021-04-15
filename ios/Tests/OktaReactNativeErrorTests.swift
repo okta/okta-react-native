@@ -13,8 +13,7 @@
 import XCTest
 @testable import ReactNativeOktaSdkBridge
 
-class OktaReactNativeErrorTests: XCTestCase {
-
+final class OktaReactNativeErrorTests: XCTestCase {
     func testLocalizedDescription() {
         XCTAssertEqual(OktaReactNativeError.notConfigured.localizedDescription, "OktaOidc client isn't configured, check if you have created a configuration with createConfig")
         XCTAssertEqual(OktaReactNativeError.noView.localizedDescription, "No current view exists")

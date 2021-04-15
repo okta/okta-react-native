@@ -14,7 +14,6 @@ import XCTest
 @testable import ReactNativeOktaSdkBridge
 
 final class OktaSdkConstantTests: XCTestCase {
-    
     func testKeys() {
         XCTAssertEqual(OktaSdkConstant.RESOLVE_TYPE_KEY, "resolve_type")
         XCTAssertEqual(OktaSdkConstant.ACCESS_TOKEN_KEY, "access_token")

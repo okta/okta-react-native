@@ -4,7 +4,7 @@ inhibit_all_warnings!
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 
-target 'ReactNativeOktaSdkBridge' do
+def shared_pods
   config = use_native_modules!
   use_react_native!(:path => config["reactNativePath"])
 
@@ -13,11 +13,10 @@ target 'ReactNativeOktaSdkBridge' do
   pod 'OktaOidc'
 end
 
+target 'ReactNativeOktaSdkBridge' do
+  shared_pods
+end
+
 target 'Tests' do
-  config = use_native_modules!
-  use_react_native!(:path => config["reactNativePath"])
-
-  use_native_modules!
-
-  pod 'OktaOidc'
+  shared_pods
 end

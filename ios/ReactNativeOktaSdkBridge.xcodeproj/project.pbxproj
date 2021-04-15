@@ -17,6 +17,9 @@
 		92A46ED62620B534002340F9 /* OktaSDKError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99754DF22C124B400503B21 /* OktaSDKError.swift */; };
 		92A46ED72620B534002340F9 /* OktaSdkBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A997533922BAC05800503B21 /* OktaSdkBridge.swift */; };
 		92A46ED82620B534002340F9 /* ReactNativeOktaSdkBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* ReactNativeOktaSdkBridge.m */; };
+		92F22C9F262872D400EE57FD /* OktaSdkBridgeMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F22C9E262872D400EE57FD /* OktaSdkBridgeMock.swift */; };
+		92F22CA3262872FE00EE57FD /* OktaOidcStateManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F22CA2262872FE00EE57FD /* OktaOidcStateManagerMock.swift */; };
+		92F22CA72628731E00EE57FD /* OktaOidcMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F22CA62628731E00EE57FD /* OktaOidcMock.swift */; };
 		E475EFD6B7A6A388E312A131 /* libPods-ReactNativeOktaSdkBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD2E375BCCF907E09079927D /* libPods-ReactNativeOktaSdkBridge.a */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +58,9 @@
 		923AF9EB2625F48A00EE4CF4 /* OktaSdkBridgeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaSdkBridgeTests.swift; sourceTree = "<group>"; };
 		92A46EAB2620B4CB002340F9 /* libReactNativeOktaSdkBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeOktaSdkBridge.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		92A46F012620B6B7002340F9 /* libPods-ReactNativeOktaSdkBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-ReactNativeOktaSdkBridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		92F22C9E262872D400EE57FD /* OktaSdkBridgeMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaSdkBridgeMock.swift; sourceTree = "<group>"; };
+		92F22CA2262872FE00EE57FD /* OktaOidcStateManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaOidcStateManagerMock.swift; sourceTree = "<group>"; };
+		92F22CA62628731E00EE57FD /* OktaOidcMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaOidcMock.swift; sourceTree = "<group>"; };
 		A997533822BAC05700503B21 /* ReactNativeOktaSdkBridge-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactNativeOktaSdkBridge-Bridging-Header.h"; sourceTree = "<group>"; };
 		A997533922BAC05800503B21 /* OktaSdkBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaSdkBridge.swift; sourceTree = "<group>"; };
 		A99754DF22C124B400503B21 /* OktaSDKError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaSDKError.swift; sourceTree = "<group>"; };
@@ -114,12 +120,23 @@
 		923AF9B62625A7D000EE4CF4 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				92F22C9D262872CA00EE57FD /* Mocks */,
 				923AF9B72625A7D000EE4CF4 /* OktaReactNativeErrorTests.swift */,
 				923AF9E52625BCD700EE4CF4 /* OktaSdkConstantTests.swift */,
 				923AF9B92625A7D000EE4CF4 /* Info.plist */,
 				923AF9EB2625F48A00EE4CF4 /* OktaSdkBridgeTests.swift */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		92F22C9D262872CA00EE57FD /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				92F22C9E262872D400EE57FD /* OktaSdkBridgeMock.swift */,
+				92F22CA2262872FE00EE57FD /* OktaOidcStateManagerMock.swift */,
+				92F22CA62628731E00EE57FD /* OktaOidcMock.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		AC38741264B6ECCCA9501AAB /* Frameworks */ = {
@@ -307,7 +324,10 @@
 			files = (
 				923AF9EC2625F48A00EE4CF4 /* OktaSdkBridgeTests.swift in Sources */,
 				923AF9B82625A7D000EE4CF4 /* OktaReactNativeErrorTests.swift in Sources */,
+				92F22C9F262872D400EE57FD /* OktaSdkBridgeMock.swift in Sources */,
+				92F22CA3262872FE00EE57FD /* OktaOidcStateManagerMock.swift in Sources */,
 				923AF9E62625BCD700EE4CF4 /* OktaSdkConstantTests.swift in Sources */,
+				92F22CA72628731E00EE57FD /* OktaOidcMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

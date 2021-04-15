@@ -13,8 +13,9 @@
 import Foundation
 import OktaOidc
 
+// MARK: - OktaOidcProtocol
+
 protocol OktaOidcProtocol: class {
-    
     var configuration: OktaOidcConfig { get }
     
     func signInWithBrowser(from presenter: UIViewController,
@@ -29,8 +30,13 @@ protocol OktaOidcProtocol: class {
                       callback: @escaping ((OktaOidcStateManager?, Error?) -> Void))
 }
 
-protocol StateManagerProtocol: class {
+extension OktaOidc: OktaOidcProtocol {
     
+}
+
+// MARK: - StateManagerProtocol
+
+protocol StateManagerProtocol: class {
     var accessToken: String? { get }
     var idToken: String? { get }
     var refreshToken: String? { get }
@@ -42,22 +48,20 @@ protocol StateManagerProtocol: class {
     func clear()
 }
 
-extension OktaOidc: OktaOidcProtocol {
-    
-}
-
 extension OktaOidcStateManager: StateManagerProtocol {
     
 }
 
+// MARK: - OktaSdkBridge
+
 @objc(OktaSdkBridge)
 class OktaSdkBridge: RCTEventEmitter {
-    
-    private(set) var oktaOidc: OktaOidcProtocol?
     var config: OktaOidcConfig? {
         oktaOidc?.configuration
     }
     
+    private(set) var oktaOidc: OktaOidcProtocol?
+
     override var methodQueue: DispatchQueue { .main }
     
     init(oidc: OktaOidcProtocol? = nil) {
@@ -432,6 +436,7 @@ class OktaSdkBridge: RCTEventEmitter {
         case OktaSdkConstant.REFRESH_TOKEN_KEY:
             token = stateManager.refreshToken
         default:
+            assertionFailure("Incorrect token name.")
             let error = OktaReactNativeError.errorTokenType
             promiseRejecter(error.errorCode, error.errorDescription, error)
             return
