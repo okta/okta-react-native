@@ -16,8 +16,8 @@ import OktaOidc
 @objc(OktaSdkBridge)
 class OktaSdkBridge: RCTEventEmitter {
     
-    var oktaOidc: OktaOidc?
-    var config: OktaOidcConfig?
+    private var oktaOidc: OktaOidc?
+    private var config: OktaOidcConfig?
     
     override var methodQueue: DispatchQueue { .main }
     
@@ -49,7 +49,7 @@ class OktaSdkBridge: RCTEventEmitter {
     }
     
     @objc
-    func signIn(_ options: [String:String] = [:]) {
+    func signIn(_ options: [String: String] = [:]) {
         guard let currOktaOidc = oktaOidc else {
             let error = OktaReactNativeError.notConfigured
             let errorDic = [
@@ -68,6 +68,11 @@ class OktaSdkBridge: RCTEventEmitter {
             ]
             sendEvent(withName: OktaSdkConstant.ON_ERROR, body: errorDic)
             return
+        }
+        
+        if #available(iOS 13.0, *) {
+            let noSSOEnabled = options["noSSO"] == "true"
+            config?.noSSO = noSSOEnabled
         }
         
         currOktaOidc.signInWithBrowser(from: view, additionalParameters: options) { stateManager, error in
@@ -204,7 +209,6 @@ class OktaSdkBridge: RCTEventEmitter {
     
     @objc(getAccessToken:promiseRejecter:)
     func getAccessToken(promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
-        
         guard let oidcConfig = config else {
             let error = OktaReactNativeError.notConfigured
             promiseRejecter(error.errorCode, error.errorDescription, error)
@@ -338,7 +342,6 @@ class OktaSdkBridge: RCTEventEmitter {
     
     @objc(refreshTokens:promiseRejecter:)
     func refreshTokens(promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
-        
         guard let oidcConfig = config else {
             let error = OktaReactNativeError.notConfigured
             promiseRejecter(error.errorCode, error.errorDescription, error)
@@ -421,7 +424,7 @@ class OktaSdkBridge: RCTEventEmitter {
             return
         }
         
-        stateManager.introspect(token: token, callback: { payload, error in
+        stateManager.introspect(token: token) { payload, error in
             if let error = error {
                 promiseRejecter(OktaReactNativeError.oktaOidcError.errorCode, error.localizedDescription, error)
                 return
@@ -434,7 +437,7 @@ class OktaSdkBridge: RCTEventEmitter {
             }
             
             promiseResolver(payload)
-        })
+        }
     }
     
     func revokeToken(tokenName: String, promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
@@ -476,8 +479,7 @@ class OktaSdkBridge: RCTEventEmitter {
         }
     }
     
-    override
-    static func requiresMainQueueSetup() -> Bool {
+    override static func requiresMainQueueSetup() -> Bool {
         return true
     }
     

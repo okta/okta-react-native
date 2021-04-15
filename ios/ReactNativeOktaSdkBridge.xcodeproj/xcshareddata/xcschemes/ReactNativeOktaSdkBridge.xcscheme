@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "58B511DA1A9E6C8500147676"
+               BlueprintIdentifier = "92A46EAA2620B4CB002340F9"
                BuildableName = "libReactNativeOktaSdkBridge.a"
                BlueprintName = "ReactNativeOktaSdkBridge"
                ReferencedContainer = "container:ReactNativeOktaSdkBridge.xcodeproj">
@@ -29,8 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -45,14 +43,12 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "58B511DA1A9E6C8500147676"
+            BlueprintIdentifier = "92A46EAA2620B4CB002340F9"
             BuildableName = "libReactNativeOktaSdkBridge.a"
             BlueprintName = "ReactNativeOktaSdkBridge"
             ReferencedContainer = "container:ReactNativeOktaSdkBridge.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -63,7 +59,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "58B511DA1A9E6C8500147676"
+            BlueprintIdentifier = "92A46EAA2620B4CB002340F9"
             BuildableName = "libReactNativeOktaSdkBridge.a"
             BlueprintName = "ReactNativeOktaSdkBridge"
             ReferencedContainer = "container:ReactNativeOktaSdkBridge.xcodeproj">

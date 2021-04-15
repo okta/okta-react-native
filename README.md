@@ -177,7 +177,8 @@ This method will handle both `browser-sign-in` and `custom-sign-in` scenarios ba
 This async method will automatically redirect users to your Okta organziation for authentication. It will emit an event once a user successfully signs in. Make sure your event listeners are mounted and unmounted. Note: on iOS there isn't a `onCancelled` event. If the sign in process is cancelled, `onError` will be triggered.
 
 #### `browser-sign-in`
-`browser-sign-in` leverages device's native browser to automatically redirect users to your Okta organziation for authentication. By providing no argument, this method will trigger the `browser-sign-in` flow. It will emit an event once a user successfully signs in. Make sure your event listeners are mounted and unmounted. **Note**: on iOS there isn't a `onCancelled` event. If the sign in process is cancelled, `onError` will be triggered.
+`browser-sign-in` leverages device's native browser to automatically redirect users to your Okta organziation for authentication. By providing no argument, this method will trigger the `browser-sign-in` flow. It will emit an event once a user successfully signs in. Make sure your event listeners are mounted and unmounted. 
+**Note**: on iOS there isn't a `onCancelled` event. If the sign in process is cancelled, `onError` will be triggered.
 
 ```javascript
 signInWithBrowser();
@@ -187,6 +188,12 @@ signInWithBrowser();
 
 ```javascript
 signInWithBrowser({ idp: 'your_idp_here' });
+```
+
+**Note**: If you want to get rid of the system sign in and sign out alert on iOS, then pass the `noSSO` parameter when calling `signInWithBrowser`. The cookies will not be retained by the browser, so after logging out the user will be prompted to re-authenticate.
+
+```javascript
+signInWithBrowser({ noSSO: true });
 ```
 
 #### `custom-sign-in`

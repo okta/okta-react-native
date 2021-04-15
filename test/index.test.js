@@ -322,6 +322,12 @@ describe('OktaReactNative', () => {
       expect(mockSignInWithBrowser).toHaveBeenCalledTimes(1);
       expect(mockSignInWithBrowser).toHaveBeenLastCalledWith({idp: 'test-idp'});
     });
+
+    it('calls native sign in method with noSSO on iOS', () => {
+      signInWithBrowser({ noSSO: true});
+      expect(mockSignInWithBrowser).toHaveBeenCalledTimes(1);
+      expect(mockSignInWithBrowser).toHaveBeenLastCalledWith({noSSO: 'true'});
+    });
   });
 
   describe('authenticateTest', () => {
