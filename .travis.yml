@@ -32,7 +32,9 @@ jobs:
       install:
         - gem install xcpretty
         - gem install cocoapods
-        - pod install --project-directory=ios/
+        - cd ios/
+        - pod install
+        - cd ../
       script:
         - xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
 
