@@ -4,6 +4,11 @@ addons:
 jdk:
   - default-jdk
 
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.13.0
+  - export PATH="$HOME/.yarn/bin:$PATH"
+  - yarn install --frozen-lockfile
+
 jobs:
   include:
     - language: node_js
@@ -14,11 +19,8 @@ jobs:
       stage: React Native
       name: React Native Tests
       install:
-        - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.13.0
-        - export PATH="$HOME/.yarn/bin:$PATH"
         - sudo apt-get update
         - sudo apt-get install -y libappindicator1
-        - yarn install --frozen-lockfile
       script:
         - yarn eslint
         - yarn dtslint
@@ -33,7 +35,7 @@ jobs:
         - gem install xcpretty
         - gem install cocoapods
         - cd ios/
-        - pod install
+        - pod install --project-directory=ios
         - cd ../
       script:
         - xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
