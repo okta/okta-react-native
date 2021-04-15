@@ -21,10 +21,10 @@ class OktaOidcMock: OktaOidcProtocol {
     
     // expires in 2037
     static let mockIdToken = """
-    eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9\
-    .eyJzdWIiOiIwMHVlMWdpMHB0WnBhNjdwVTBoNyIsIm5hbWUiOiJKb3JkYW4gTWVsYmVyZyIsInZlciI6MSwiaXNzIjoiaHR0cHM6Ly9kZW1vLW9yZy5va3RhcHJldmlldy5jb20vb2F1dGgyL2RlZmF1bHQiLCJhdWQiOiIwb2FlMWVuaWE2b2Qybmx6MDBoNyIsImlhdCI6MTUyMTIzMDMzNiwiZXhwIjoxNjE4NDE4OTYwLCJqdGkiOiJJRC5Fc0g5MndqVU1fNTJOdHg1Mlc0QkFpNGVlRUlJak5WbFZYaVZxbkR5S2U4IiwiYW1yIjpbInB3ZCJdLCJpZHAiOiIwMG9lMWdpMG5mU3FBY0VaMjBoNyIsInByZWZlcnJlZF91c2VybmFtZSI6ImpvcmRhbi5tZWxiZXJnQG9rdGEuY29tIiwiYXV0aF90aW1lIjoxNTIxMjMwMzM1LCJhdF9oYXNoIjoiUmNRM2dHeXQ3bHJIckFwenF4RkxmQSJ9\
-    .FVF_SLZ3-bOW8Uy-cFq40o-aqndBxLIdWQuA6L6ZMIQ
+    eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3d3cuZXhhbXBsZS5jb20iLCJpYXQiOjE2MTg0NzU1ODMsImV4cCI6MjEyMzM5NzE4MywiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20ifQ.WY2K4adyY9p--NN83REjZzZglUI7JjxPNvmI3VigGFo
     """
+    
+    static let mockAccessToken = mockIdToken
     
     init(configuration: OktaOidcConfig, shouldFail: Bool) {
         self.configuration = configuration
@@ -99,22 +99,73 @@ final class OktaSdkBridgeMock: OktaSdkBridge {
     
     private(set) var eventsRegister: [String: Any] = [:]
     
-    override func sendEvent(withName name: String!, body: Any!) {
-        eventsRegister[name] = body
+    private var customStateManager: StateManagerProtocol?
+    
+    func setCustomStateManager(_ stateManager: StateManagerProtocol) {
+        self.customStateManager = stateManager
     }
     
+    // Must be overriden
     override func supportedEvents() -> [String]! {
         super.supportedEvents()
+    }
+    
+    override func sendEvent(withName name: String!, body: Any!) {
+        eventsRegister[name] = body
     }
     
     override func presentedViewController() -> UIViewController? {
         UIViewController()
     }
     
-    override func readStateManager() -> OktaOidcStateManager? {
-        config.flatMap {
+    override func readStateManager() -> StateManagerProtocol? {
+        if customStateManager != nil {
+            return customStateManager
+        }
+        
+        return config.flatMap {
             OktaOidcMock.oidcStateManager(with: $0)
         }
+    }
+}
+
+final class OktaOidcStateManagerMock: StateManagerProtocol {
+    
+    var accessToken: String?
+    
+    var idToken: String?
+    
+    var refreshToken: String?
+    
+    private let shouldFail: Bool
+    private let config: OktaOidcConfig
+    
+    init(shouldFail: Bool, config: OktaOidcConfig) {
+        self.shouldFail = shouldFail
+        self.config = config
+    }
+    
+    func getUser(_ callback: @escaping ([String: Any]?, Error?) -> Void) {
+        callback(shouldFail ? nil : ["name": "mock"],
+                 shouldFail ? OktaOidcError.noUserInfoEndpoint : nil)
+    }
+    
+    func renew(callback: @escaping ((OktaOidcStateManager?, Error?) -> Void)) {
+        callback(shouldFail ? nil : OktaOidcMock.oidcStateManager(with: config),
+                 shouldFail ? OktaOidcError.noRefreshToken : nil)
+    }
+    
+    func revoke(_ token: String?, callback: @escaping (Bool, Error?) -> Void) {
+        callback(!shouldFail, shouldFail ? OktaOidcError.noBearerToken : nil)
+    }
+    
+    func introspect(token: String?, callback: @escaping ([String: Any]?, Error?) -> Void) {
+        callback(shouldFail ? nil : ["exp": "mock"],
+                 shouldFail ? OktaOidcError.noBearerToken : nil)
+    }
+    
+    func clear() {
+        // nothing
     }
 }
 
@@ -127,6 +178,49 @@ final class OktaSdkBridgeTests: XCTestCase {
         "logoutRedirectUri": "com.example://logout",
         "scopes": "openid profile offline_access",
     ])
+    
+    func testMainQueue() {
+        let oidc = OktaOidcMock(configuration: config, shouldFail: false)
+        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        
+        XCTAssertTrue(OktaSdkBridge.requiresMainQueueSetup())
+        XCTAssertEqual(bridge.methodQueue, .main)
+    }
+    
+    func testSupportedEvent() {
+        let oidc = OktaOidcMock(configuration: config, shouldFail: false)
+        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        
+        XCTAssertEqual(bridge.supportedEvents(), [
+            OktaSdkConstant.SIGN_IN_SUCCESS,
+            OktaSdkConstant.SIGN_OUT_SUCCESS,
+            OktaSdkConstant.ON_ERROR,
+            OktaSdkConstant.ON_CANCELLED
+        ])
+    }
+    
+    func testCreateConfigSucceeded() {
+        // given
+        let oidc = OktaOidcMock(configuration: config, shouldFail: false)
+        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        
+        let expectation = XCTestExpectation(description: "createConfig must succeed.")
+        
+        
+        bridge.createConfig(config.clientId,
+                            redirectUrl: config.redirectUri.absoluteString,
+                            endSessionRedirectUri: config.logoutRedirectUri?.absoluteString ?? "",
+                            discoveryUri: config.issuer,
+                            scopes: config.scopes,
+                            userAgentTemplate: "") { (result) in
+            XCTAssertNotNil(result)
+            expectation.fulfill()
+        } promiseRejecter: { (_, _, _) in
+            XCTAssert(false, "createConfig failed.")
+        }
+
+        wait(for: [expectation], timeout: 5)
+    }
     
     func testSignInSucceeded() {
         // given
@@ -160,7 +254,7 @@ final class OktaSdkBridgeTests: XCTestCase {
         let bridge = OktaSdkBridgeMock(oidc: oidc)
         
         let expectation = XCTestExpectation(description: "Authentication with Session Token must succeed.")
-
+        
         // when
         bridge.authenticate("{SessionToken}") { token in
             XCTAssertEqual(bridge.eventsRegister.count, 1)
@@ -180,7 +274,7 @@ final class OktaSdkBridgeTests: XCTestCase {
         let bridge = OktaSdkBridgeMock(oidc: oidc)
         
         let expectation = XCTestExpectation(description: "Authentication with Session Token must fail.")
-
+        
         // when
         bridge.authenticate("{SessionToken}") { token in
             XCTAssert(false, "Authentication succeeded.")
@@ -199,7 +293,7 @@ final class OktaSdkBridgeTests: XCTestCase {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
         let bridge = OktaSdkBridgeMock(oidc: oidc)
-        
+        // before sign out we should store state manager.
         testSignInSucceeded()
         
         // when
@@ -215,6 +309,8 @@ final class OktaSdkBridgeTests: XCTestCase {
         let oidc = OktaOidcMock(configuration: config, shouldFail: true)
         let bridge = OktaSdkBridgeMock(oidc: oidc)
         
+        // before sign out we should store state manager.
+        testSignInSucceeded()
         // when
         bridge.signOut()
         
@@ -227,6 +323,8 @@ final class OktaSdkBridgeTests: XCTestCase {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: true)
         let bridge = OktaSdkBridgeMock(oidc: oidc)
+        
+        testSignInSucceeded()
         
         let expectation = XCTestExpectation(description: "Getting Access Token must succeed.")
         
@@ -246,6 +344,8 @@ final class OktaSdkBridgeTests: XCTestCase {
         let oidc = OktaOidcMock(configuration: config, shouldFail: true)
         let bridge = OktaSdkBridgeMock(oidc: oidc)
         
+        testSignInSucceeded()
+        
         let expectation = XCTestExpectation(description: "Getting ID Token must succeed.")
         
         // when
@@ -256,6 +356,200 @@ final class OktaSdkBridgeTests: XCTestCase {
             XCTAssert(false, "Getting ID Token failed.")
         }
         
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func testGetUserSucceeded() throws {
+        // given
+        let oidc = OktaOidcMock(configuration: config, shouldFail: true)
+        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
+        bridge.setCustomStateManager(stateManager)
+        
+        let expectation = XCTestExpectation(description: "Getting User must succeed.")
+        
+        // when
+        bridge.getUser { (userData) in
+            XCTAssertNotNil(userData)
+            expectation.fulfill()
+        } promiseRejecter: { (code, message, error) in
+            XCTAssert(false, "Getting User failed")
+        }
+
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func testIsAuthenticatedSucceeded() throws {
+        // given
+        let oidc = OktaOidcMock(configuration: config, shouldFail: true)
+        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
+        stateManager.accessToken = OktaOidcMock.mockAccessToken
+        stateManager.idToken = OktaOidcMock.mockIdToken
+        bridge.setCustomStateManager(stateManager)
+        
+        let expectation = XCTestExpectation(description: "isAuthenticated must return true.")
+        
+        bridge.isAuthenticated { (result) in
+            XCTAssertNotNil(result)
+            expectation.fulfill()
+        } promiseRejecter: { _, _, _ in
+            XCTAssert(false, "isAuthenticated failed")
+        }
+
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func testRefreshTokensSucceeded() throws {
+        // given
+        let oidc = OktaOidcMock(configuration: config, shouldFail: true)
+        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
+        stateManager.accessToken = OktaOidcMock.mockAccessToken
+        stateManager.idToken = OktaOidcMock.mockIdToken
+        bridge.setCustomStateManager(stateManager)
+        
+        let expectation = XCTestExpectation(description: "Refresh Tokens must succeeded.")
+        
+        bridge.refreshTokens { (result) in
+            XCTAssertNotNil(result)
+            expectation.fulfill()
+        } promiseRejecter: { (_, _, _) in
+            XCTAssert(false, "Refresh Tokens failed")
+        }
+        
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func testClearTokensSucceeded() {
+        // given
+        let oidc = OktaOidcMock(configuration: config, shouldFail: false)
+        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        
+        let expectation = XCTestExpectation(description: "Clear Tokens must succeeded.")
+        
+        // when
+        bridge.clearTokens { (result) in
+            XCTAssertNotNil(result)
+            expectation.fulfill()
+        } promiseRejecter: { (_, _, _) in
+            XCTAssert(false, "Refresh Tokens failed")
+        }
+
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func testIntrospectIDTokenSucceeded() throws {
+        // given
+        let oidc = OktaOidcMock(configuration: config, shouldFail: false)
+        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
+        bridge.setCustomStateManager(stateManager)
+        
+        let expectation = XCTestExpectation(description: "Introspect ID Token must succeeded.")
+        
+        bridge.introspectIdToken { (result) in
+            XCTAssertNotNil(result)
+            expectation.fulfill()
+        } promiseRejecter: { (_, _, _) in
+            XCTAssert(false, "Introspect ID Token failed")
+        }
+
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func testIntrospectAccessTokenSucceeded() throws {
+        // given
+        let oidc = OktaOidcMock(configuration: config, shouldFail: false)
+        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
+        bridge.setCustomStateManager(stateManager)
+        
+        let expectation = XCTestExpectation(description: "Introspect Access Token must succeeded.")
+        
+        bridge.introspectAccessToken { (result) in
+            XCTAssertNotNil(result)
+            expectation.fulfill()
+        } promiseRejecter: { (_, _, _) in
+            XCTAssert(false, "Introspect Access Token failed")
+        }
+
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func testIntrospectRefreshTokenSucceeded() throws {
+        // given
+        let oidc = OktaOidcMock(configuration: config, shouldFail: false)
+        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
+        bridge.setCustomStateManager(stateManager)
+        
+        let expectation = XCTestExpectation(description: "Introspect Refresh Token must succeeded.")
+        
+        bridge.introspectRefreshToken { (result) in
+            XCTAssertNotNil(result)
+            expectation.fulfill()
+        } promiseRejecter: { (_, _, _) in
+            XCTAssert(false, "Introspect Refresh Token failed")
+        }
+
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func testRevokeIDTokenSucceeded() throws {
+        // given
+        let oidc = OktaOidcMock(configuration: config, shouldFail: false)
+        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
+        bridge.setCustomStateManager(stateManager)
+        
+        let expectation = XCTestExpectation(description: "Revoke ID Token must succeeded.")
+        
+        bridge.revokeIdToken { (result) in
+            XCTAssertNotNil(result)
+            expectation.fulfill()
+        } promiseRejecter: { (_, _, _) in
+            XCTAssert(false, "Revoke ID Token failed")
+        }
+
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func testRevokeAccessTokenSucceeded() throws {
+        // given
+        let oidc = OktaOidcMock(configuration: config, shouldFail: false)
+        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
+        bridge.setCustomStateManager(stateManager)
+        
+        let expectation = XCTestExpectation(description: "Revoke Access Token must succeeded.")
+        
+        bridge.revokeAccessToken { (result) in
+            XCTAssertNotNil(result)
+            expectation.fulfill()
+        } promiseRejecter: { (_, _, _) in
+            XCTAssert(false, "Revoke Access Token failed")
+        }
+
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func testRevokeRefreshTokenSucceeded() throws {
+        // given
+        let oidc = OktaOidcMock(configuration: config, shouldFail: false)
+        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
+        bridge.setCustomStateManager(stateManager)
+        
+        let expectation = XCTestExpectation(description: "Revoke Refresh Token must succeeded.")
+        
+        bridge.revokeRefreshToken { (result) in
+            XCTAssertNotNil(result)
+            expectation.fulfill()
+        } promiseRejecter: { (_, _, _) in
+            XCTAssert(false, "Revoke Refresh Token failed")
+        }
+
         wait(for: [expectation], timeout: 5)
     }
 }
