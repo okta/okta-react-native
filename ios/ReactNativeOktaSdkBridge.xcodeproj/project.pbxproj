@@ -20,6 +20,7 @@
 		92F22C9F262872D400EE57FD /* OktaSdkBridgeMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F22C9E262872D400EE57FD /* OktaSdkBridgeMock.swift */; };
 		92F22CA3262872FE00EE57FD /* OktaOidcStateManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F22CA2262872FE00EE57FD /* OktaOidcStateManagerMock.swift */; };
 		92F22CA72628731E00EE57FD /* OktaOidcMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F22CA62628731E00EE57FD /* OktaOidcMock.swift */; };
+		92F22CD22629AB1000EE57FD /* OktaOidcStateManager+Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F22CD12629AB1000EE57FD /* OktaOidcStateManager+Factory.swift */; };
 		E475EFD6B7A6A388E312A131 /* libPods-ReactNativeOktaSdkBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD2E375BCCF907E09079927D /* libPods-ReactNativeOktaSdkBridge.a */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,7 @@
 		92F22C9E262872D400EE57FD /* OktaSdkBridgeMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaSdkBridgeMock.swift; sourceTree = "<group>"; };
 		92F22CA2262872FE00EE57FD /* OktaOidcStateManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaOidcStateManagerMock.swift; sourceTree = "<group>"; };
 		92F22CA62628731E00EE57FD /* OktaOidcMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaOidcMock.swift; sourceTree = "<group>"; };
+		92F22CD12629AB1000EE57FD /* OktaOidcStateManager+Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OktaOidcStateManager+Factory.swift"; sourceTree = "<group>"; };
 		A997533822BAC05700503B21 /* ReactNativeOktaSdkBridge-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactNativeOktaSdkBridge-Bridging-Header.h"; sourceTree = "<group>"; };
 		A997533922BAC05800503B21 /* OktaSdkBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaSdkBridge.swift; sourceTree = "<group>"; };
 		A99754DF22C124B400503B21 /* OktaSDKError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaSDKError.swift; sourceTree = "<group>"; };
@@ -132,9 +134,10 @@
 		92F22C9D262872CA00EE57FD /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
-				92F22C9E262872D400EE57FD /* OktaSdkBridgeMock.swift */,
-				92F22CA2262872FE00EE57FD /* OktaOidcStateManagerMock.swift */,
 				92F22CA62628731E00EE57FD /* OktaOidcMock.swift */,
+				92F22CD12629AB1000EE57FD /* OktaOidcStateManager+Factory.swift */,
+				92F22CA2262872FE00EE57FD /* OktaOidcStateManagerMock.swift */,
+				92F22C9E262872D400EE57FD /* OktaSdkBridgeMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				923AF9EC2625F48A00EE4CF4 /* OktaSdkBridgeTests.swift in Sources */,
+				92F22CD22629AB1000EE57FD /* OktaOidcStateManager+Factory.swift in Sources */,
 				923AF9B82625A7D000EE4CF4 /* OktaReactNativeErrorTests.swift in Sources */,
 				92F22C9F262872D400EE57FD /* OktaSdkBridgeMock.swift in Sources */,
 				92F22CA3262872FE00EE57FD /* OktaOidcStateManagerMock.swift in Sources */,

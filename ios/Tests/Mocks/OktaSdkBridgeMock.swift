@@ -18,6 +18,16 @@ final class OktaSdkBridgeMock: OktaSdkBridge {
     private(set) var eventsRegister: [String: Any] = [:]
     private var customStateManager: StateManagerProtocol?
     
+    override var storedStateManager: StateManagerProtocol? {
+        if customStateManager != nil {
+            return customStateManager
+        }
+        
+        return config.flatMap {
+            OktaOidcStateManager.makeOidcStateManager(with: $0)
+        }
+    }
+    
     func setCustomStateManager(_ stateManager: StateManagerProtocol) {
         self.customStateManager = stateManager
     }
@@ -33,15 +43,5 @@ final class OktaSdkBridgeMock: OktaSdkBridge {
     
     override func presentedViewController() -> UIViewController? {
         UIViewController()
-    }
-    
-    override func readStateManager() -> StateManagerProtocol? {
-        if customStateManager != nil {
-            return customStateManager
-        }
-        
-        return config.flatMap {
-            OktaOidcMock.oidcStateManager(with: $0)
-        }
     }
 }

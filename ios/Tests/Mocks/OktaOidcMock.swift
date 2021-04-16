@@ -18,24 +18,19 @@ class OktaOidcMock: OktaOidcProtocol {
     let configuration: OktaOidcConfig
     
     private let shouldFail: Bool
-    
-    // expires in 2037
-    static let mockIdToken = """
-    eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3d3cuZXhhbXBsZS5jb20iLCJpYXQiOjE2MTg0NzU1ODMsImV4cCI6MjEyMzM5NzE4MywiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20ifQ.WY2K4adyY9p--NN83REjZzZglUI7JjxPNvmI3VigGFo
-    """
-    
-    static let mockAccessToken = mockIdToken
+    private let oidcManager: OktaOidcStateManager
     
     init(configuration: OktaOidcConfig, shouldFail: Bool) {
         self.configuration = configuration
         self.shouldFail = shouldFail
+        self.oidcManager = OktaOidcStateManager.makeOidcStateManager(with: configuration)
     }
     
     func signInWithBrowser(from presenter: UIViewController,
                            additionalParameters: [String: String],
                            callback: @escaping ((OktaOidcStateManager?, Error?) -> Void)) {
-        let oidcManager = Self.oidcStateManager(with: configuration)
-        callback(shouldFail ? nil : oidcManager, shouldFail ? OktaReactNativeError.oktaOidcError : nil)
+        callback(shouldFail ? nil : oidcManager,
+                 shouldFail ? OktaReactNativeError.oktaOidcError : nil)
     }
     
     func signOutOfOkta(_ authStateManager: OktaOidcStateManager, from presenter: UIViewController, callback: @escaping ((Error?) -> Void)) {
@@ -43,54 +38,7 @@ class OktaOidcMock: OktaOidcProtocol {
     }
     
     func authenticate(withSessionToken sessionToken: String, callback: @escaping ((OktaOidcStateManager?, Error?) -> Void)) {
-        let oidcManager = Self.oidcStateManager(with: configuration)
-        callback(shouldFail ? nil : oidcManager, shouldFail ? OktaReactNativeError.oktaOidcError : nil)
-    }
-    
-    static func oidcStateManager(with configuration: OktaOidcConfig) -> OktaOidcStateManager {
-        let serviceConfig = OKTServiceConfiguration(authorizationEndpoint: URL(string: configuration.issuer)!,
-                                                    tokenEndpoint: URL(string: configuration.issuer)!,
-                                                    issuer: URL(string: configuration.issuer)!)
-        
-        let mockTokenRequest = OKTTokenRequest(configuration: serviceConfig,
-                                               grantType: OKTGrantTypeRefreshToken,
-                                               authorizationCode: nil,
-                                               redirectURL: configuration.redirectUri,
-                                               clientID: "nil",
-                                               clientSecret: nil,
-                                               scope: nil,
-                                               refreshToken: nil,
-                                               codeVerifier: nil,
-                                               additionalParameters: nil)
-        
-        let mockTokenResponse = OKTTokenResponse(
-            request: mockTokenRequest,
-            parameters: [
-                "access_token": "mockAccessToken" as NSCopying & NSObjectProtocol,
-                "expires_in": Date().addingTimeInterval(3600).timeIntervalSince1970 as NSCopying & NSObjectProtocol,
-                "token_type": "Bearer" as NSCopying & NSObjectProtocol,
-                "id_token": mockIdToken as NSCopying & NSObjectProtocol,
-                "refresh_token": "refreshToken" as NSCopying & NSObjectProtocol,
-                "scope": "openid offline_access" as NSCopying & NSObjectProtocol
-            ]
-        )
-        
-        let mockAuthRequest = OKTAuthorizationRequest(
-            configuration: serviceConfig,
-            clientId: configuration.clientId,
-            clientSecret: nil,
-            scopes: ["openid", "email"],
-            redirectURL: configuration.redirectUri,
-            responseType: OKTResponseTypeCode,
-            additionalParameters: nil
-        )
-        
-        let mockAuthResponse = OKTAuthorizationResponse(
-            request: mockAuthRequest,
-            parameters: ["code": "mockAuthCode" as NSCopying & NSObjectProtocol]
-        )
-        
-        let authState = OKTAuthState(authorizationResponse: mockAuthResponse, tokenResponse: mockTokenResponse)
-        return OktaOidcStateManager(authState: authState)
+        callback(shouldFail ? nil : oidcManager,
+                 shouldFail ? OktaReactNativeError.oktaOidcError : nil)
     }
 }

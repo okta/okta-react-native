@@ -269,8 +269,8 @@ final class OktaSdkBridgeTests: XCTestCase {
         let oidc = OktaOidcMock(configuration: config, shouldFail: true)
         let bridge = OktaSdkBridgeMock(oidc: oidc)
         let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
-        stateManager.accessToken = OktaOidcMock.mockAccessToken
-        stateManager.idToken = OktaOidcMock.mockIdToken
+        stateManager.accessToken = OktaOidcStateManager.mockAccessToken
+        stateManager.idToken = OktaOidcStateManager.mockIdToken
         bridge.setCustomStateManager(stateManager)
         
         let expectation = XCTestExpectation(description: "isAuthenticated must return true.")
@@ -294,8 +294,8 @@ final class OktaSdkBridgeTests: XCTestCase {
         let oidc = OktaOidcMock(configuration: config, shouldFail: true)
         let bridge = OktaSdkBridgeMock(oidc: oidc)
         let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
-        stateManager.accessToken = OktaOidcMock.mockAccessToken
-        stateManager.idToken = OktaOidcMock.mockIdToken
+        stateManager.accessToken = OktaOidcStateManager.mockAccessToken
+        stateManager.idToken = OktaOidcStateManager.mockIdToken
         bridge.setCustomStateManager(stateManager)
         
         let expectation = XCTestExpectation(description: "Refresh Tokens must succeeded.")

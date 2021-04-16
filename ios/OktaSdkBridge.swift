@@ -60,6 +60,15 @@ class OktaSdkBridge: RCTEventEmitter {
         oktaOidc?.configuration
     }
     
+    var storedStateManager: StateManagerProtocol? {
+        guard let config = config else {
+            print(OktaOidcError.notConfigured.errorDescription ?? "The SDK is not configured.")
+            return nil
+        }
+        
+        return OktaOidcStateManager.readFromSecureStorage(for: config)
+    }
+    
     private(set) var oktaOidc: OktaOidcProtocol?
     
     override var methodQueue: DispatchQueue { .main }
@@ -70,15 +79,6 @@ class OktaSdkBridge: RCTEventEmitter {
     
     func presentedViewController() -> UIViewController? {
         RCTPresentedViewController()
-    }
-    
-    func readStateManager() -> StateManagerProtocol? {
-        guard let config = config else {
-            print(OktaOidcError.notConfigured.errorDescription ?? "The SDK is not configured.")
-            return nil
-        }
-        
-        return OktaOidcStateManager.readFromSecureStorage(for: config)
     }
     
     @objc
@@ -187,7 +187,7 @@ class OktaSdkBridge: RCTEventEmitter {
             return
         }
         
-        guard let stateManager = readStateManager() as? OktaOidcStateManager else {
+        guard let stateManager = storedStateManager as? OktaOidcStateManager else {
             let error = OktaReactNativeError.unauthenticated
             let errorDic = [
                 OktaSdkConstant.ERROR_CODE_KEY: error.errorCode,
@@ -269,7 +269,7 @@ class OktaSdkBridge: RCTEventEmitter {
     
     @objc(getAccessToken:promiseRejecter:)
     func getAccessToken(promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
-        guard let stateManager = readStateManager() else {
+        guard let stateManager = storedStateManager else {
             let error = OktaReactNativeError.unauthenticated
             promiseRejecter(error.errorCode, error.errorDescription, error)
             return
@@ -290,7 +290,7 @@ class OktaSdkBridge: RCTEventEmitter {
     
     @objc(getIdToken:promiseRejecter:)
     func getIdToken(promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {        
-        guard let stateManager = readStateManager() else {
+        guard let stateManager = storedStateManager else {
             let error = OktaReactNativeError.unauthenticated
             promiseRejecter(error.errorCode, error.errorDescription, error)
             return
@@ -312,7 +312,7 @@ class OktaSdkBridge: RCTEventEmitter {
     
     @objc(getUser:promiseRejecter:)
     func getUser(promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
-        guard let stateManager = readStateManager() else {
+        guard let stateManager = storedStateManager else {
             let error = OktaReactNativeError.unauthenticated
             promiseRejecter(error.errorCode, error.errorDescription, error)
             return
@@ -334,7 +334,7 @@ class OktaSdkBridge: RCTEventEmitter {
             OktaSdkConstant.AUTHENTICATED_KEY: false
         ]
         
-        guard let stateManager = readStateManager() else {
+        guard let stateManager = storedStateManager else {
             promiseResolver(promiseResult)
             return
         }
@@ -378,7 +378,7 @@ class OktaSdkBridge: RCTEventEmitter {
     
     @objc(refreshTokens:promiseRejecter:)
     func refreshTokens(promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
-        guard let stateManager = readStateManager() else {
+        guard let stateManager = storedStateManager else {
             let error = OktaReactNativeError.unauthenticated
             promiseRejecter(error.errorCode, error.errorDescription, error)
             return
@@ -409,7 +409,7 @@ class OktaSdkBridge: RCTEventEmitter {
 
     @objc(clearTokens:promiseRejecter:)
     func clearTokens(promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
-        guard let stateManager = readStateManager() else {
+        guard let stateManager = storedStateManager else {
             let error = OktaReactNativeError.unauthenticated
             promiseRejecter(error.errorCode, error.errorDescription, error)
             return
@@ -420,7 +420,7 @@ class OktaSdkBridge: RCTEventEmitter {
     }
 
     func introspectToken(tokenName: String, promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
-        guard let stateManager = readStateManager() else {
+        guard let stateManager = storedStateManager else {
             let error = OktaReactNativeError.unauthenticated
             promiseRejecter(error.errorCode, error.errorDescription, error)
             return
@@ -459,7 +459,7 @@ class OktaSdkBridge: RCTEventEmitter {
     }
     
     func revokeToken(tokenName: String, promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
-        guard let stateManager = readStateManager() else {
+        guard let stateManager = storedStateManager else {
             let error = OktaReactNativeError.unauthenticated
             promiseRejecter(error.errorCode, error.errorDescription, error)
             return

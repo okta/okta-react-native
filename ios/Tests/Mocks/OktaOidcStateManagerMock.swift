@@ -33,7 +33,7 @@ final class OktaOidcStateManagerMock: StateManagerProtocol {
     }
     
     func renew(callback: @escaping ((OktaOidcStateManager?, Error?) -> Void)) {
-        callback(shouldFail ? nil : OktaOidcMock.oidcStateManager(with: config),
+        callback(shouldFail ? nil : OktaOidcStateManager.makeOidcStateManager(with: config),
                  shouldFail ? OktaOidcError.noRefreshToken : nil)
     }
     
