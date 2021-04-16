@@ -1,30 +1,43 @@
-language: node_js
-node_js:
-- '12.13.0'
-
 addons:
   chrome: stable
-
-services:
-  - xvfb
 
 jdk:
   - default-jdk
 
-script:
-- yarn eslint
-- yarn dtslint
-- yarn test
-- bash ./scripts/snyk.sh
-
-install:
-- yarn install --frozen-lockfile
-
 before_install:
-- curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.13.0
-- export PATH="$HOME/.yarn/bin:$PATH"
-- sudo apt-get update
-- sudo apt-get install -y libappindicator1
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.13.0
+  - export PATH="$HOME/.yarn/bin:$PATH"
+  - yarn install --frozen-lockfile
+
+jobs:
+  include:
+    - language: node_js
+      os: linux
+      services:
+        - xvfb
+      node_js: 14.15
+      stage: React Native
+      name: React Native Tests
+      install:
+        - sudo apt-get update
+        - sudo apt-get install -y libappindicator1
+      script:
+        - yarn eslint
+        - yarn dtslint
+        - yarn test
+        - bash ./scripts/snyk.sh
+    - language: objective-c
+      os: osx
+      osx_image: xcode12.2
+      stage: iOS
+      name: iOS Tests
+      install:
+        - gem install xcpretty
+        - gem install cocoapods
+        - pod install --project-directory=ios
+      script:
+        - xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
+
 
 notifications:
   slack:
