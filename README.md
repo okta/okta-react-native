@@ -82,7 +82,7 @@ You can currently add Okta OIDC iOS through CocoaPods:
 
    target '{YourTargetName}' do
 
-   pod 'OktaOidc', '~> 3.0'
+   pod 'OktaOidc', '~> 3.10.2'
 
    end
    ```
@@ -93,7 +93,7 @@ You can currently add Okta OIDC iOS through CocoaPods:
    With [Carthage](https://github.com/Carthage/Carthage), add the following line to your Cartfile:
 
     ```
-    github "okta/okta-oidc-ios" ~> 3.5.0
+    github "okta/okta-oidc-ios" ~> 3.10.2
     ```
    Then run `carthage update --platform iOS`.
 
