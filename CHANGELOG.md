@@ -1,6 +1,20 @@
+# 1.11.0
+
+### Feature
+
+- [#117](https://github.com/okta/okta-react-native/pull/117) Adds `noSSO` parameter on iOS
+
+### Bug Fix
+
+- [#107](https://github.com/okta/okta-react-native/pull/107) Fixes Android nonexistent activity obtainment
+
+### Other 
+
+- [#124](https://github.com/okta/okta-react-native/pull/124) Updates iOS OktaOidc dependency
+
 # 1.10.0
 
-### Bug Fixes
+### Bug Fix
 
 - [#103](https://github.com/okta/okta-react-native/pull/103) Fixes hermes engine support
 
