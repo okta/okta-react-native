@@ -25,7 +25,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     
     func testMainQueue() {
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         
         XCTAssertTrue(OktaSdkBridge.requiresMainQueueSetup())
         XCTAssertEqual(bridge.methodQueue, .main)
@@ -33,7 +34,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     
     func testSupportedEvent() {
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         
         XCTAssertEqual(bridge.supportedEvents(), [
             OktaSdkConstant.SIGN_IN_SUCCESS,
@@ -46,7 +48,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testCreateConfigSucceeded() {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         
         let expectation = XCTestExpectation(description: "createConfig must succeed.")
         
@@ -71,7 +74,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testSignInSucceeded() {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         
         // when
         bridge.signIn([:])
@@ -88,7 +92,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testSignInFailed() {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: true)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         
         // when
         bridge.signIn([:])
@@ -105,13 +110,17 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testSignInWithNoSSO() {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         
         // when
         bridge.signIn(["noSSO": "true"])
         
         // then
-        XCTAssertTrue(oidc.configuration.noSSO)
+        if #available(iOS 13.0, *) {
+            XCTAssertTrue(oidc.configuration.noSSO)
+        }
+        
         XCTAssertNotNil(bridge.eventsRegister[OktaSdkConstant.SIGN_IN_SUCCESS])
     }
     
@@ -120,7 +129,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testAuthenticationWithTokenSucceeded() {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         
         let expectation = XCTestExpectation(description: "Authentication with Session Token must succeed.")
         
@@ -144,7 +154,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testAuthenticationWithTokenFailed() {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: true)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         
         let expectation = XCTestExpectation(description: "Authentication with Session Token must fail.")
         
@@ -165,7 +176,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testSignOutSucceeded() {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         // before sign out we should store state manager.
         testSignInSucceeded()
         
@@ -182,7 +194,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testSignOutFailed() {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: true)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         
         // before sign out we should store state manager.
         testSignInSucceeded()
@@ -200,7 +213,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testGetAccessTokenSucceeded() {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: true)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         
         testSignInSucceeded()
         
@@ -223,7 +237,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testGetIDTokenSucceeded() {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: true)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         
         testSignInSucceeded()
         
@@ -246,7 +261,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testGetUserSucceeded() throws {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: true)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
         bridge.setCustomStateManager(stateManager)
         
@@ -267,7 +283,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testIsAuthenticatedSucceeded() throws {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: true)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
         stateManager.accessToken = OktaOidcStateManager.mockAccessToken
         stateManager.idToken = OktaOidcStateManager.mockIdToken
@@ -292,7 +309,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testRefreshTokensSucceeded() throws {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: true)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
         stateManager.accessToken = OktaOidcStateManager.mockAccessToken
         stateManager.idToken = OktaOidcStateManager.mockIdToken
@@ -318,7 +336,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testClearTokensSucceeded() {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         
         let expectation = XCTestExpectation(description: "Clear Tokens must succeeded.")
         
@@ -338,7 +357,9 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testIntrospectIDTokenSucceeded() throws {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
+        
         let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
         bridge.setCustomStateManager(stateManager)
         
@@ -357,7 +378,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testIntrospectAccessTokenSucceeded() throws {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
         bridge.setCustomStateManager(stateManager)
         
@@ -376,7 +398,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testIntrospectRefreshTokenSucceeded() throws {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
         bridge.setCustomStateManager(stateManager)
         
@@ -395,7 +418,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testRevokeIDTokenSucceeded() throws {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
         bridge.setCustomStateManager(stateManager)
         
@@ -416,7 +440,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testRevokeAccessTokenSucceeded() throws {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
         bridge.setCustomStateManager(stateManager)
         
@@ -437,7 +462,8 @@ final class OktaSdkBridgeTests: XCTestCase {
     func testRevokeRefreshTokenSucceeded() throws {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
-        let bridge = OktaSdkBridgeMock(oidc: oidc)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
         let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
         bridge.setCustomStateManager(stateManager)
         
