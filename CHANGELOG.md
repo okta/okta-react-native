@@ -1,3 +1,9 @@
+# 1.11.1
+
+### Bug Fix
+
+- [#131](https://github.com/okta/okta-react-native/pull/131) Fixes iOS package linking
+
 # 1.11.0
 
 ### Feature
