@@ -105,11 +105,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				A99754E122C3FC5800503B21 /* OktaSdkConstant.swift */,
-				A99754DF22C124B400503B21 /* OktaSDKError.swift */,
-				A997533922BAC05800503B21 /* OktaSdkBridge.swift */,
-				B3E7B5891CC2AC0600A0062D /* ReactNativeOktaSdkBridge.m */,
-				A997533822BAC05700503B21 /* ReactNativeOktaSdkBridge-Bridging-Header.h */,
+				92825C82264AB55E00A31DEB /* OktaSdkBridge */,
 				923AF9B62625A7D000EE4CF4 /* Tests */,
 				134814211AA4EA7D00B7C361 /* Products */,
 				E23CCD718BC59153B4164FEA /* Pods */,
@@ -129,6 +125,18 @@
 				923AF9EB2625F48A00EE4CF4 /* OktaSdkBridgeTests.swift */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		92825C82264AB55E00A31DEB /* OktaSdkBridge */ = {
+			isa = PBXGroup;
+			children = (
+				A99754E122C3FC5800503B21 /* OktaSdkConstant.swift */,
+				A99754DF22C124B400503B21 /* OktaSDKError.swift */,
+				A997533922BAC05800503B21 /* OktaSdkBridge.swift */,
+				B3E7B5891CC2AC0600A0062D /* ReactNativeOktaSdkBridge.m */,
+				A997533822BAC05700503B21 /* ReactNativeOktaSdkBridge-Bridging-Header.h */,
+			);
+			path = OktaSdkBridge;
 			sourceTree = "<group>";
 		};
 		92F22C9D262872CA00EE57FD /* Mocks */ = {
@@ -532,7 +540,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "ReactNativeOktaSdkBridge-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "OktaSdkBridge/ReactNativeOktaSdkBridge-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -555,7 +563,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "ReactNativeOktaSdkBridge-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "OktaSdkBridge/ReactNativeOktaSdkBridge-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

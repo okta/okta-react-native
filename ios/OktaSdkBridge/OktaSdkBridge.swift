@@ -69,13 +69,9 @@ class OktaSdkBridge: RCTEventEmitter {
         return OktaOidcStateManager.readFromSecureStorage(for: config)
     }
     
-    private(set) var oktaOidc: OktaOidcProtocol?
+    var oktaOidc: OktaOidcProtocol?
     
     override var methodQueue: DispatchQueue { .main }
-    
-    init(oidc: OktaOidcProtocol? = nil) {
-        self.oktaOidc = oidc
-    }
     
     func presentedViewController() -> UIViewController? {
         RCTPresentedViewController()
