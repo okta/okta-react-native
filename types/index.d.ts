@@ -87,7 +87,7 @@ export namespace Okta {
 
   interface BrowserOptions {
     idp?: string;
-    noSSO?: string;
+    noSSO?: boolean;
   }
 
   interface StringAnyMap {
