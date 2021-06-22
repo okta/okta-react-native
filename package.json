@@ -3,7 +3,7 @@
   "name": "@okta/okta-react-native",
   "title": "React Native Okta Sdk Bridge",
   "version": "1.12.0",
-  "types": "dist/types/index.d.ts",
+  "types": "types/index.d.ts",
   "description": "Okta OIDC for React Native",
   "main": "dist/index.js",
   "podname": "OktaSdkBridgeReactNative",
@@ -13,8 +13,8 @@
     "lint": "eslint .",
     "lint:report": "eslint -f checkstyle -o ./test-reports/lint/eslint-checkstyle-result.xml .",
     "prepare": "yarn build",
-    "test": "jest",
-    "dtslint": "dtslint ./types",
+    "test": "jest && tsd",
+    "tsd": "tsd",
     "test:debug": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand"
   },
   "repository": {
@@ -60,7 +60,6 @@
     "@typescript-eslint/parser": "^4.14.2",
     "babel-jest": "^25.1.0",
     "chalk": "^4.1.0",
-    "dtslint": "^4.0.6",
     "eslint": "^7.19.0",
     "eslint-plugin-jest": "^24.1.3",
     "eslint-plugin-node": "^11.1.0",
@@ -70,6 +69,7 @@
     "react": "^16.13.0",
     "react-native": "^0.63.0",
     "shelljs": "^0.8.4",
+    "tsd": "^0.17.0",
     "typescript": "^4.1.3"
   },
   "dependencies": {
@@ -102,5 +102,8 @@
   "jest-junit": {
     "outputDirectory": "./test-reports/unit/",
     "outputName": "junit-result.xml"
+  },
+  "tsd": {
+    "directory": "./dist/types"
   }
 }

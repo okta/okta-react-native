@@ -48,6 +48,7 @@ export const createConfig = async({
   httpConnectionTimeout,
   httpReadTimeout,
   browserMatchAll = false,
+  oktaAuthConfig = {}
 }) => {
 
   assertIssuer(discoveryUri);
@@ -57,12 +58,19 @@ export const createConfig = async({
 
   const userAgentTemplate = `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} ${Platform.OS}/${Platform.Version}`;
   const { origin } = new Url(discoveryUri);
-  authClient = new OktaAuth({ 
+
+  oktaAuthConfig = {
+    ...oktaAuthConfig,
     issuer: issuer || origin,
+    clientId,
+    redirectUri,
+    scopes,
     userAgent: {
       template: userAgentTemplate.replace('$UPSTREAM_SDK', '$OKTA_AUTH_JS')
     } 
-  });
+  };
+  
+  authClient = new OktaAuth(oktaAuthConfig);
 
   if (Platform.OS === 'ios') {
     scopes = scopes.join(' ');

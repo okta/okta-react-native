@@ -82,17 +82,17 @@ describe('OktaReactNative', () => {
 
   describe('createConfigTest', () => {
     let mockCreateConfig;
-
-    const config = {
-      clientId: 'dummy_client_id',
-      redirectUri: 'dummy://redirect', 
-      endSessionRedirectUri: 'dummy://endSessionRedirect', 
-      discoveryUri: 'https://dummy_issuer',
-      scopes: ['scope1'],
-      requireHardwareBackedKeyStore: true
-    };
+    let config;
 
     beforeEach(() => {
+      config = {
+        clientId: 'dummy_client_id',
+        redirectUri: 'dummy://redirect', 
+        endSessionRedirectUri: 'dummy://endSessionRedirect', 
+        discoveryUri: 'https://dummy_issuer',
+        scopes: ['scope1'],
+        requireHardwareBackedKeyStore: true
+      };
       mockCreateConfig = require('react-native').NativeModules.OktaSdkBridge.createConfig;
       mockCreateConfig.mockReset();
       OktaAuth.mockClear();
@@ -104,6 +104,30 @@ describe('OktaReactNative', () => {
           code: '-100', 
           message: 'OktaOidc client isn\'t configured, check if you have created a configuration with createConfig'
         });
+    });
+
+    it('applies oktaAuthConfig when initialize authClient', async () => {
+      Platform.OS = 'ios';
+      Platform.Version = '1.0.0';
+      config = {
+        ...config,
+        oktaAuthConfig: {
+          mockConfig1: 'mock config 1',
+          mockConfig2: 'mock config 2'
+        }
+      };
+      await createConfig(config);
+      expect(OktaAuth).toHaveBeenCalledWith({
+        issuer: 'https://dummy_issuer',
+        clientId: 'dummy_client_id',
+        redirectUri: 'dummy://redirect', 
+        scopes: ['scope1'],
+        userAgent: {
+          template: `@okta/okta-react-native/${version} $OKTA_AUTH_JS react-native/${version} ios/1.0.0`,
+        },
+        mockConfig1: 'mock config 1',
+        mockConfig2: 'mock config 2'
+      });
     });
     
     it('passes in correct parameters on ios device', () => {
