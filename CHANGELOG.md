@@ -1,3 +1,9 @@
+# 1.12.0
+
+### Feature
+
+- [#147](https://github.com/okta/okta-react-native/pull/147) Accepts `oktaAuthConfig` in `createConfig` method to pass configuration for generating the `authClient`(OktaAuth instance).
+
 # 1.11.1
 
 ### Bug Fix
