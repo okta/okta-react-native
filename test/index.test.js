@@ -115,7 +115,7 @@ describe('OktaReactNative', () => {
           mockConfig1: 'mock config 1',
           mockConfig2: 'mock config 2'
         }
-      }
+      };
       await createConfig(config);
       expect(OktaAuth).toHaveBeenCalledWith({
         issuer: 'https://dummy_issuer',
