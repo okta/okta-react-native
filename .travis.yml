@@ -22,8 +22,7 @@ jobs:
         - sudo apt-get update
         - sudo apt-get install -y libappindicator1
       script:
-        - yarn eslint
-        - yarn dtslint
+        - yarn lint
         - yarn test
         - bash ./scripts/snyk.sh
     - language: objective-c

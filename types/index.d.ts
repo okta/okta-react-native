@@ -14,6 +14,7 @@
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable camelcase */
+import { OktaAuthOptions } from '@okta/okta-auth-js';
 
 export function createConfig(config: Okta.ConfigParameters): Promise<boolean>;
 
@@ -67,6 +68,7 @@ export namespace Okta {
     httpConnectionTimeout?: number;
     httpReadTimeout?: number;
     browserMatchAll?: boolean;
+    oktaAuthConfig?: OktaAuthOptions;
   }
 
   interface AuthenticationResponse {
