@@ -10,12 +10,7 @@
 
 ### Other 
 
-- [#142](https://github.com/okta/okta-react-native/pull/142) Updates glob-parent from 5.1.1 to 5.1.2
-- [#138](https://github.com/okta/okta-react-native/pull/138) Updates browserslist from 4.16.3 to 4.16.6
-- [#132](https://github.com/okta/okta-react-native/pull/132) Updates hosted-git-info from 2.8.8 to 2.8.9
-- [#129](https://github.com/okta/okta-react-native/pull/129) Updates lodash from 4.17.20 to 4.17.21
-- [#128](https://github.com/okta/okta-react-native/pull/128) Updates ua-parser-js from 0.7.23 to 0.7.28
-- [#127](https://github.com/okta/okta-react-native/pull/127) Updates url-parse from 1.4.7 to 1.5.0
+- Dependencies upgrade 
 
 # 1.11.1
 
