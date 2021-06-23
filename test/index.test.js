@@ -11,6 +11,7 @@
  */
 
 /* eslint-disable camelcase */
+/* eslint-disable jest/no-conditional-expect */
 
 const {
   createConfig,

@@ -4,6 +4,14 @@
 
 - [#147](https://github.com/okta/okta-react-native/pull/147) Accepts `oktaAuthConfig` in `createConfig` method to pass configuration for generating the `authClient`(OktaAuth instance).
 
+### Bug Fix 
+
+- [#144](https://github.com/okta/okta-react-native/pull/144) Fixes `noSSO` parameter in TS definition file
+
+### Other 
+
+- Dependencies upgrade 
+
 # 1.11.1
 
 ### Bug Fix
