@@ -181,8 +181,19 @@ final class OktaSdkBridgeTests: XCTestCase {
         // before sign out we should store state manager.
         testSignInSucceeded()
         
+        let expectation = XCTestExpectation(description: "Sign Out succeed.")
+        
         // when
-        bridge.signOut()
+        bridge.signOut { result in
+            let resultDictionary = result as? [String: String]
+            XCTAssertNotNil(resultDictionary)
+            XCTAssertEqual(resultDictionary?[OktaSdkConstant.RESOLVE_TYPE_KEY], OktaSdkConstant.SIGNED_OUT)
+            
+            expectation.fulfill()
+        } promiseRejecter: { (code, message, error) in
+            XCTAssert(false, "signOut failed")
+        }
+
         
         // then
         XCTAssertEqual(bridge.eventsRegister.count, 1)
@@ -197,10 +208,21 @@ final class OktaSdkBridgeTests: XCTestCase {
         let bridge = OktaSdkBridgeMock()
         bridge.oktaOidc = oidc
         
+        let expectation = XCTestExpectation(description: "Sign Out failed.")
+        
         // before sign out we should store state manager.
         testSignInSucceeded()
         // when
-        bridge.signOut()
+        bridge.signOut { result in
+            XCTAssert(false, "signOut succeed.")
+            
+        } promiseRejecter: { (code, message, error) in
+            XCTAssertNotNil(code)
+            XCTAssertNotNil(message)
+            XCTAssertNotNil(error)
+            
+            expectation.fulfill()
+        }
         
         // then
         XCTAssertEqual(bridge.eventsRegister.count, 1)
