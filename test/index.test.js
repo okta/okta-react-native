@@ -423,7 +423,7 @@ describe('OktaReactNative', () => {
     it('calls native sign out method', async () => {
       mockSignOut.mockResolvedValueOnce({'resolve_type': 'sign_out'});
 
-      await expect(mockSignOut()).resolves.toEqual({'resolve_type': 'sign_out'});
+      await expect(signOut()).resolves.toEqual({'resolve_type': 'sign_out'});
     });
   });
 
