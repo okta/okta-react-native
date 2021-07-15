@@ -29,7 +29,7 @@ export function signInWithBrowser(
 ): Promise<Okta.AuthenticationResponse>;
 
 export function authenticate(
-  sessionToken: string
+  { sessionToken }: { sessionToken: string } 
 ): Promise<Okta.AuthenticationResponse>;
 
 export function signOut(): Promise<{ resolve_type: string }>;
