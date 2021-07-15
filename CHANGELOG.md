@@ -1,3 +1,9 @@
+# 1.12.1
+
+### Bug Fix 
+
+- [#158](https://github.com/okta/okta-react-native/pull/158) Fixes TS definition for `authenticate` method
+
 # 1.12.0
 
 ### Feature
