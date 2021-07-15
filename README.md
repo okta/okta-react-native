@@ -247,19 +247,19 @@ componentWillUnmount() {
 If you already logged in to Okta and have a valid session token, you can complete authorization by calling `authenticate` method. It will emit an event once a user successfully signs in. Make sure your event listeners are mounted and unmounted. Note: on iOS there isn't a `onCancelled` event. If the `authenticate` process is cancelled, `onError` will be triggered.
 
 ```javascript
-authenticate({sessionToken: sessionToken});
+await authenticate({sessionToken: sessionToken});
 ```
 
 ### `signOut`
 
-Clear the browser session and clear the app session (stored tokens) in memory. Fires an event once a user successfully logs out. For sample usage, refer to `signIn`.
+Clears the browser session and clears the app session (stored tokens) in memory. Fires an event once a user successfully logs out. For sample usage, refer to `signIn`.
 
-**Note**: This method apply for [browser-sign-in](#browser-sign-in) scenario only. Use a combination of `revokeToken` (optional) and `clearTokens` methods to signOut when use [custom-sign-in](#custom-sign-in).
+**Note**: This method apply for [browser-sign-in](#browser-sign-in) scenario only. Use a combination of `revokeToken` (optional) and `clearTokens` methods to sign out when use [custom-sign-in](#custom-sign-in).
 
 #### browser-sign-in sample
 
 ```javascript
-signOut();
+await signOut();
 ```
 
 #### custom-sign-in sample
