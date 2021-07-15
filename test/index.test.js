@@ -394,7 +394,7 @@ describe('OktaReactNative', () => {
     });
   });
 
-  describe('signOutTest.', () => {
+  describe('signOutTest succeeded.', () => {
     let mockSignOut;
 
     beforeEach(() => {
@@ -419,6 +419,26 @@ describe('OktaReactNative', () => {
       mockSignOut.mockResolvedValueOnce(response);
 
       await expect(signOut()).resolves.toEqual(response);
+    });
+  });
+
+  describe('signOutTest failed.', () => {
+    let mockSignOut;
+
+    beforeEach(() => {
+      mockSignOut = require('react-native').NativeModules.OktaSdkBridge.signOut;
+    });
+
+    it('calls native sign out method', () => {
+      mockSignOut.mockRejectedValueOnce({ 
+        error_code: '1001', 
+        error_message: 'Error occured during sign-out method call.' 
+      });
+
+      return signOut().catch(givenError => {
+        expect(givenError.error_code).toEqual('1001');
+        expect(givenError.error_message).toEqual('Error occured during sign-out method call.');
+      });
     });
   });  
   
