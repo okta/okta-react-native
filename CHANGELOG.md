@@ -1,3 +1,9 @@
+# 1.13.0
+
+### Other
+
+- [#151](https://github.com/okta/okta-react-native/pull/151) Updates android-oidc dependency
+
 # 1.12.1
 
 ### Bug Fix 

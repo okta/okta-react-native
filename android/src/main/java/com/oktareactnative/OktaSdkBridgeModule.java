@@ -431,6 +431,13 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+        if (activity == null) {
+            final WritableMap params = Arguments.createMap();
+            params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.NO_VIEW.getErrorCode());
+            params.putString(OktaSdkConstant.ERROR_MSG_KEY, OktaSdkError.NO_VIEW.getErrorMessage());
+            sendEvent(reactContext, OktaSdkConstant.ON_ERROR, params);
+            return;
+        }
         if (webClient != null) {
             webClient.handleActivityResult(requestCode & 0xffff, resultCode, data);
             registerCallback(activity);
