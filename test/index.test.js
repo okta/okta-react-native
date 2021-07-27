@@ -144,6 +144,7 @@ describe('OktaReactNative', () => {
         config.discoveryUri,
         processedScope,
         `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} ios/1.0.0`,
+        15
       );
     });
 

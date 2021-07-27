@@ -74,13 +74,16 @@ export const createConfig = async({
 
   if (Platform.OS === 'ios') {
     scopes = scopes.join(' ');
+    const defaultiOSTimeout = 15;
+
     return NativeModules.OktaSdkBridge.createConfig(
       clientId,
       redirectUri,
       endSessionRedirectUri,
       discoveryUri,
       scopes,
-      userAgentTemplate
+      userAgentTemplate,
+      httpConnectionTimeout ?? defaultiOSTimeout,
     );
   }
 

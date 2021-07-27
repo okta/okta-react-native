@@ -73,6 +73,8 @@ class OktaSdkBridge: RCTEventEmitter {
     
     override var methodQueue: DispatchQueue { .main }
     
+    private var requestTimeout: Int?
+    
     func presentedViewController() -> UIViewController? {
         RCTPresentedViewController()
     }
@@ -84,6 +86,7 @@ class OktaSdkBridge: RCTEventEmitter {
                       discoveryUri: String,
                       scopes: String,
                       userAgentTemplate: String,
+                      requestTimeout: Int,
                       promiseResolver: RCTPromiseResolveBlock,
                       promiseRejecter: RCTPromiseRejectBlock) {
         do {
@@ -97,7 +100,12 @@ class OktaSdkBridge: RCTEventEmitter {
                 "logoutRedirectUri": endSessionRedirectUri,
                 "scopes": scopes
             ])
+            
+            config.requestCustomizationDelegate = self
+
             oktaOidc = try OktaOidc(configuration: config)
+            self.requestTimeout = requestTimeout
+
             promiseResolver(true)
         } catch let error {
             promiseRejecter(OktaReactNativeError.oktaOidcError.errorCode, error.localizedDescription, error)
@@ -515,5 +523,24 @@ class OktaSdkBridge: RCTEventEmitter {
         }
         
         return false
+    }
+}
+
+extension OktaSdkBridge: OktaNetworkRequestCustomizationDelegate {
+    func customizableURLRequest(_ request: URLRequest?) -> URLRequest? {
+        guard let timeout = requestTimeout,
+              let request = request,
+              let mutableRequestCopy = (request as NSURLRequest).mutableCopy() as? NSMutableURLRequest else
+        {
+            return request
+        }
+        
+        mutableRequestCopy.timeoutInterval = TimeInterval(timeout)
+        
+        return mutableRequestCopy as URLRequest
+    }
+    
+    func didReceive(_ response: URLResponse?) {
+        // Not needed
     }
 }
