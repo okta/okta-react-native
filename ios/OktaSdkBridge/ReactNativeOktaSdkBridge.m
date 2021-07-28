@@ -21,7 +21,8 @@ RCT_EXTERN_METHOD(
   endSessionRedirectUri:(NSString *)endSessionRedirectUri 
   discoveryUri:(NSString *)discoveryUri 
   scopes:(NSString *)scopes 
-  userAgentTemplate:(NSString *)userAgentTemplate 
+  userAgentTemplate:(NSString *)userAgentTemplate
+  requestTimeout:(NSInteger)requestTimeout
   promiseResolver:(RCTPromiseResolveBlock *)promiseResolver 
   promiseRejecter:(RCTPromiseRejectBlock *)promiseRejecter
 )

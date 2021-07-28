@@ -152,29 +152,28 @@ import { createConfig, signIn, signOut, getAccessToken } from '@okta/okta-react-
 
 ### `createConfig`
 
-This method will create a configured client on the native modules. Resolves `true` if successfully configures a client. Note: `requireHardwareBackedKeyStore` is a configurable setting only on android devices. If you're a developer testing on android emulators, set this field to `false`. 
+This method will create a configured client on the native modules. Resolves `true` if successfully configures a client.
 
-**Note**: `issuer` is an optional field in config, for more information please refer to [About the Issuer](https://github.com/okta/okta-auth-js/tree/master#about-the-issuer)
-
-**Note**: `androidChromeTabColor` is an optional field in config, and is used only by Android for the Chrome Custom Tabs color for the OIDC flow.
-
-**Note**: `browserMatchAll` is an optional field in config, and is used only by Android to match all Chrome Custom Tabs browsers.
-
-**Note**: `httpConnectionTimeout` and `httpReadTimeout` are optional fields in config. These are used for HTTP requests performed by the SDK. Timeouts are in seconds.
+* `issuer` is an optional field in config, for more information please refer to [About the Issuer](https://github.com/okta/okta-auth-js/tree/master#about-the-issuer).
+* `requireHardwareBackedKeyStore` is a configurable setting only on Android devices. If you're a developer testing on Android emulators, set this field to `false`. 
+* `androidChromeTabColor` is an optional field in config, and is used only by _Android_ for the Chrome Custom Tabs color for the OIDC flow.
+* `browserMatchAll` is an optional field in config, and is used only by _Android_ to match all Chrome Custom Tabs browsers.
+* `httpConnectionTimeout` is an optional field in config, represented in seconds. Available on _iOS_ and _Android_.
+* `httpReadTimeout` is an optional field in config, represented in seconds. Available only on _Android_.
 
 ```javascript
 await createConfig({
-  issuer: "https://{yourOktaDomain}/oauth2/default", // optional
+  issuer: "https://{yourOktaDomain}/oauth2/default", // Optional
   clientId: "{clientId}",
   redirectUri: "{redirectUri}",
   endSessionRedirectUri: "{endSessionRedirectUri}",
   discoveryUri: "https://{yourOktaDomain}",
   scopes: ["openid", "profile", "offline_access"],
-  requireHardwareBackedKeyStore: true,
-  androidChromeTabColor: "#FF00AA",
-  browserMatchAll: true,
-  httpConnectionTimeout: 15,
-  httpReadTimeout: 10,
+  requireHardwareBackedKeyStore: true, // Optional
+  androidChromeTabColor: "#FF00AA", // Optional
+  browserMatchAll: true, // Optional
+  httpConnectionTimeout: 15, // Optional
+  httpReadTimeout: 10, // Optional
 });
 ``` 
 
