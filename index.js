@@ -72,8 +72,8 @@ export const createConfig = async({
   
   authClient = new OktaAuth(oktaAuthConfig);
 
-  const connectionTimeout = httpConnectionTimeout ?? 15;
-  const readTimeout = httpReadTimeout ?? 10;
+  httpConnectionTimeout = httpConnectionTimeout || 15;
+  httpReadTimeout = httpReadTimeout || 10;
 
   if (Platform.OS === 'ios') {
     scopes = scopes.join(' ');
@@ -85,13 +85,13 @@ export const createConfig = async({
       discoveryUri,
       scopes,
       userAgentTemplate,
-      connectionTimeout,
+      httpConnectionTimeout,
     );
   }
 
   const timeouts = {
-    httpConnectionTimeout: connectionTimeout,
-    httpReadTimeout: readTimeout,
+    httpConnectionTimeout,
+    httpReadTimeout,
   };
     
   return NativeModules.OktaSdkBridge.createConfig(
