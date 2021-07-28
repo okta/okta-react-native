@@ -84,6 +84,7 @@ describe('OktaReactNative', () => {
   describe('createConfigTest', () => {
     let mockCreateConfig;
     let config;
+    let defaultTimeouts = { httpConnectionTimeout: 15, httpReadTimeout: 10, };
 
     beforeEach(() => {
       config = {
@@ -144,7 +145,7 @@ describe('OktaReactNative', () => {
         config.discoveryUri,
         processedScope,
         `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} ios/1.0.0`,
-        15
+        defaultTimeouts.httpConnectionTimeout,
       );
     });
 
@@ -162,7 +163,7 @@ describe('OktaReactNative', () => {
         `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
         undefined,
-        {},
+        defaultTimeouts,
         false,
       );
     });
@@ -183,7 +184,7 @@ describe('OktaReactNative', () => {
         `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
         '#FF00AA',
-        {},
+        defaultTimeouts,
         false,
       );
     });
@@ -204,7 +205,7 @@ describe('OktaReactNative', () => {
         `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
         undefined,
-        {},
+        defaultTimeouts,
         true,
       );
     });
