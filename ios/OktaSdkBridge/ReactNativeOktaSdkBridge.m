@@ -26,7 +26,11 @@ RCT_EXTERN_METHOD(
   promiseRejecter:(RCTPromiseRejectBlock *)promiseRejecter
 )
 
-RCT_EXTERN_METHOD(signIn:(NSDictionary*)options)
+RCT_EXTERN_METHOD(
+  signIn:(NSDictionary*)options
+  promiseResolver:(RCTPromiseResolveBlock *)promiseResolver
+  promiseRejecter:(RCTPromiseRejectBlock *)promiseRejecter
+)
 
 RCT_EXTERN_METHOD(
   authenticate:

@@ -77,8 +77,21 @@ final class OktaSdkBridgeTests: XCTestCase {
         let bridge = OktaSdkBridgeMock()
         bridge.oktaOidc = oidc
         
+        let expectation = XCTestExpectation(description: "Sign In must succeed.")
+        
         // when
-        bridge.signIn([:])
+        bridge.signIn([:]) { result in
+            let resultDictionary = result as? [String: String]
+            XCTAssertNotNil(resultDictionary)
+            XCTAssertEqual(resultDictionary?[OktaSdkConstant.RESOLVE_TYPE_KEY], OktaSdkConstant.AUTHORIZED)
+            XCTAssertNotNil(resultDictionary?[OktaSdkConstant.ACCESS_TOKEN_KEY])
+            
+            expectation.fulfill()
+            
+            expectation.fulfill()
+        } promiseRejecter: { (code, message, error) in
+            XCTAssert(false, "Authentication failed.")
+        }
         
         // then
         XCTAssertEqual(bridge.eventsRegister.count, 1)
@@ -87,6 +100,8 @@ final class OktaSdkBridgeTests: XCTestCase {
         
         XCTAssertEqual(resultDictionary[OktaSdkConstant.RESOLVE_TYPE_KEY]!, OktaSdkConstant.AUTHORIZED)
         XCTAssertNotNil(resultDictionary[OktaSdkConstant.ACCESS_TOKEN_KEY]!)
+        
+        wait(for: [expectation], timeout: 5)
     }
     
     func testSignInFailed() {
@@ -95,8 +110,19 @@ final class OktaSdkBridgeTests: XCTestCase {
         let bridge = OktaSdkBridgeMock()
         bridge.oktaOidc = oidc
         
+        let expectation = XCTestExpectation(description: "Sign In must fail.")
+        
         // when
-        bridge.signIn([:])
+        bridge.signIn([:]) { result in
+            XCTAssert(false, "Authentication succeeded.")
+        } promiseRejecter: { (code, message, error) in
+            // then
+            XCTAssertNotNil(code)
+            XCTAssertNotNil(message)
+            XCTAssertNotNil(error)
+            
+            expectation.fulfill()
+        }
         
         // then
         XCTAssertEqual(bridge.eventsRegister.count, 1)
@@ -113,8 +139,21 @@ final class OktaSdkBridgeTests: XCTestCase {
         let bridge = OktaSdkBridgeMock()
         bridge.oktaOidc = oidc
         
+        let expectation = XCTestExpectation(description: "Sign In must succeed.")
+        
         // when
-        bridge.signIn(["noSSO": "true"])
+        bridge.signIn(["noSSO": "true"]) { result in
+            let resultDictionary = result as? [String: String]
+            XCTAssertNotNil(resultDictionary)
+            XCTAssertEqual(resultDictionary?[OktaSdkConstant.RESOLVE_TYPE_KEY], OktaSdkConstant.AUTHORIZED)
+            XCTAssertNotNil(resultDictionary?[OktaSdkConstant.ACCESS_TOKEN_KEY])
+            
+            expectation.fulfill()
+            
+            expectation.fulfill()
+        } promiseRejecter: { (code, message, error) in
+            XCTAssert(false, "Authentication failed.")
+        }
         
         // then
         if #available(iOS 13.0, *) {
