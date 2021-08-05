@@ -1,7 +1,17 @@
-# Okta React Native
-
 [![npm version](https://img.shields.io/npm/v/@okta/okta-react-native.svg?style=flat-square)](https://www.npmjs.com/package/@okta/okta-react-native)
 [![build status](https://img.shields.io/travis/okta/okta-react-native/master.svg?style=flat-square)](https://travis-ci.org/okta/okta-react-native)
+
+[<img src="https://www.okta.com/sites/default/files/Dev_Logo-01_Large-thumbnail.png" align="right" width="256px"/>](https://devforum.okta.com/)
+
+# Okta React Native
+
+  - [Prerequisites](#prerequisites)
+  - [Configure an OpenID Connect Client](#configure-an-openid-connect-client-in-okta)
+  - [Getting started](#getting-started)
+    - [iOS Setup](#ios-setup)
+    - [Android Setup](#android-setup)
+  - [Usage guide](#usage)
+  - [Contributing](#contributing)
 
 The Okta React Native library makes it easy to add authentication to your React Native app. This library is a wrapper around [Okta OIDC Android](https://github.com/okta/okta-oidc-android) and [Okta OIDC iOS](https://github.com/okta/okta-oidc-ios).
 
@@ -10,9 +20,11 @@ This library follows the current best practice for native apps using:
 * [OAuth 2.0 Authorization Code Flow](https://tools.ietf.org/html/rfc6749#section-1.3.1)
 * [Proof Key for Code Exchange (PKCE)](https://tools.ietf.org/html/rfc7636)
 
-This library also exposes APIs to interact with [Authentication API](https://developer.okta.com/docs/api/resources/authn) directly to implement native UI for authentication.
+This library also exposes APIs to interact with [Authentication API](https://developer.okta.com/docs/api/resources/authn) directly to implement native UI for authentication. The library supports two flows in your React Native application:
+* **[Browser Sign In](#browser-sign-in)** - redirects the user to the Okta browser login page of your Org for authentication. The user is redirected back to the React Native application after authenticating.
+* **[Custom Sign In](#custom-sign-in)** - A React Native application that adopts native authorization to take control over authorization flow and/or provide custom UI.
 
-You can learn more on the [Okta + ReactNative](https://developer.okta.com/code/react-native/) page in our documentation. You can also download our [sample application](https://github.com/okta/samples-js-react-native/tree/master/browser-sign-in)
+You can learn more on the [Okta + ReactNative](https://developer.okta.com/code/react-native/) page in our documentation. You can also download our [sample applications](https://github.com/okta/samples-js-react-native).
 
 ## Prerequisites
 
@@ -20,7 +32,7 @@ You can learn more on the [Okta + ReactNative](https://developer.okta.com/code/r
 * If you don't have a React Native app, or are new to React Native, please continue with the [React Native CLI Quickstart](https://facebook.github.io/react-native/docs/getting-started) guide. It will walk you through the creation of a React Native app and other application development essentials.
 * If you are developing with an Android device emulator, make sure to check out the [React Native - Android Development](https://facebook.github.io/react-native/docs/getting-started.html#android-development-environment) setup instructions.
 
-## Add an OpenID Connect Client in Okta
+## Configure an OpenID Connect Client in Okta
 
 In Okta, applications are OpenID Connect clients that can use Okta Authorization servers to authenticate users.  Your Okta Org already has a default authorization server, so you just need to create an OIDC client that will use it.
 
@@ -30,7 +42,7 @@ In Okta, applications are OpenID Connect clients that can use Okta Authorization
 | Setting             | Value                                        |
 | ------------------- | -------------------------------------------- |
 | App Name            | My Native App                                |
-| Login redirect URIs | com.mynativeapp:/                            |
+| Login redirect URIs | com.mynative.app:/                            |
 | Grant Types Allowed | Authorization Code, Refresh Token            |
 
 After you have created the application there are two more values you will need to gather:
@@ -71,7 +83,7 @@ You can currently add Okta OIDC iOS through CocoaPods:
 
 1. [**CocoaPods**]((https://guides.cocoapods.org/using/getting-started.html))
 
-   ***React Native >= 0.60***: With React Native 0.60 pods are added to podfile automatically. Run `pod install` command to install dependecies:
+   ***React Native >= 0.60***: With React Native 0.60 pods are added to `Podfile` automatically. Run the commands to install dependencies:
    ```
    cd ios
    pod install
@@ -82,7 +94,7 @@ You can currently add Okta OIDC iOS through CocoaPods:
 
    target '{YourTargetName}' do
 
-   pod 'OktaOidc', '~> 3.10.2'
+   pod 'OktaOidc', '~> 3.10.4'
 
    end
    ```
@@ -93,7 +105,7 @@ You can currently add Okta OIDC iOS through CocoaPods:
    With [Carthage](https://github.com/Carthage/Carthage), add the following line to your Cartfile:
 
     ```
-    github "okta/okta-oidc-ios" ~> 3.10.2
+    github "okta/okta-oidc-ios" ~> 3.10.4
     ```
    Then run `carthage update --platform iOS`.
 
@@ -110,9 +122,7 @@ This library depends on the native [Okta OIDC Android](https://github.com/okta/o
 
 1. Add this line to `android/build.gradle`, under `allprojects` -> `repositories`.
     ```
-    maven {
-      url  "https://dl.bintray.com/okta/com.okta.android"
-    }
+    mavenCentral()
     ```
     
 2. Make sure your `minSdkVersion` is `21` in `android/build.gradle`.
@@ -140,29 +150,28 @@ import { createConfig, signIn, signOut, getAccessToken } from '@okta/okta-react-
 
 ### `createConfig`
 
-This method will create a configured client on the native modules. Resolves `true` if successfully configures a client. Note: `requireHardwareBackedKeyStore` is a configurable setting only on android devices. If you're a developer testing on android emulators, set this field to `false`. 
+This method will create a configured client on the native modules. Resolves `true` if successfully configures a client.
 
-**Note**: `issuer` is an optional field in config, for more information please refer to [About the Issuer](https://github.com/okta/okta-auth-js/tree/master#about-the-issuer)
-
-**Note**: `androidChromeTabColor` is an optional field in config, and is used only by Android for the Chrome Custom Tabs color for the OIDC flow.
-
-**Note**: `browserMatchAll` is an optional field in config, and is used only by Android to match all Chrome Custom Tabs browsers.
-
-**Note**: `httpConnectionTimeout` and `httpReadTimeout` are optional fields in config. These are used for HTTP requests performed by the SDK. Timeouts are in seconds.
+* `issuer` is an optional field in config, for more information please refer to [About the Issuer](https://github.com/okta/okta-auth-js/tree/master#about-the-issuer).
+* `requireHardwareBackedKeyStore` is a configurable setting only on Android devices. If you're a developer testing on Android emulators, set this field to `false`. 
+* `androidChromeTabColor` is an optional field in config, and is used only by _Android_ for the Chrome Custom Tabs color for the OIDC flow.
+* `browserMatchAll` is an optional field in config, and is used only by _Android_ to match all Chrome Custom Tabs browsers.
+* `httpConnectionTimeout` is an optional field in config, represented in seconds. Available on _iOS_ and _Android_.
+* `httpReadTimeout` is an optional field in config, represented in seconds. Available only on _Android_.
 
 ```javascript
 await createConfig({
-  issuer: "https://{yourOktaDomain}/oauth2/default", // optional
+  issuer: "https://{yourOktaDomain}/oauth2/default", // Optional
   clientId: "{clientId}",
   redirectUri: "{redirectUri}",
   endSessionRedirectUri: "{endSessionRedirectUri}",
   discoveryUri: "https://{yourOktaDomain}",
   scopes: ["openid", "profile", "offline_access"],
-  requireHardwareBackedKeyStore: true,
-  androidChromeTabColor: "#FF00AA",
-  browserMatchAll: true,
-  httpConnectionTimeout: 15,
-  httpReadTimeout: 10,
+  requireHardwareBackedKeyStore: true, // Optional
+  androidChromeTabColor: "#FF00AA", // Optional
+  browserMatchAll: true, // Optional
+  httpConnectionTimeout: 15, // Optional
+  httpReadTimeout: 10, // Optional
 });
 ``` 
 
@@ -178,6 +187,7 @@ This async method will automatically redirect users to your Okta organziation fo
 
 #### `browser-sign-in`
 `browser-sign-in` leverages device's native browser to automatically redirect users to your Okta organziation for authentication. By providing no argument, this method will trigger the `browser-sign-in` flow. It will emit an event once a user successfully signs in. Make sure your event listeners are mounted and unmounted. 
+
 **Note**: on iOS there isn't a `onCancelled` event. If the sign in process is cancelled, `onError` will be triggered.
 
 ```javascript
@@ -302,12 +312,6 @@ If authenticated:
 }
 ```
 
-Else:
-```javascript
-{
-  "authenticated": false
-}
-```
 
 
 ### `getAccessToken`
@@ -320,7 +324,7 @@ await getAccessToken();
 
 ##### Sample Response
 
-If an access token is available:
+If the access token is available:
 
 ```javascript
 {
@@ -330,7 +334,7 @@ If an access token is available:
 
 ### `getIdToken`
 
-This method returns a promise that will return the identity token as a string. The promise will be rejected if no id token is available. 
+This method returns a promise that will return the identity token as a string. The promise will be rejected if no ID token is available. 
 
 ```javascript
 await getIdToken();
@@ -338,7 +342,7 @@ await getIdToken();
 
 ##### Sample Response
 
-If an id token is available:
+If the ID token is available:
 
 ```javascript
 {
@@ -446,11 +450,11 @@ await introspectAccessToken();
 
 ##### Sample Response
 
-Sample responses can be found [here](https://developer.okta.com/docs/reference/api/oidc/#response-properties-3)
+Sample responses can be found [here](https://developer.okta.com/docs/reference/api/oidc/#response-properties-3).
 
 ### `introspectIdToken`
 
-Introspect the id token. 
+Introspect the ID token. 
 
 ```javascript
 await introspectIdToken();
@@ -458,7 +462,7 @@ await introspectIdToken();
 
 ##### Sample Response
 
-Sample responses can be found [here](https://developer.okta.com/docs/reference/api/oidc/#response-properties-3)
+Sample responses can be found [here](https://developer.okta.com/docs/reference/api/oidc/#response-properties-3).
 
 ### `introspectRefreshToken`
 
@@ -470,7 +474,7 @@ await introspectRefreshToken();
 
 ##### Sample Response
 
-Sample responses can be found [here](https://developer.okta.com/docs/reference/api/oidc/#response-properties-3)
+Sample responses can be found [here](https://developer.okta.com/docs/reference/api/oidc/#response-properties-3).
 
 
 ### `refreshTokens`

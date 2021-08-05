@@ -72,15 +72,20 @@ export const createConfig = async({
   
   authClient = new OktaAuth(oktaAuthConfig);
 
+  httpConnectionTimeout = httpConnectionTimeout || 15;
+  httpReadTimeout = httpReadTimeout || 10;
+
   if (Platform.OS === 'ios') {
     scopes = scopes.join(' ');
+
     return NativeModules.OktaSdkBridge.createConfig(
       clientId,
       redirectUri,
       endSessionRedirectUri,
       discoveryUri,
       scopes,
-      userAgentTemplate
+      userAgentTemplate,
+      httpConnectionTimeout,
     );
   }
 

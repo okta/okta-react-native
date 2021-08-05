@@ -73,6 +73,8 @@ class OktaSdkBridge: RCTEventEmitter {
     
     override var methodQueue: DispatchQueue { .main }
     
+    private var requestTimeout: Int?
+    
     func presentedViewController() -> UIViewController? {
         RCTPresentedViewController()
     }
@@ -84,6 +86,7 @@ class OktaSdkBridge: RCTEventEmitter {
                       discoveryUri: String,
                       scopes: String,
                       userAgentTemplate: String,
+                      requestTimeout: Int,
                       promiseResolver: RCTPromiseResolveBlock,
                       promiseRejecter: RCTPromiseRejectBlock) {
         do {
@@ -97,7 +100,12 @@ class OktaSdkBridge: RCTEventEmitter {
                 "logoutRedirectUri": endSessionRedirectUri,
                 "scopes": scopes
             ])
+            
+            config.requestCustomizationDelegate = self
+
             oktaOidc = try OktaOidc(configuration: config)
+            self.requestTimeout = requestTimeout
+
             promiseResolver(true)
         } catch let error {
             promiseRejecter(OktaReactNativeError.oktaOidcError.errorCode, error.localizedDescription, error)
@@ -142,6 +150,10 @@ class OktaSdkBridge: RCTEventEmitter {
         
         currOktaOidc.signInWithBrowser(from: view, additionalParameters: options) { stateManager, error in
             if let error = error {
+                if self.shouldIgnoreError(error) {
+                    return
+                }
+                
                 let errorDic = [
                     OktaSdkConstant.ERROR_CODE_KEY: OktaReactNativeError.oktaOidcError.errorCode,
                     OktaSdkConstant.ERROR_MSG_KEY: error.localizedDescription
@@ -222,6 +234,10 @@ class OktaSdkBridge: RCTEventEmitter {
         
         currOktaOidc.signOutOfOkta(stateManager, from: view) { error in
             if let error = error {
+                if self.shouldIgnoreError(error) {
+                    return
+                }
+                
                 let errorDic = [
                     OktaSdkConstant.ERROR_CODE_KEY: OktaReactNativeError.oktaOidcError.errorCode,
                     OktaSdkConstant.ERROR_MSG_KEY: error.localizedDescription
@@ -529,5 +545,34 @@ class OktaSdkBridge: RCTEventEmitter {
             OktaSdkConstant.ON_ERROR,
             OktaSdkConstant.ON_CANCELLED
         ]
+    }
+    
+    /// Defines the errors which must be ignored and not thrown to the higher (React Native) layer.
+    /// - Parameter error: Error to evaluate.
+    private func shouldIgnoreError(_ error: Error) -> Bool {
+        if case OktaOidcError.userCancelledAuthorizationFlow = error {
+            return true
+        }
+        
+        return false
+    }
+}
+
+extension OktaSdkBridge: OktaNetworkRequestCustomizationDelegate {
+    func customizableURLRequest(_ request: URLRequest?) -> URLRequest? {
+        guard let timeout = requestTimeout,
+              let request = request,
+              let mutableRequestCopy = (request as NSURLRequest).mutableCopy() as? NSMutableURLRequest else
+        {
+            return request
+        }
+        
+        mutableRequestCopy.timeoutInterval = TimeInterval(timeout)
+        
+        return mutableRequestCopy as URLRequest
+    }
+    
+    func didReceive(_ response: URLResponse?) {
+        // Not needed
     }
 }
