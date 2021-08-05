@@ -394,7 +394,7 @@ describe('OktaReactNative', () => {
     });
   });
 
-  describe('signOutTest succeeded.', () => {
+  describe('signOutTest.', () => {
     let mockSignOut;
 
     beforeEach(() => {
@@ -423,27 +423,14 @@ describe('OktaReactNative', () => {
     it('calls native sign out method', async () => {
       mockSignOut.mockResolvedValueOnce({'resolve_type': 'sign_out'});
 
-      await expect(signOut()).resolves.toEqual({'resolve_type': 'sign_out'});
-    });
-  });
-
-  describe('signOutTest failed.', () => {
-    let mockSignOut;
-
-    beforeEach(() => {
-      mockSignOut = require('react-native').NativeModules.OktaSdkBridge.signOut;
+      await expect(signOut()).rejects.toEqual(error);
     });
 
-    it('calls native sign out method', () => {
-      mockSignOut.mockRejectedValueOnce({ 
-        error_code: '1001', 
-        error_message: 'Error occured during sign-out method call.' 
-      });
+    it('calls native sign out method failed', async () => {
+      const response = {'resolve_type': 'sign_out'};
+      mockSignOut.mockResolvedValueOnce(response);
 
-      return signOut().catch(givenError => {
-        expect(givenError.error_code).toEqual('1001');
-        expect(givenError.error_message).toEqual('Error occured during sign-out method call.');
-      });
+      await expect(signOut()).resolves.toEqual(response);
     });
   });  
   
