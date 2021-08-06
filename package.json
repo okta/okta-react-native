@@ -43,7 +43,7 @@
   "readmeFilename": "README.md",
   "peerDependencies": {
     "events": "^3.1.0",
-    "react": "^16.13.0",
+    "react": "^16.13.0 || ^17.0.0",
     "react-native": "^0.63.0"
   },
   "devDependencies": {
