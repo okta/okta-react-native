@@ -150,7 +150,10 @@ class OktaSdkBridge: RCTEventEmitter {
         
         currOktaOidc.signInWithBrowser(from: view, additionalParameters: options) { stateManager, error in
             if let error = error {
-                if self.shouldIgnoreError(error) {
+                if case OktaOidcError.userCancelledAuthorizationFlow = error {
+                    self.sendEvent(withName: OktaSdkConstant.ON_CANCELLED,
+                                   body:  [OktaSdkConstant.RESOLVE_TYPE_KEY: OktaSdkConstant.CANCELLED])
+                    
                     return
                 }
                 
@@ -234,7 +237,10 @@ class OktaSdkBridge: RCTEventEmitter {
         
         currOktaOidc.signOutOfOkta(stateManager, from: view) { error in
             if let error = error {
-                if self.shouldIgnoreError(error) {
+                if case OktaOidcError.userCancelledAuthorizationFlow = error {
+                    self.sendEvent(withName: OktaSdkConstant.ON_ERROR,
+                                   body:  [OktaSdkConstant.RESOLVE_TYPE_KEY: OktaSdkConstant.CANCELLED])
+                    
                     return
                 }
                 
@@ -545,16 +551,6 @@ class OktaSdkBridge: RCTEventEmitter {
             OktaSdkConstant.ON_ERROR,
             OktaSdkConstant.ON_CANCELLED
         ]
-    }
-    
-    /// Defines the errors which must be ignored and not thrown to the higher (React Native) layer.
-    /// - Parameter error: Error to evaluate.
-    private func shouldIgnoreError(_ error: Error) -> Bool {
-        if case OktaOidcError.userCancelledAuthorizationFlow = error {
-            return true
-        }
-        
-        return false
     }
 }
 
