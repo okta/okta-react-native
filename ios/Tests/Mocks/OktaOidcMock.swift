@@ -19,10 +19,16 @@ class OktaOidcMock: OktaOidcProtocol {
     
     private let shouldFail: Bool
     private let oidcManager: OktaOidcStateManager
+    private let failedError: Error?
     
-    init(configuration: OktaOidcConfig, shouldFail: Bool) {
+    private var callbackError: Error {
+        failedError ?? OktaReactNativeError.oktaOidcError
+    }
+    
+    init(configuration: OktaOidcConfig, shouldFail: Bool, failedError: Error? = nil) {
         self.configuration = configuration
         self.shouldFail = shouldFail
+        self.failedError = failedError
         self.oidcManager = OktaOidcStateManager.makeOidcStateManager(with: configuration)
     }
     
@@ -30,15 +36,15 @@ class OktaOidcMock: OktaOidcProtocol {
                            additionalParameters: [String: String],
                            callback: @escaping ((OktaOidcStateManager?, Error?) -> Void)) {
         callback(shouldFail ? nil : oidcManager,
-                 shouldFail ? OktaReactNativeError.oktaOidcError : nil)
+                 shouldFail ? callbackError : nil)
     }
     
     func signOutOfOkta(_ authStateManager: OktaOidcStateManager, from presenter: UIViewController, callback: @escaping ((Error?) -> Void)) {
-        callback(shouldFail ? OktaReactNativeError.oktaOidcError : nil)
+        callback(shouldFail ? callbackError : nil)
     }
     
     func authenticate(withSessionToken sessionToken: String, callback: @escaping ((OktaOidcStateManager?, Error?) -> Void)) {
         callback(shouldFail ? nil : oidcManager,
-                 shouldFail ? OktaReactNativeError.oktaOidcError : nil)
+                 shouldFail ? callbackError : nil)
     }
 }

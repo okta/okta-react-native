@@ -40,7 +40,7 @@ protocol StateManagerProtocol: class {
     var accessToken: String? { get }
     var idToken: String? { get }
     var refreshToken: String? { get }
-
+    
     func getUser(_ callback: @escaping ([String:Any]?, Error?) -> Void)
     func renew(callback: @escaping ((OktaOidcStateManager?, Error?) -> Void))
     func revoke(_ token: String?, callback: @escaping (Bool, Error?) -> Void)
@@ -102,10 +102,10 @@ class OktaSdkBridge: RCTEventEmitter {
             ])
             
             config.requestCustomizationDelegate = self
-
+            
             oktaOidc = try OktaOidc(configuration: config)
             self.requestTimeout = requestTimeout
-
+            
             promiseResolver(true)
         } catch let error {
             promiseRejecter(OktaReactNativeError.oktaOidcError.errorCode, error.localizedDescription, error)
@@ -211,7 +211,7 @@ class OktaSdkBridge: RCTEventEmitter {
         currOktaOidc.signOutOfOkta(stateManager, from: view) { error in
             if let error = error {
                 if case OktaOidcError.userCancelledAuthorizationFlow = error {
-                    self.sendEvent(withName: OktaSdkConstant.ON_ERROR,
+                    self.sendEvent(withName: OktaSdkConstant.ON_CANCELLED,
                                    body:  [OktaSdkConstant.RESOLVE_TYPE_KEY: OktaSdkConstant.CANCELLED])
                     
                     return
@@ -273,7 +273,7 @@ class OktaSdkBridge: RCTEventEmitter {
                                 errorDic[OktaSdkConstant.ERROR_MSG_KEY]!, error)
                 return
             }
-
+            
             currStateManager.writeToSecureStorage()
             let dic = [
                 OktaSdkConstant.RESOLVE_TYPE_KEY: OktaSdkConstant.AUTHORIZED,
@@ -401,7 +401,7 @@ class OktaSdkBridge: RCTEventEmitter {
             promiseRejecter(error.errorCode, error.errorDescription, error)
             return
         }
-
+        
         stateManager.renew { newAccessToken, error in
             if let error = error {
                 promiseRejecter(OktaReactNativeError.oktaOidcError.errorCode, error.localizedDescription, error)
@@ -424,7 +424,7 @@ class OktaSdkBridge: RCTEventEmitter {
             promiseResolver(dic)
         }
     }
-
+    
     @objc(clearTokens:promiseRejecter:)
     func clearTokens(promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
         guard let stateManager = storedStateManager else {
@@ -432,11 +432,11 @@ class OktaSdkBridge: RCTEventEmitter {
             promiseRejecter(error.errorCode, error.errorDescription, error)
             return
         }
-
+        
         stateManager.clear()
         promiseResolver(true)
     }
-
+    
     func introspectToken(tokenName: String, promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
         guard let stateManager = storedStateManager else {
             let error = OktaReactNativeError.unauthenticated
@@ -509,11 +509,11 @@ class OktaSdkBridge: RCTEventEmitter {
     }
     
     override static func requiresMainQueueSetup() -> Bool {
-        return true
+        true
     }
     
     override func supportedEvents() -> [String]! {
-        return [
+        [
             OktaSdkConstant.SIGN_IN_SUCCESS,
             OktaSdkConstant.SIGN_OUT_SUCCESS,
             OktaSdkConstant.ON_ERROR,
