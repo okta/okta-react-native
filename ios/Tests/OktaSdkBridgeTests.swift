@@ -59,7 +59,8 @@ final class OktaSdkBridgeTests: XCTestCase {
                             endSessionRedirectUri: config.logoutRedirectUri?.absoluteString ?? "",
                             discoveryUri: config.issuer,
                             scopes: config.scopes,
-                            userAgentTemplate: "") { (result) in
+                            userAgentTemplate: "",
+                            requestTimeout: 20) { (result) in
             XCTAssertNotNil(result)
             expectation.fulfill()
         } promiseRejecter: { (_, _, _) in
@@ -540,5 +541,39 @@ final class OktaSdkBridgeTests: XCTestCase {
         }
 
         wait(for: [expectation], timeout: 5)
+    }
+    
+    func testCancellationErrorOnSignIn() throws {
+        // given
+        let oidc = OktaOidcMock(configuration: config, shouldFail: true, failedError: OktaOidcError.userCancelledAuthorizationFlow)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
+        
+        // when
+        bridge.signIn([:])
+        
+        // then
+        XCTAssertEqual(bridge.eventsRegister.count, 1)
+
+        let resultDictionary = bridge.eventsRegister[OktaSdkConstant.ON_CANCELLED] as! [String: String?]
+        
+        XCTAssertNotNil(resultDictionary[OktaSdkConstant.RESOLVE_TYPE_KEY]!)
+    }
+    
+    func testCancellationErrorOnSignOn() throws {
+        // given
+        let oidc = OktaOidcMock(configuration: config, shouldFail: true, failedError: OktaOidcError.userCancelledAuthorizationFlow)
+        let bridge = OktaSdkBridgeMock()
+        bridge.oktaOidc = oidc
+        
+        // when
+        bridge.signOut()
+        
+        // then
+        XCTAssertEqual(bridge.eventsRegister.count, 1)
+
+        let resultDictionary = bridge.eventsRegister[OktaSdkConstant.ON_CANCELLED] as! [String: String?]
+        
+        XCTAssertNotNil(resultDictionary[OktaSdkConstant.RESOLVE_TYPE_KEY]!)
     }
 }
