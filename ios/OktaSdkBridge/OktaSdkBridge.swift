@@ -152,7 +152,9 @@ class OktaSdkBridge: RCTEventEmitter {
             if let error = error {
                 if case OktaOidcError.userCancelledAuthorizationFlow = error {
                     self.sendEvent(withName: OktaSdkConstant.ON_CANCELLED,
-                                   body:  [OktaSdkConstant.RESOLVE_TYPE_KEY: OktaSdkConstant.CANCELLED])
+                                   body: [OktaSdkConstant.RESOLVE_TYPE_KEY: OktaSdkConstant.CANCELLED])
+
+                    promiseRejecter(OktaReactNativeError.cancelled.errorCode, OktaReactNativeError.cancelled.localizedDescription, OktaReactNativeError.cancelled)
                     
                     return
                 }
@@ -239,7 +241,9 @@ class OktaSdkBridge: RCTEventEmitter {
             if let error = error {
                 if case OktaOidcError.userCancelledAuthorizationFlow = error {
                     self.sendEvent(withName: OktaSdkConstant.ON_CANCELLED,
-                                   body:  [OktaSdkConstant.RESOLVE_TYPE_KEY: OktaSdkConstant.CANCELLED])
+                                   body: [OktaSdkConstant.RESOLVE_TYPE_KEY: OktaSdkConstant.CANCELLED])
+
+                    promiseRejecter(OktaReactNativeError.cancelled.errorCode, OktaReactNativeError.cancelled.localizedDescription, OktaReactNativeError.cancelled)
                     
                     return
                 }

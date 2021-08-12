@@ -549,31 +549,53 @@ final class OktaSdkBridgeTests: XCTestCase {
         let bridge = OktaSdkBridgeMock()
         bridge.oktaOidc = oidc
         
+        let expectation = XCTestExpectation(description: "Cancellation must succeeded.")
+        
         // when
-        bridge.signIn([:])
+        bridge.signIn([:]) { _ in
+            XCTAssert(false, "Cancellation failed.")
+        } promiseRejecter: { (errorCode, errorMessage, error) in
+            XCTAssertEqual(errorCode, "-1200")
+            XCTAssertNotNil(errorMessage)
+            XCTAssertNotNil(error)
+            
+            expectation.fulfill()
+        }
         
         // then
         XCTAssertEqual(bridge.eventsRegister.count, 1)
 
         let resultDictionary = bridge.eventsRegister[OktaSdkConstant.ON_CANCELLED] as! [String: String?]
-        
         XCTAssertNotNil(resultDictionary[OktaSdkConstant.RESOLVE_TYPE_KEY]!)
+        
+        wait(for: [expectation], timeout: 5)
     }
     
-    func testCancellationErrorOnSignOn() throws {
+    func testCancellationErrorOnSignOut() throws {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: true, failedError: OktaOidcError.userCancelledAuthorizationFlow)
         let bridge = OktaSdkBridgeMock()
         bridge.oktaOidc = oidc
         
+        let expectation = XCTestExpectation(description: "Cancellation must succeeded.")
+        
         // when
-        bridge.signOut()
+        bridge.signOut { _ in
+            XCTAssert(false, "Cancellation failed.")
+        } promiseRejecter: { (errorCode, errorMessage, error) in
+            XCTAssertEqual(errorCode, "-1200")
+            XCTAssertNotNil(errorMessage)
+            XCTAssertNotNil(error)
+            
+            expectation.fulfill()
+        }
         
         // then
         XCTAssertEqual(bridge.eventsRegister.count, 1)
 
         let resultDictionary = bridge.eventsRegister[OktaSdkConstant.ON_CANCELLED] as! [String: String?]
-        
         XCTAssertNotNil(resultDictionary[OktaSdkConstant.RESOLVE_TYPE_KEY]!)
+            
+        wait(for: [expectation], timeout: 5)
     }
 }
