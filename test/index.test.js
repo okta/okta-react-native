@@ -240,14 +240,28 @@ describe('OktaReactNative', () => {
       mockSignIn.mockReset();
     });
 
-    it('calls native sign in method', () => {
-      signIn();
+    it('calls native Sign In method succeeded', async () => {
+      const response = { resolve_type: 'authorized', access_token: 'AccessToken' };
+      mockSignIn.mockResolvedValueOnce(response);
+
+      await expect(signIn()).resolves.toEqual(response);
+
+      expect(mockSignIn).toHaveBeenCalledTimes(1);
+      expect(mockSignIn).toHaveBeenLastCalledWith({});
+    });
+
+    it('calls native Sign In method failed', async () => {
+      const error = { code: '1111', message: 'Error', error: 'Cancel' };
+      mockSignIn.mockRejectedValueOnce(error);
+
+      await expect(signIn()).rejects.toEqual(error);
+
       expect(mockSignIn).toHaveBeenCalledTimes(1);
       expect(mockSignIn).toHaveBeenLastCalledWith({});
     });
   });
 
-  describe('signInTest with credentials', () => {
+  describe('custom signIn with credentials', () => {
     let mockAuthenticate;
     const signInCredentials = { username: 'okta.user', password: 'secure-pass-123!' };
     const sessionToken = 'Dummy-Session-token-1234';
@@ -259,7 +273,7 @@ describe('OktaReactNative', () => {
       mockSignInOktaAuth.mockReset();
     });
 
-    it('sign-in succeed, authentication succeed', async () => {
+    it('custom sign-in succeed, authentication succeed', async () => {
       mockSignInOktaAuth.mockImplementation().mockResolvedValueOnce({ status: 'SUCCESS', sessionToken: sessionToken });
       mockAuthenticate.mockResolvedValueOnce(authToken);
       
@@ -271,7 +285,7 @@ describe('OktaReactNative', () => {
       expect(mockAuthenticate).toHaveBeenLastCalledWith(sessionToken);
     });
 
-    it('sign-in method fails', () => {
+    it('custom sign-in method fails', () => {
       mockSignInOktaAuth.mockImplementation().mockRejectedValueOnce(
         { 
           error_code: '1001', 
@@ -289,7 +303,7 @@ describe('OktaReactNative', () => {
       });
     });
 
-    it('sign-in method succeed, authentication fails', () => {
+    it('custom sign-in method succeed, authentication fails', () => {
       mockSignInOktaAuth.mockImplementation().mockResolvedValueOnce({ status: 'SUCCESS', sessionToken: sessionToken });
       mockAuthenticate.mockRejectedValue({ 
         error_code: '1001', 
@@ -307,7 +321,7 @@ describe('OktaReactNative', () => {
       });
     });
 
-    it('sign-in method succeed, authentication succeed but token null', () => {
+    it('custom sign-in method succeed, authentication succeed but token null', () => {
       mockSignInOktaAuth.mockImplementation().mockResolvedValueOnce({ status: 'SUCCESS', sessionToken: sessionToken });
       mockAuthenticate.mockResolvedValueOnce(null);
       
@@ -322,7 +336,7 @@ describe('OktaReactNative', () => {
       });
     });
 
-    it('sign-in method succeed, authentication succeed, status not SUCCESS', () => {
+    it('custom sign-in method succeed, authentication succeed, status not SUCCESS', () => {
       mockSignInOktaAuth.mockImplementation().mockResolvedValueOnce({ status: 'LOCKED_OUT', sessionToken: sessionToken });
       mockAuthenticate.mockResolvedValueOnce(authToken);
 
@@ -344,14 +358,22 @@ describe('OktaReactNative', () => {
       mockSignInWithBrowser.mockReset();
     });
 
-    it('calls native sign in method with idp on iOS', () => {
-      signInWithBrowser({idp: 'test-idp'});
+    it('calls native sign in method with idp on iOS', async () => {
+      const response = { resolve_type: 'authorized', access_token: 'AccessToken' };
+      mockSignInWithBrowser.mockResolvedValueOnce(response);
+
+      await expect(signInWithBrowser({idp: 'test-idp'})).resolves.toEqual(response);
+
       expect(mockSignInWithBrowser).toHaveBeenCalledTimes(1);
       expect(mockSignInWithBrowser).toHaveBeenLastCalledWith({idp: 'test-idp'});
     });
 
-    it('calls native sign in method with noSSO on iOS', () => {
-      signInWithBrowser({ noSSO: true});
+    it('calls native sign in method with noSSO on iOS', async () => {
+      const response = { resolve_type: 'authorized', access_token: 'AccessToken' };
+      mockSignInWithBrowser.mockResolvedValueOnce(response);
+
+      await expect(signInWithBrowser({ noSSO: true })).resolves.toEqual(response);
+
       expect(mockSignInWithBrowser).toHaveBeenCalledTimes(1);
       expect(mockSignInWithBrowser).toHaveBeenLastCalledWith({noSSO: 'true'});
     });
@@ -372,18 +394,27 @@ describe('OktaReactNative', () => {
     });
   });
 
-  describe('signOutTest', () => {
+  describe('signOutTest.', () => {
     let mockSignOut;
 
     beforeEach(() => {
       mockSignOut = require('react-native').NativeModules.OktaSdkBridge.signOut;
     });
 
-    it('calls native sign out method', () => {
-      signOut();
-      expect(mockSignOut).toHaveBeenCalledTimes(1);
+    it('calls native sign out method succeeded', async () => {
+      const error = { error_code: '1001',  error_message: 'Error occured during sign-out method call.' };
+      mockSignOut.mockRejectedValueOnce(error);
+
+      await expect(signOut()).rejects.toEqual(error);
     });
-  });
+
+    it('calls native sign out method failed', async () => {
+      const response = {'resolve_type': 'sign_out'};
+      mockSignOut.mockResolvedValueOnce(response);
+
+      await expect(signOut()).resolves.toEqual(response);
+    });
+  });  
   
   describe('getAccessTokenTest', () => {
     let mockGetAccessToken;
@@ -393,9 +424,10 @@ describe('OktaReactNative', () => {
     });
 
     it('gets access token successfully', async () => {
-      mockGetAccessToken.mockReturnValueOnce('dummy_access_token');
+      const token = 'dummy_access_token';
+      mockGetAccessToken.mockReturnValueOnce(token);
 
-      await expect(getAccessToken()).resolves.toEqual('dummy_access_token');
+      await expect(getAccessToken()).resolves.toEqual(token);
     });
   });
 
@@ -408,9 +440,10 @@ describe('OktaReactNative', () => {
     });
 
     it('gets id token successfully', async () => {
-      mockGetIdToken.mockReturnValueOnce({'id_token': 'dummy_id_token'});
+      const response = {'id_token': 'dummy_id_token'}; 
+      mockGetIdToken.mockReturnValueOnce(response);
 
-      await expect(getIdToken()).resolves.toEqual({'id_token': 'dummy_id_token'});
+      await expect(getIdToken()).resolves.toEqual(response);
     });
   });
 
@@ -423,24 +456,17 @@ describe('OktaReactNative', () => {
     });
 
     it('gets id token successfully', async () => {
-      mockGetUser.mockResolvedValueOnce({
-        'name': 'Joe Doe',
-        'sub': '00uid4BxXw6I6TV4m0g3',
-      });
+      const response = { 'name': 'Joe Doe', 'sub': '00uid4BxXw6I6TV4m0g3' };
+      mockGetUser.mockResolvedValueOnce(response);
 
-      await expect(getUser()).resolves.toEqual({
-        'name': 'Joe Doe',
-        'sub': '00uid4BxXw6I6TV4m0g3',
-      });
+      await expect(getUser()).resolves.toEqual(response);
     });
 
     it('gets id token successfully from json string result', async () => {
-      mockGetUser.mockResolvedValueOnce('{"name":"Joe Doe","sub":"00uid4BxXw6I6TV4m0g3"}');
+      const response = { name: 'Joe Doe', sub: '00uid4BxXw6I6TV4m0g3' };
+      mockGetUser.mockResolvedValueOnce(response);
       
-      await expect(getUser()).resolves.toEqual({
-        'name': 'Joe Doe',
-        'sub': '00uid4BxXw6I6TV4m0g3',
-      });
+      await expect(getUser()).resolves.toEqual(response);
     });
 
     it('gets parsing error', () => {
@@ -544,18 +570,14 @@ describe('OktaReactNative', () => {
     });
 
     it('introspects the access token', async () => {
-      mockIntrospectAccessToken.mockReturnValueOnce({
+      const response = {
         'active': true,
         'token_type': 'Bearer',
         'client_id': 'dummy_client_id'
-      });
+      };
 
-      
-      await expect(introspectAccessToken()).resolves.toEqual({
-        'active': true,
-        'token_type': 'Bearer',
-        'client_id': 'dummy_client_id'
-      });
+      mockIntrospectAccessToken.mockReturnValueOnce(response);
+      await expect(introspectAccessToken()).resolves.toEqual(response);
     });
   });
 
@@ -568,15 +590,10 @@ describe('OktaReactNative', () => {
     });
 
     it('introspects the id token', async () => {
-      mockIntrospectIdToken.mockReturnValueOnce({
-        'active': true,
-        'client_id': 'dummy_client_id'
-      });
+      const response = { 'active': true, 'client_id': 'dummy_client_id' };
+      mockIntrospectIdToken.mockReturnValueOnce(response);
       
-      await expect(introspectIdToken()).resolves.toEqual({
-        'active': true,
-        'client_id': 'dummy_client_id'
-      });
+      await expect(introspectIdToken()).resolves.toEqual(response);
     });
   });
 
@@ -589,15 +606,11 @@ describe('OktaReactNative', () => {
     });
 
     it('introspects the refresh token', async () => {
-      mockIntrospectRefreshToken.mockReturnValueOnce({
-        'active': true,
-        'client_id': 'dummy_client_id'
-      });
+      const response = { 'active': true, 'client_id': 'dummy_client_id' };
+
+      mockIntrospectRefreshToken.mockReturnValueOnce(response);
       
-      await expect(introspectRefreshToken()).resolves.toEqual({
-        'active': true,
-        'client_id': 'dummy_client_id'
-      });
+      await expect(introspectRefreshToken()).resolves.toEqual(response);
     });
   });
 
