@@ -24,6 +24,7 @@ final class OktaReactNativeErrorTests: XCTestCase {
         XCTAssertEqual(OktaReactNativeError.errorTokenType.localizedDescription, "Token type not found")
         XCTAssertEqual(OktaReactNativeError.errorPayload.localizedDescription, "Error in retrieving payload")
         XCTAssertEqual(OktaReactNativeError.noAccessToken.localizedDescription, "No access token found")
+        XCTAssertEqual(OktaReactNativeError.cancelled.localizedDescription, "User cancelled a session")
     }
     
     func testErrorCode() {
@@ -36,6 +37,7 @@ final class OktaReactNativeErrorTests: XCTestCase {
         XCTAssertEqual(OktaReactNativeError.errorTokenType.errorCode, "-700")
         XCTAssertEqual(OktaReactNativeError.errorPayload.errorCode, "-800")
         XCTAssertEqual(OktaReactNativeError.noAccessToken.errorCode, "-900")
+        XCTAssertEqual(OktaReactNativeError.cancelled.errorCode, "-1200")
     }
 
 }
