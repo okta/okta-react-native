@@ -1,8 +1,10 @@
+# 1.13.1
+
+### Other 
+
+- Reverts breaking change
+
 # 1.13.0
-
-### Feature
-
-- [#155](https://github.com/okta/okta-react-native/pull/155) Adds the promise for `signOut` method (iOS)
 
 ### Other
 

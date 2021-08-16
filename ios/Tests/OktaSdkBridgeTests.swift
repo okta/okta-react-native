@@ -77,21 +77,8 @@ final class OktaSdkBridgeTests: XCTestCase {
         let bridge = OktaSdkBridgeMock()
         bridge.oktaOidc = oidc
         
-        let expectation = XCTestExpectation(description: "Sign In must succeed.")
-        
         // when
-        bridge.signIn([:]) { result in
-            let resultDictionary = result as? [String: String]
-            XCTAssertNotNil(resultDictionary)
-            XCTAssertEqual(resultDictionary?[OktaSdkConstant.RESOLVE_TYPE_KEY], OktaSdkConstant.AUTHORIZED)
-            XCTAssertNotNil(resultDictionary?[OktaSdkConstant.ACCESS_TOKEN_KEY])
-            
-            expectation.fulfill()
-            
-            expectation.fulfill()
-        } promiseRejecter: { (code, message, error) in
-            XCTAssert(false, "Authentication failed.")
-        }
+        bridge.signIn([:])
         
         // then
         XCTAssertEqual(bridge.eventsRegister.count, 1)
@@ -100,8 +87,6 @@ final class OktaSdkBridgeTests: XCTestCase {
         
         XCTAssertEqual(resultDictionary[OktaSdkConstant.RESOLVE_TYPE_KEY]!, OktaSdkConstant.AUTHORIZED)
         XCTAssertNotNil(resultDictionary[OktaSdkConstant.ACCESS_TOKEN_KEY]!)
-        
-        wait(for: [expectation], timeout: 5)
     }
     
     func testSignInFailed() {
@@ -110,19 +95,8 @@ final class OktaSdkBridgeTests: XCTestCase {
         let bridge = OktaSdkBridgeMock()
         bridge.oktaOidc = oidc
         
-        let expectation = XCTestExpectation(description: "Sign In must fail.")
-        
         // when
-        bridge.signIn([:]) { result in
-            XCTAssert(false, "Authentication succeeded.")
-        } promiseRejecter: { (code, message, error) in
-            // then
-            XCTAssertNotNil(code)
-            XCTAssertNotNil(message)
-            XCTAssertNotNil(error)
-            
-            expectation.fulfill()
-        }
+        bridge.signIn([:])
         
         // then
         XCTAssertEqual(bridge.eventsRegister.count, 1)
@@ -139,21 +113,8 @@ final class OktaSdkBridgeTests: XCTestCase {
         let bridge = OktaSdkBridgeMock()
         bridge.oktaOidc = oidc
         
-        let expectation = XCTestExpectation(description: "Sign In must succeed.")
-        
         // when
-        bridge.signIn(["noSSO": "true"]) { result in
-            let resultDictionary = result as? [String: String]
-            XCTAssertNotNil(resultDictionary)
-            XCTAssertEqual(resultDictionary?[OktaSdkConstant.RESOLVE_TYPE_KEY], OktaSdkConstant.AUTHORIZED)
-            XCTAssertNotNil(resultDictionary?[OktaSdkConstant.ACCESS_TOKEN_KEY])
-            
-            expectation.fulfill()
-            
-            expectation.fulfill()
-        } promiseRejecter: { (code, message, error) in
-            XCTAssert(false, "Authentication failed.")
-        }
+        bridge.signIn(["noSSO": "true"])
         
         // then
         if #available(iOS 13.0, *) {
@@ -220,19 +181,8 @@ final class OktaSdkBridgeTests: XCTestCase {
         // before sign out we should store state manager.
         testSignInSucceeded()
         
-        let expectation = XCTestExpectation(description: "Sign Out succeed.")
-        
         // when
-        bridge.signOut { result in
-            let resultDictionary = result as? [String: String]
-            XCTAssertNotNil(resultDictionary)
-            XCTAssertEqual(resultDictionary?[OktaSdkConstant.RESOLVE_TYPE_KEY], OktaSdkConstant.SIGNED_OUT)
-            
-            expectation.fulfill()
-        } promiseRejecter: { (code, message, error) in
-            XCTAssert(false, "signOut failed")
-        }
-
+        bridge.signOut()
         
         // then
         XCTAssertEqual(bridge.eventsRegister.count, 1)
@@ -247,21 +197,10 @@ final class OktaSdkBridgeTests: XCTestCase {
         let bridge = OktaSdkBridgeMock()
         bridge.oktaOidc = oidc
         
-        let expectation = XCTestExpectation(description: "Sign Out failed.")
-        
         // before sign out we should store state manager.
         testSignInSucceeded()
         // when
-        bridge.signOut { result in
-            XCTAssert(false, "signOut succeed.")
-            
-        } promiseRejecter: { (code, message, error) in
-            XCTAssertNotNil(code)
-            XCTAssertNotNil(message)
-            XCTAssertNotNil(error)
-            
-            expectation.fulfill()
-        }
+        bridge.signOut()
         
         // then
         XCTAssertEqual(bridge.eventsRegister.count, 1)
