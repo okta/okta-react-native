@@ -191,31 +191,19 @@ This async method will automatically redirect users to your Okta organziation fo
 **Note**: on iOS there isn't a `onCancelled` event. If the sign in process is cancelled, `onError` will be triggered.
 
 ```javascript
-await signInWithBrowser();
+signInWithBrowser();
 ```
 
 **Note**: IDP can be passed by specifying an argument with the idp parameter.
 
 ```javascript
-await signInWithBrowser({ idp: 'your_idp_here' });
+signInWithBrowser({ idp: 'your_idp_here' });
 ```
 
 **Note**: If you want to get rid of the system sign in and sign out alert on iOS, then pass the `noSSO` parameter when calling `signInWithBrowser`. The cookies will not be retained by the browser, so after logging out the user will be prompted to re-authenticate.
 
 ```javascript
-await signInWithBrowser({ noSSO: true });
-```
-
-##### Sample Usage
-```javascript
-signInWithBrowser({ noSSO: true })
-  .then(result => {
-    // Consume accessToken from result.access_token
-  })
-  .catch(error => {
-    // { code: "", message: "", detail: { message: "", status: "" } }
-    // handle error
-  })
+signInWithBrowser({ noSSO: true });
 ```
 
 #### `custom-sign-in`
@@ -269,19 +257,19 @@ componentWillUnmount() {
 If you already logged in to Okta and have a valid session token, you can complete authorization by calling `authenticate` method. It will emit an event once a user successfully signs in. Make sure your event listeners are mounted and unmounted. Note: on iOS there isn't a `onCancelled` event. If the `authenticate` process is cancelled, `onError` will be triggered.
 
 ```javascript
-await authenticate({sessionToken: sessionToken});
+authenticate({sessionToken: sessionToken});
 ```
 
 ### `signOut`
 
-Clears the browser session and the app session (stored tokens) in memory. Fires an event once a user successfully logs out. For sample usage, refer to `signIn`.
+Clear the browser session and clear the app session (stored tokens) in memory. Fires an event once a user successfully logs out. For sample usage, refer to `signIn`.
 
-**Note**: This method apply for [browser-sign-in](#browser-sign-in) scenario only. Use a combination of `revokeToken` (optional) and `clearTokens` methods to sign out when use [custom-sign-in](#custom-sign-in).
+**Note**: This method apply for [browser-sign-in](#browser-sign-in) scenario only. Use a combination of `revokeToken` (optional) and `clearTokens` methods to signOut when use [custom-sign-in](#custom-sign-in).
 
 #### browser-sign-in sample
 
 ```javascript
-await signOut();
+signOut();
 ```
 
 #### custom-sign-in sample

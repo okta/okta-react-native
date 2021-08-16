@@ -1,9 +1,5 @@
 # 1.13.0
 
-### Feature
-
-- [#155](https://github.com/okta/okta-react-native/pull/155) Adds the promise for `signOut` method (iOS)
-
 ### Other
 
 - [#151](https://github.com/okta/okta-react-native/pull/151) Updates android-oidc dependency
