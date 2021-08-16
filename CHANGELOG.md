@@ -1,3 +1,9 @@
+# 1.13.1
+
+### Other 
+
+- Reverts breaking change
+
 # 1.13.0
 
 ### Other
