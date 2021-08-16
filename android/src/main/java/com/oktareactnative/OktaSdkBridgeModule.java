@@ -55,6 +55,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     private OIDCConfig config;
     private WebAuthClient webClient;
     private AuthClient authClient;
+    private Promise queuedPromise;
 
     public OktaSdkBridgeModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -63,6 +64,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     }
 
     @Override
+    @NonNull
     public String getName() {
         return "OktaSdkBridge";
     }
@@ -156,7 +158,10 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     }
 
     @ReactMethod
-    public void signIn(ReadableMap options) {
+    public void signIn(
+        ReadableMap options,
+        Promise promise
+    ) {
         Activity currentActivity = getCurrentActivity();
 
         if (currentActivity == null) {
@@ -164,6 +169,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.NO_VIEW.getErrorCode());
             params.putString(OktaSdkConstant.ERROR_MSG_KEY, OktaSdkError.NO_VIEW.getErrorMessage());
             sendEvent(reactContext, OktaSdkConstant.ON_ERROR, params);
+            promise.reject(OktaSdkError.NO_VIEW.getErrorCode(), OktaSdkError.NO_VIEW.getErrorMessage());
             return;
         }
 
@@ -172,6 +178,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.NOT_CONFIGURED.getErrorCode());
             params.putString(OktaSdkConstant.ERROR_MSG_KEY, OktaSdkError.NOT_CONFIGURED.getErrorMessage());
             sendEvent(reactContext, OktaSdkConstant.ON_ERROR, params);
+            promise.reject(OktaSdkError.NOT_CONFIGURED.getErrorCode(), OktaSdkError.NOT_CONFIGURED.getErrorMessage());
             return;
         }
 
@@ -179,6 +186,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
         if (options.hasKey("idp")) {
             payloadBuilder.setIdp(options.getString("idp"));
         }
+        queuedPromise = promise;
         webClient.signIn(currentActivity, payloadBuilder.build());
     }
 
@@ -332,7 +340,9 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     }
 
     @ReactMethod
-    public void signOut() {
+    public void signOut(
+        Promise promise
+    ) {
         Activity currentActivity = getCurrentActivity();
 
         if (currentActivity == null) {
@@ -340,6 +350,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.NO_VIEW.getErrorCode());
             params.putString(OktaSdkConstant.ERROR_MSG_KEY, OktaSdkError.NO_VIEW.getErrorMessage());
             sendEvent(reactContext, OktaSdkConstant.ON_ERROR, params);
+            promise.reject(OktaSdkError.NO_VIEW.getErrorCode(), OktaSdkError.NO_VIEW.getErrorMessage());
             return;
         }
 
@@ -348,9 +359,11 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.NOT_CONFIGURED.getErrorCode());
             params.putString(OktaSdkConstant.ERROR_MSG_KEY, OktaSdkError.NOT_CONFIGURED.getErrorMessage());
             sendEvent(reactContext, OktaSdkConstant.ON_ERROR, params);
+            promise.reject(OktaSdkError.NOT_CONFIGURED.getErrorCode(), OktaSdkError.NOT_CONFIGURED.getErrorMessage());
             return;
         }
 
+        queuedPromise = promise;
         webClient.signOutOfOkta(currentActivity);
     }
 
@@ -467,24 +480,37 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
         webClient.registerCallback(new ResultCallback<AuthorizationStatus, AuthorizationException>() {
             @Override
             public void onSuccess(@NonNull AuthorizationStatus status) {
+                final Promise promise = queuedPromise;
                 if (status == AuthorizationStatus.AUTHORIZED) {
                     try {
                         WritableMap params = Arguments.createMap();
                         Tokens tokens = sessionClient.getTokens();
                         params.putString(OktaSdkConstant.RESOLVE_TYPE_KEY, OktaSdkConstant.AUTHORIZED);
                         params.putString(OktaSdkConstant.ACCESS_TOKEN_KEY, tokens.getAccessToken());
+                        if (promise != null) {
+                            promise.resolve(params.copy());
+                        }
                         sendEvent(reactContext, OktaSdkConstant.SIGN_IN_SUCCESS, params);
+                        queuedPromise = null;
                     } catch (AuthorizationException e) {
                         WritableMap params = Arguments.createMap();
                         params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.SIGN_IN_FAILED.getErrorCode());
                         params.putString(OktaSdkConstant.ERROR_MSG_KEY, OktaSdkError.SIGN_IN_FAILED.getErrorMessage());
+                        if (promise != null) {
+                            promise.reject(e);
+                        }
                         sendEvent(reactContext, OktaSdkConstant.ON_ERROR, params);
+                        queuedPromise = null;
                     }
                 } else if (status == AuthorizationStatus.SIGNED_OUT) {
                     sessionClient.clear();
                     WritableMap params = Arguments.createMap();
                     params.putString(OktaSdkConstant.RESOLVE_TYPE_KEY, OktaSdkConstant.SIGNED_OUT);
+                    if (promise != null) {
+                        promise.resolve(params.copy());
+                    }
                     sendEvent(reactContext, OktaSdkConstant.SIGN_OUT_SUCCESS, params);
+                    queuedPromise = null;
                 }
             }
 
@@ -493,6 +519,9 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                 WritableMap params = Arguments.createMap();
                 params.putString(OktaSdkConstant.RESOLVE_TYPE_KEY, OktaSdkConstant.CANCELLED);
                 sendEvent(reactContext, OktaSdkConstant.ON_CANCELLED, params);
+                final Promise promise = queuedPromise;
+                promise.reject(OktaSdkError.CANCELLED.getErrorCode(), OktaSdkError.CANCELLED.getErrorMessage());
+                queuedPromise = null;
             }
 
             @Override
@@ -501,6 +530,9 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                 params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.OKTA_OIDC_ERROR.getErrorCode());
                 params.putString(OktaSdkConstant.ERROR_MSG_KEY, msg);
                 sendEvent(reactContext, OktaSdkConstant.ON_ERROR, params);
+                final Promise promise = queuedPromise;
+                promise.reject(OktaSdkError.SIGN_IN_FAILED.getErrorCode(), params);
+                queuedPromise = null;
             }
         }, activity);
     }

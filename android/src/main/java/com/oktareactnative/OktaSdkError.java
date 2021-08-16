@@ -20,7 +20,8 @@ public enum OktaSdkError {
     ERROR_TOKEN_TYPE("-700", "Token type not found"),
     NO_ACCESS_TOKEN("-900", "No access token found"),
     SIGN_IN_FAILED("-1000", "Sign in was not authorized"),
-    NO_TOKENS("-1100", "Tokens not found");
+    NO_TOKENS("-1100", "Tokens not found"),
+    CANCELLED("-1200", "User cancelled a session");
 
     private final String errorCode;
     private final String errorMessage;

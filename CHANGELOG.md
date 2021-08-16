@@ -3,6 +3,7 @@
 ### Feature
 
 - [#155](https://github.com/okta/okta-react-native/pull/155) Adds the promise for `signOut` method (iOS)
+- [#177](https://github.com/okta/okta-react-native/pull/177) Adds the promise for `signOut` method (Android)
 
 ### Other
 
