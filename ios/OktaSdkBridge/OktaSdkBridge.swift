@@ -15,7 +15,7 @@ import OktaOidc
 
 // MARK: - OktaOidcProtocol
 
-protocol OktaOidcProtocol: AnyObject {
+protocol OktaOidcProtocol: class {
     var configuration: OktaOidcConfig { get }
     
     func signInWithBrowser(from presenter: UIViewController,
@@ -36,7 +36,7 @@ extension OktaOidc: OktaOidcProtocol {
 
 // MARK: - StateManagerProtocol
 
-protocol StateManagerProtocol: AnyObject {
+protocol StateManagerProtocol: class {
     var accessToken: String? { get }
     var idToken: String? { get }
     var refreshToken: String? { get }
@@ -113,20 +113,14 @@ class OktaSdkBridge: RCTEventEmitter {
     }
     
     @objc
-    func signIn(_ options: [String: String] = [:],
-                promiseResolver: @escaping RCTPromiseResolveBlock,
-                promiseRejecter: @escaping RCTPromiseRejectBlock) {
-        
+    func signIn(_ options: [String: String] = [:]) {
         guard let currOktaOidc = oktaOidc else {
             let error = OktaReactNativeError.notConfigured
             let errorDic = [
                 OktaSdkConstant.ERROR_CODE_KEY: error.errorCode,
                 OktaSdkConstant.ERROR_MSG_KEY: error.errorDescription
             ]
-            
             sendEvent(withName: OktaSdkConstant.ON_ERROR, body: errorDic)
-            promiseRejecter(error.errorCode, error.errorDescription, error)
-            
             return
         }
         
@@ -136,10 +130,7 @@ class OktaSdkBridge: RCTEventEmitter {
                 OktaSdkConstant.ERROR_CODE_KEY: error.errorCode,
                 OktaSdkConstant.ERROR_MSG_KEY: error.errorDescription
             ]
-            
             sendEvent(withName: OktaSdkConstant.ON_ERROR, body: errorDic)
-            promiseRejecter(error.errorCode, error.errorDescription, error)
-            
             return
         }
         
@@ -163,10 +154,7 @@ class OktaSdkBridge: RCTEventEmitter {
                     OktaSdkConstant.ERROR_CODE_KEY: OktaReactNativeError.oktaOidcError.errorCode,
                     OktaSdkConstant.ERROR_MSG_KEY: error.localizedDescription
                 ]
-                
                 self.sendEvent(withName: OktaSdkConstant.ON_ERROR, body: errorDic)
-                promiseRejecter(OktaReactNativeError.oktaOidcError.errorCode, error.localizedDescription, error)
-                
                 return
             }
             
@@ -176,21 +164,17 @@ class OktaSdkBridge: RCTEventEmitter {
                     OktaSdkConstant.ERROR_CODE_KEY: error.errorCode,
                     OktaSdkConstant.ERROR_MSG_KEY: error.errorDescription
                 ]
-                
                 self.sendEvent(withName: OktaSdkConstant.ON_ERROR, body: errorDic)
-                promiseRejecter(error.errorCode, error.errorDescription, error)
-                
                 return
             }
             
             currStateManager.writeToSecureStorage()
-            let result = [
+            let dic = [
                 OktaSdkConstant.RESOLVE_TYPE_KEY: OktaSdkConstant.AUTHORIZED,
                 OktaSdkConstant.ACCESS_TOKEN_KEY: stateManager?.accessToken
             ]
             
-            self.sendEvent(withName: OktaSdkConstant.SIGN_IN_SUCCESS, body: result)
-            promiseResolver(result)
+            self.sendEvent(withName: OktaSdkConstant.SIGN_IN_SUCCESS, body: dic)
         }
     }
     
@@ -204,10 +188,7 @@ class OktaSdkBridge: RCTEventEmitter {
                 OktaSdkConstant.ERROR_CODE_KEY: error.errorCode,
                 OktaSdkConstant.ERROR_MSG_KEY: error.errorDescription
             ]
-            
             sendEvent(withName: OktaSdkConstant.ON_ERROR, body: errorDic)
-            promiseRejecter(error.errorCode, error.errorDescription, error)
-            
             return
         }
         
@@ -217,10 +198,7 @@ class OktaSdkBridge: RCTEventEmitter {
                 OktaSdkConstant.ERROR_CODE_KEY: error.errorCode,
                 OktaSdkConstant.ERROR_MSG_KEY: error.errorDescription
             ]
-            
             sendEvent(withName: OktaSdkConstant.ON_ERROR, body: errorDic)
-            promiseRejecter(error.errorCode, error.errorDescription, error)
-            
             return
         }
         
@@ -230,10 +208,7 @@ class OktaSdkBridge: RCTEventEmitter {
                 OktaSdkConstant.ERROR_CODE_KEY: error.errorCode,
                 OktaSdkConstant.ERROR_MSG_KEY: error.errorDescription
             ]
-            
             sendEvent(withName: OktaSdkConstant.ON_ERROR, body: errorDic)
-            promiseRejecter(error.errorCode, error.errorDescription, error)
-            
             return
         }
         
@@ -252,21 +227,16 @@ class OktaSdkBridge: RCTEventEmitter {
                     OktaSdkConstant.ERROR_CODE_KEY: OktaReactNativeError.oktaOidcError.errorCode,
                     OktaSdkConstant.ERROR_MSG_KEY: error.localizedDescription
                 ]
-                
                 self.sendEvent(withName: OktaSdkConstant.ON_ERROR, body: errorDic)
-                promiseRejecter(OktaReactNativeError.oktaOidcError.errorCode, error.localizedDescription, error)
-                
                 return
             }
             
-            let result = [
+            let dic = [
                 OktaSdkConstant.RESOLVE_TYPE_KEY: OktaSdkConstant.SIGNED_OUT
             ]
-            
             stateManager.clear()
             
-            self.sendEvent(withName: OktaSdkConstant.SIGN_OUT_SUCCESS, body: result)
-            promiseResolver(result)
+            self.sendEvent(withName: OktaSdkConstant.SIGN_OUT_SUCCESS, body: dic)
         }
     }
     
