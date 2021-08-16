@@ -7,6 +7,7 @@
 ### Other
 
 - [#151](https://github.com/okta/okta-react-native/pull/151) Updates android-oidc dependency
+- [#178](https://github.com/okta/okta-react-native/pull/178) Updates `@okta/okta-auth-js` to version 5.3.1
 
 # 1.12.1
 
