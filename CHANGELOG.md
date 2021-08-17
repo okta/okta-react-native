@@ -1,3 +1,9 @@
+# 1.13.2
+
+### Other 
+
+- [#183](https://github.com/okta/okta-react-native/pull/183) Updates iOS OIDC dependency
+
 # 1.13.1
 
 ### Other 
