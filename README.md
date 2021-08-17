@@ -86,7 +86,7 @@ You can currently add Okta OIDC iOS through CocoaPods:
    ***React Native >= 0.60***: With React Native 0.60 pods are added to `Podfile` automatically. Run the commands to install dependencies:
    ```
    cd ios
-   pod install
+   pod install --repo-update
    ```
    ***React Native < 0.60***: Make sure your `Podfile` looks like this:
     ```   
