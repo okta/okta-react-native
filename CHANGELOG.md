@@ -2,7 +2,7 @@
 
 ### Other 
 
-- [#183](https://github.com/okta/okta-react-native/pull/183) Updates iOS OIDC dependency
+- [#183](https://github.com/okta/okta-react-native/pull/183) Updates iOS OIDC dependency: fixes the error when it cannot install OktaOidc 3.10.5
 
 # 1.13.1
 
