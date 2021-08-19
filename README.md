@@ -503,6 +503,7 @@ await refreshTokens();
 `okta-react-native` `v2.0` has a few major changes in API.
 
 - `signInWithBrowser` returns Promise.
+
 **Note:** Events `signInSuccess`, `onError` are still triggered.
 
 ```javascript
@@ -514,7 +515,9 @@ signInWithBrowser().then(result => {
 })
 ```
 - `signOut` returns Promise.
+
 **Note:** Events `signOutSuccess`, `onError` are still triggered.
+
 ```javascript
 signOut().then(result => {
     // { resolve_type: 'signed_out' }
@@ -531,8 +534,10 @@ Additionally, `signInWithBrowser` and `signOut` throws the error: `{ code: '-120
 #### Troubleshooting
 
 - `CocoaPods could not find compatible versions for pod "OktaOidc"`.
+
 **Solution:** Navigate through Terminal to the folder `ios` and execute the command: `pod install —repo-update`.
 - Tests fail with the error: `TypeError: Cannot read property 'hostname' of undefined`.
+
 **Solution:** Put extra mock `global.window.location = {};`
 
 
