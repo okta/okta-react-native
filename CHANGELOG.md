@@ -18,7 +18,7 @@ Note: For more details, [follow migration guide](https://github.com/okta/okta-re
 ### Other 
 
 - Reverts breaking change
-  
+
 # 1.13.0
 
 ### Feature
