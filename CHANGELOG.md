@@ -2,8 +2,8 @@
 
 ### Breaking Changes
 
-- [#155](https://github.com/okta/okta-react-native/pull/155) Changes the promise for `signOut` and `signInWithBrowser` methods (iOS)
-- [#177](https://github.com/okta/okta-react-native/pull/177) Changes the promise for `signOut` and `signInWithBrowser` methods (Android)
+- [#155](https://github.com/okta/okta-react-native/pull/155) Changes `signOut`and `signInWithBrowser` methods signature to return a Promise (iOS)
+- [#177](https://github.com/okta/okta-react-native/pull/177) Changes `signOut` and `signInWithBrowser` methods signature to return a Promise (Android)
 
 Note: For more details, [follow migration guide](https://github.com/okta/okta-react-native/blob/master/README.md#migrating-between-versions).
 
