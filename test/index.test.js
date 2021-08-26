@@ -235,7 +235,7 @@ describe('OktaReactNative', () => {
       );
     });
 
-    it('_oktaUserAgent', async () => {
+    it('adds an environment to oktaAuth\'s _oktaUserAgent', async () => {
       Platform.OS = 'ios';
 
       await createConfig(config);
