@@ -15,7 +15,7 @@ import { assertIssuer, assertClientId, assertRedirectUri } from '@okta/configura
 import jwt from 'jwt-lite';
 import { OktaAuth } from '@okta/okta-auth-js';
 import Url from 'url-parse';
-import { name, version } from './package.json';
+import { version } from './package.json';
 
 let authClient;
 
@@ -56,7 +56,6 @@ export const createConfig = async({
   assertRedirectUri(redirectUri);
   assertRedirectUri(endSessionRedirectUri);
 
-  const userAgentTemplate = `${name}/${version} $UPSTREAM_SDK react-native/${version} ${Platform.OS}/${Platform.Version}`;
   const { origin } = new Url(discoveryUri);
 
   oktaAuthConfig = {
@@ -64,22 +63,19 @@ export const createConfig = async({
     issuer: issuer || origin,
     clientId,
     redirectUri,
-    scopes,
-    userAgent: {
-      template: userAgentTemplate.replace('$UPSTREAM_SDK', '$OKTA_AUTH_JS')
-    } 
+    scopes
   };
   
   authClient = new OktaAuth(oktaAuthConfig);
 
   if (authClient._oktaUserAgent) {
-    authClient._oktaUserAgent.addEnvironment(`${name}/${version}`);
-  } else {
-    console.warn('_oktaUserAgent is not available on Auth SDK instance. Please use okta-auth-js@^5.3.1 .');
+    authClient._oktaUserAgent.addEnvironment(`react-native/${version} ${Platform.OS}/${Platform.Version}`);
   }
 
   httpConnectionTimeout = httpConnectionTimeout || 15;
   httpReadTimeout = httpReadTimeout || 10;
+
+  const userAgentTemplate = `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} ${Platform.OS}/${Platform.Version}`;
 
   if (Platform.OS === 'ios') {
     scopes = scopes.join(' ');

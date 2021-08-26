@@ -44,7 +44,14 @@ let mockSignInOktaAuth = jest.fn();
 jest.mock('@okta/okta-auth-js', () => { 
   return {
     OktaAuth: jest.fn().mockImplementation(() => {
-      return {signIn: mockSignInOktaAuth};
+      return {
+        signIn: mockSignInOktaAuth, 
+        _oktaUserAgent: {
+          addEnvironment: jest.fn(),
+          getHttpHeader: jest.fn(),
+          getVersion: jest.fn()
+        }
+      };
     })
   };
 });
@@ -124,9 +131,6 @@ describe('OktaReactNative', () => {
         clientId: 'dummy_client_id',
         redirectUri: 'dummy://redirect', 
         scopes: ['scope1'],
-        userAgent: {
-          template: `@okta/okta-react-native/${version} $OKTA_AUTH_JS react-native/${version} ios/1.0.0`,
-        },
         mockConfig1: 'mock config 1',
         mockConfig2: 'mock config 2'
       });
@@ -229,6 +233,16 @@ describe('OktaReactNative', () => {
         { httpConnectionTimeout: 12, httpReadTimeout: 34 },
         false,
       );
+    });
+
+    it('_oktaUserAgent', async () => {
+      Platform.OS = 'ios';
+
+      await createConfig(config);
+
+      let mockOktaUserAgentAddEnvironment = getAuthClient()._oktaUserAgent.addEnvironment;
+      expect(mockOktaUserAgentAddEnvironment).toHaveBeenCalledTimes(1);
+      expect(mockOktaUserAgentAddEnvironment).toHaveBeenCalledWith(`react-native/${version} ${Platform.OS}/${Platform.Version}`);
     });
   });
 
