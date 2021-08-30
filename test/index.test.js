@@ -36,7 +36,7 @@ const {
 } = jest.requireActual('../');
 
 import { Platform } from 'react-native';
-import { version } from '../package.json';
+import { version, peerDependencies } from '../package.json';
 import { OktaAuth } from '@okta/okta-auth-js';
 
 let mockSignInOktaAuth = jest.fn();
@@ -44,7 +44,14 @@ let mockSignInOktaAuth = jest.fn();
 jest.mock('@okta/okta-auth-js', () => { 
   return {
     OktaAuth: jest.fn().mockImplementation(() => {
-      return {signIn: mockSignInOktaAuth};
+      return {
+        signIn: mockSignInOktaAuth, 
+        _oktaUserAgent: {
+          addEnvironment: jest.fn(),
+          getHttpHeader: jest.fn(),
+          getVersion: jest.fn()
+        }
+      };
     })
   };
 });
@@ -85,6 +92,7 @@ describe('OktaReactNative', () => {
     let mockCreateConfig;
     let config;
     let defaultTimeouts = { httpConnectionTimeout: 15, httpReadTimeout: 10, };
+    const reactNativeVersion = peerDependencies['react-native'];    
 
     beforeEach(() => {
       config = {
@@ -124,9 +132,6 @@ describe('OktaReactNative', () => {
         clientId: 'dummy_client_id',
         redirectUri: 'dummy://redirect', 
         scopes: ['scope1'],
-        userAgent: {
-          template: `@okta/okta-react-native/${version} $OKTA_AUTH_JS react-native/${version} ios/1.0.0`,
-        },
         mockConfig1: 'mock config 1',
         mockConfig2: 'mock config 2'
       });
@@ -144,7 +149,7 @@ describe('OktaReactNative', () => {
         config.endSessionRedirectUri,
         config.discoveryUri,
         processedScope,
-        `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} ios/1.0.0`,
+        `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} ios/1.0.0`,
         defaultTimeouts.httpConnectionTimeout,
       );
     });
@@ -160,7 +165,7 @@ describe('OktaReactNative', () => {
         config.endSessionRedirectUri,
         config.discoveryUri,
         config.scopes,
-        `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
+        `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
         undefined,
         defaultTimeouts,
@@ -181,7 +186,7 @@ describe('OktaReactNative', () => {
         config.endSessionRedirectUri,
         config.discoveryUri,
         config.scopes,
-        `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
+        `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
         '#FF00AA',
         defaultTimeouts,
@@ -202,7 +207,7 @@ describe('OktaReactNative', () => {
         config.endSessionRedirectUri,
         config.discoveryUri,
         config.scopes,
-        `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
+        `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
         undefined,
         defaultTimeouts,
@@ -223,12 +228,22 @@ describe('OktaReactNative', () => {
         config.endSessionRedirectUri,
         config.discoveryUri,
         config.scopes,
-        `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
+        `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
         undefined,
         { httpConnectionTimeout: 12, httpReadTimeout: 34 },
         false,
       );
+    });
+
+    it('adds an environment to oktaAuth\'s _oktaUserAgent', async () => {
+      await createConfig(config);
+
+      let mockOktaUserAgentAddEnvironment = getAuthClient()._oktaUserAgent.addEnvironment;
+      expect(mockOktaUserAgentAddEnvironment).toHaveBeenCalledTimes(1);
+      
+      expect(mockOktaUserAgentAddEnvironment)
+        .toHaveBeenCalledWith(`okta-react-native/${version} react-native/${reactNativeVersion} ${Platform.OS}/${Platform.Version}`);
     });
   });
 
