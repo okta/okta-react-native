@@ -78,8 +78,6 @@ export const createConfig = async({
   httpConnectionTimeout = httpConnectionTimeout || 15;
   httpReadTimeout = httpReadTimeout || 10;
 
-  
-
   if (Platform.OS === 'ios') {
     scopes = scopes.join(' ');
 
