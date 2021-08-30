@@ -15,7 +15,7 @@ import { assertIssuer, assertClientId, assertRedirectUri } from '@okta/configura
 import jwt from 'jwt-lite';
 import { OktaAuth } from '@okta/okta-auth-js';
 import Url from 'url-parse';
-import { version } from './package.json';
+import { version, peerDependencies } from './package.json';
 
 let authClient;
 
@@ -68,14 +68,17 @@ export const createConfig = async({
   
   authClient = new OktaAuth(oktaAuthConfig);
 
+  const reactNativeVersion = peerDependencies['react-native'];
+  const userAgentTemplate = `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} ${Platform.OS}/${Platform.Version}`;
+  
   if (authClient._oktaUserAgent) {
-    authClient._oktaUserAgent.addEnvironment(`react-native/${version} ${Platform.OS}/${Platform.Version}`);
+    authClient._oktaUserAgent.addEnvironment(userAgentTemplate.replace('$UPSTREAM_SDK ', ''));
   }
 
   httpConnectionTimeout = httpConnectionTimeout || 15;
   httpReadTimeout = httpReadTimeout || 10;
 
-  const userAgentTemplate = `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} ${Platform.OS}/${Platform.Version}`;
+  
 
   if (Platform.OS === 'ios') {
     scopes = scopes.join(' ');

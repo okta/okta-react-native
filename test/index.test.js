@@ -36,7 +36,7 @@ const {
 } = jest.requireActual('../');
 
 import { Platform } from 'react-native';
-import { version } from '../package.json';
+import { version, peerDependencies } from '../package.json';
 import { OktaAuth } from '@okta/okta-auth-js';
 
 let mockSignInOktaAuth = jest.fn();
@@ -92,6 +92,7 @@ describe('OktaReactNative', () => {
     let mockCreateConfig;
     let config;
     let defaultTimeouts = { httpConnectionTimeout: 15, httpReadTimeout: 10, };
+    const reactNativeVersion = peerDependencies['react-native'];    
 
     beforeEach(() => {
       config = {
@@ -148,7 +149,7 @@ describe('OktaReactNative', () => {
         config.endSessionRedirectUri,
         config.discoveryUri,
         processedScope,
-        `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} ios/1.0.0`,
+        `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} ios/1.0.0`,
         defaultTimeouts.httpConnectionTimeout,
       );
     });
@@ -164,7 +165,7 @@ describe('OktaReactNative', () => {
         config.endSessionRedirectUri,
         config.discoveryUri,
         config.scopes,
-        `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
+        `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
         undefined,
         defaultTimeouts,
@@ -185,7 +186,7 @@ describe('OktaReactNative', () => {
         config.endSessionRedirectUri,
         config.discoveryUri,
         config.scopes,
-        `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
+        `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
         '#FF00AA',
         defaultTimeouts,
@@ -206,7 +207,7 @@ describe('OktaReactNative', () => {
         config.endSessionRedirectUri,
         config.discoveryUri,
         config.scopes,
-        `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
+        `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
         undefined,
         defaultTimeouts,
@@ -227,7 +228,7 @@ describe('OktaReactNative', () => {
         config.endSessionRedirectUri,
         config.discoveryUri,
         config.scopes,
-        `@okta/okta-react-native/${version} $UPSTREAM_SDK react-native/${version} android/1.0.0`,
+        `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} android/1.0.0`,
         config.requireHardwareBackedKeyStore,
         undefined,
         { httpConnectionTimeout: 12, httpReadTimeout: 34 },
@@ -236,13 +237,13 @@ describe('OktaReactNative', () => {
     });
 
     it('adds an environment to oktaAuth\'s _oktaUserAgent', async () => {
-      Platform.OS = 'ios';
-
       await createConfig(config);
 
       let mockOktaUserAgentAddEnvironment = getAuthClient()._oktaUserAgent.addEnvironment;
       expect(mockOktaUserAgentAddEnvironment).toHaveBeenCalledTimes(1);
-      expect(mockOktaUserAgentAddEnvironment).toHaveBeenCalledWith(`react-native/${version} ${Platform.OS}/${Platform.Version}`);
+      
+      expect(mockOktaUserAgentAddEnvironment)
+        .toHaveBeenCalledWith(`okta-react-native/${version} react-native/${reactNativeVersion} ${Platform.OS}/${Platform.Version}`);
     });
   });
 
