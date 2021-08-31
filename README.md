@@ -536,10 +536,6 @@ Additionally, `signInWithBrowser` and `signOut` throws the error: `{ code: '-120
 - `CocoaPods could not find compatible versions for pod "OktaOidc"`.
 
 **Solution:** Navigate through Terminal to the folder `ios` and execute the command: `pod install —repo-update`.
-- Tests fail with the error: `TypeError: Cannot read property 'hostname' of undefined`.
-
-**Solution:** Put extra mock `global.window.location = {};`
-
 
 ## Contributing
 We welcome contributions to all of our open-source packages. Please see the [contribution guide](https://github.com/okta/okta-react-native/blob/master/CONTRIBUTING.md) to understand how to structure a contribution.
