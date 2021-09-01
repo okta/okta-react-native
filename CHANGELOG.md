@@ -1,3 +1,12 @@
+# 2.0.0
+
+### Breaking Changes
+
+- [#155](https://github.com/okta/okta-react-native/pull/155) Changes `signOut`and `signInWithBrowser` methods signature to return a Promise (iOS)
+- [#177](https://github.com/okta/okta-react-native/pull/177) Changes `signOut` and `signInWithBrowser` methods signature to return a Promise (Android)
+
+Note: For more details, [follow migration guide](https://github.com/okta/okta-react-native/blob/master/README.md#migrating-between-versions).
+
 # 1.13.2
 
 ### Other 
