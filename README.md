@@ -11,6 +11,7 @@
     - [iOS Setup](#ios-setup)
     - [Android Setup](#android-setup)
   - [Usage guide](#usage)
+  - [Migrating between versions](#migrating-between-versions)
   - [Contributing](#contributing)
 
 The Okta React Native library makes it easy to add authentication to your React Native app. This library is a wrapper around [Okta OIDC Android](https://github.com/okta/okta-oidc-android) and [Okta OIDC iOS](https://github.com/okta/okta-oidc-ios).
@@ -86,7 +87,7 @@ You can currently add Okta OIDC iOS through CocoaPods:
    ***React Native >= 0.60***: With React Native 0.60 pods are added to `Podfile` automatically. Run the commands to install dependencies:
    ```
    cd ios
-   pod install
+   pod install --repo-update
    ```
    ***React Native < 0.60***: Make sure your `Podfile` looks like this:
     ```   
@@ -494,6 +495,47 @@ await refreshTokens();
   "refresh_token": "refreshToken" 
 }
 ```
+
+## Migrating between versions
+
+### Migrating from 1.x to 2.x
+
+`okta-react-native` `v2.0` has a few major changes in API.
+
+- `signInWithBrowser` returns Promise.
+
+**Note:** Events `signInSuccess`, `onError` are still triggered.
+
+```javascript
+signInWithBrowser().then(result => {
+    // { resolve_type: 'authorized', access_token: 'token' }
+  })
+.catch(error => {
+    // { code: '', message: '', detail: { message: '', status: '' } }
+})
+```
+- `signOut` returns Promise.
+
+**Note:** Events `signOutSuccess`, `onError` are still triggered.
+
+```javascript
+signOut().then(result => {
+    // { resolve_type: 'signed_out' }
+  })
+.catch(error => {
+    // { code: '', message: '', detail: { message: '', status: '' } }
+    // Handle error
+})
+```
+
+- The event `onCancelled` is triggered if a user cancels (closes) a embedded-browser window or tap the button `Cancel` (on iOS).
+Additionally, `signInWithBrowser` and `signOut` throws the error: `{ code: '-1200', message: 'User cancelled a session' }`.
+
+#### Troubleshooting
+
+- `CocoaPods could not find compatible versions for pod "OktaOidc"`.
+
+**Solution:** Navigate through Terminal to the folder `ios` and execute the command: `pod install —repo-update`.
 
 ## Contributing
 We welcome contributions to all of our open-source packages. Please see the [contribution guide](https://github.com/okta/okta-react-native/blob/master/CONTRIBUTING.md) to understand how to structure a contribution.
