@@ -40,8 +40,7 @@ RCT_EXTERN_METHOD(
   promiseRejecter:(RCTPromiseRejectBlock *)promiseRejecter
 )
 
-RCT_EXTERN_METHOD(signOut:
-                  promiseResolver:(RCTPromiseResolveBlock *)promiseResolver
+RCT_EXTERN_METHOD(signOutWithPromiseResolver:(RCTPromiseResolveBlock *)promiseResolver
                   promiseRejecter:(RCTPromiseRejectBlock *)promiseRejecter)
 
 RCT_EXTERN_METHOD(getAccessToken:(RCTPromiseResolveBlock *)promiseResolver promiseRejecter:(RCTPromiseRejectBlock *)promiseRejecter)
