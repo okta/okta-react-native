@@ -15,6 +15,8 @@ import { assertIssuer, assertClientId, assertRedirectUri } from '@okta/configura
 import { OktaAuth } from '@okta/okta-auth-js';
 import Url from 'url-parse';
 import { version, peerDependencies } from './package.json';
+
+// eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode';
 
 let authClient;
