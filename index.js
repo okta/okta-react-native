@@ -15,6 +15,7 @@ import { assertIssuer, assertClientId, assertRedirectUri } from '@okta/configura
 import { OktaAuth } from '@okta/okta-auth-js';
 import Url from 'url-parse';
 import { version, peerDependencies } from './package.json';
+import jwt_decode from 'jwt-decode';
 
 let authClient;
 
@@ -192,7 +193,7 @@ export const getUser = async() => {
 
 export const getUserFromIdToken = async() => {
   let idTokenResponse = await getIdToken();
-  return getAuthClient().token.decode(idTokenResponse.id_token).payload;
+  return jwt_decode(idTokenResponse.id_token);
 };
 
 export const isAuthenticated = async() => {
