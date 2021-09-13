@@ -1325,26 +1325,7 @@
     "@okta/okta-auth-js" "^4.0.0"
     lodash "^4.17.15"
 
-"@okta/okta-auth-js@^4.0.0":
-  version "4.9.2"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-4.9.2.tgz#95ee2ade7dd81d10707db5a555fd5f51b2969b5d"
-  integrity sha512-YgNN4IUK3haaMUD0ahBHlCU8OV4btY2pvuEG2+hcWPhhOZrdfkW68Gl0Q3mYOb1wi9wrKnnznbKfG/kjOz8i2Q==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
-    Base64 "1.1.0"
-    core-js "^3.6.5"
-    cross-fetch "^3.0.6"
-    js-cookie "2.2.1"
-    karma-coverage "^2.0.3"
-    node-cache "^5.1.2"
-    p-cancelable "^2.0.0"
-    text-encoding "^0.7.0"
-    tiny-emitter "1.1.0"
-    tsd "^0.14.0"
-    webcrypto-shim "^0.1.5"
-    xhr2 "0.1.3"
-
-"@okta/okta-auth-js@^5.4.1":
+"@okta/okta-auth-js@5.4.1":
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-5.4.1.tgz#1b25e6fcb862d1b8c95275bc206d4daa67cd2410"
   integrity sha512-EMvHx454kkCZ+keLz1cxE1uROICS2C9lhiiZENRJVge6doZy6y4yNXxz+ja31kDULkcApqfPqJvhraK76u94og==
@@ -1362,6 +1343,25 @@
     p-cancelable "^2.0.0"
     text-encoding "^0.7.0"
     tiny-emitter "1.1.0"
+    webcrypto-shim "^0.1.5"
+    xhr2 "0.1.3"
+
+"@okta/okta-auth-js@^4.0.0":
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-4.9.2.tgz#95ee2ade7dd81d10707db5a555fd5f51b2969b5d"
+  integrity sha512-YgNN4IUK3haaMUD0ahBHlCU8OV4btY2pvuEG2+hcWPhhOZrdfkW68Gl0Q3mYOb1wi9wrKnnznbKfG/kjOz8i2Q==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    Base64 "1.1.0"
+    core-js "^3.6.5"
+    cross-fetch "^3.0.6"
+    js-cookie "2.2.1"
+    karma-coverage "^2.0.3"
+    node-cache "^5.1.2"
+    p-cancelable "^2.0.0"
+    text-encoding "^0.7.0"
+    tiny-emitter "1.1.0"
+    tsd "^0.14.0"
     webcrypto-shim "^0.1.5"
     xhr2 "0.1.3"
 
