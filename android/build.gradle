@@ -69,7 +69,7 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation files('libs/oidc-androidx-debug.aar')
+    implementation files('libs/oidc-androidx-release.aar')
 }
 
 def configureReactNativePom(def pom) {
