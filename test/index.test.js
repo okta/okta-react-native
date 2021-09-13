@@ -41,7 +41,10 @@ import { OktaAuth } from '@okta/okta-auth-js';
 
 let mockSignInOktaAuth = jest.fn();
 
-jest.mock('@okta/okta-auth-js', () => { 
+jest.mock('@okta/okta-auth-js', () => {
+  const OktaAuth = jest.requireActual('@okta/okta-auth-js');
+  const sdkInstance = new OktaAuth.OktaAuth({ issuer: 'https://foo'});
+
   return {
     OktaAuth: jest.fn().mockImplementation(() => {
       return {
@@ -50,6 +53,9 @@ jest.mock('@okta/okta-auth-js', () => {
           addEnvironment: jest.fn(),
           getHttpHeader: jest.fn(),
           getVersion: jest.fn()
+        },
+        token: {
+          decode: sdkInstance.token.decode
         }
       };
     })

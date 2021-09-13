@@ -12,10 +12,12 @@
 
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
 import { assertIssuer, assertClientId, assertRedirectUri } from '@okta/configuration-validation';
-import jwt from 'jwt-lite';
 import { OktaAuth } from '@okta/okta-auth-js';
 import Url from 'url-parse';
 import { version, peerDependencies } from './package.json';
+
+// eslint-disable-next-line camelcase
+import jwt_decode from 'jwt-decode';
 
 let authClient;
 
@@ -193,7 +195,7 @@ export const getUser = async() => {
 
 export const getUserFromIdToken = async() => {
   let idTokenResponse = await getIdToken();
-  return jwt.decode(idTokenResponse.id_token).claimsSet;
+  return jwt_decode(idTokenResponse.id_token);
 };
 
 export const isAuthenticated = async() => {
