@@ -395,11 +395,14 @@ final class OktaSdkBridgeTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
     
-    func testClearTokensSucceeded() {
+    func testClearTokensSucceeded() throws {
         // given
         let oidc = OktaOidcMock(configuration: config, shouldFail: false)
         let bridge = OktaSdkBridgeMock()
         bridge.oktaOidc = oidc
+        
+        let stateManager = OktaOidcStateManagerMock(shouldFail: false, config: try XCTUnwrap(bridge.config))
+        bridge.setCustomStateManager(stateManager)
         
         let expectation = XCTestExpectation(description: "Clear Tokens must succeeded.")
         
