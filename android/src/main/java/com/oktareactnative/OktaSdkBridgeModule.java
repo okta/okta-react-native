@@ -18,6 +18,7 @@ import static com.okta.oidc.OktaResultFragment.REQUEST_CODE_SIGN_OUT;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -455,7 +456,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             return;
         }
         if (webClient != null) {
-            int rc = getRecalculatedRequestCodeForActivityResult(requestCode, resultCode, data.getData().toString());
+            int rc = getRecalculatedRequestCodeForActivityResult(requestCode, resultCode, data);
             webClient.handleActivityResult(rc, resultCode, data);
             registerCallback(activity);
         }
@@ -661,8 +662,14 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
         }
     }
 
-    private int getRecalculatedRequestCodeForActivityResult(int initialRequestCode, int resultCode, String callbackUri) {
+    private int getRecalculatedRequestCodeForActivityResult(
+            final int initialRequestCode,
+            final int resultCode,
+            @Nullable Intent data
+    ) {
         if (resultCode == Activity.RESULT_OK) {
+            final String callbackUri = data != null ? data.getDataString() : "";
+            if (callbackUri == null) return initialRequestCode;
             if (callbackUri.startsWith(this.config.getRedirectUri().toString())) {
                 return REQUEST_CODE_SIGN_IN;
             } else if (callbackUri.startsWith(this.config.getEndSessionRedirectUri().toString())) {
