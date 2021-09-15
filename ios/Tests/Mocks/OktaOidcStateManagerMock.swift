@@ -46,7 +46,7 @@ final class OktaOidcStateManagerMock: StateManagerProtocol {
                  shouldFail ? OktaOidcError.noBearerToken : nil)
     }
     
-    func clear() {
-        // nothing
+    func removeFromSecureStorage() throws {
+        
     }
 }

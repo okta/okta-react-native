@@ -45,7 +45,7 @@ protocol StateManagerProtocol: AnyObject {
     func renew(callback: @escaping ((OktaOidcStateManager?, Error?) -> Void))
     func revoke(_ token: String?, callback: @escaping (Bool, Error?) -> Void)
     func introspect(token: String?, callback: @escaping ([String : Any]?, Error?) -> Void)
-    func clear()
+    func removeFromSecureStorage() throws
 }
 
 extension OktaOidcStateManager: StateManagerProtocol {
@@ -469,8 +469,12 @@ class OktaSdkBridge: RCTEventEmitter {
             return
         }
         
-        stateManager.clear()
-        promiseResolver(true)
+        do {
+            try stateManager.removeFromSecureStorage()
+            promiseResolver(true)
+        } catch {
+            promiseResolver(false)
+        }
     }
     
     func introspectToken(tokenName: String, promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock) {
