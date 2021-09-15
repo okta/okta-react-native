@@ -195,7 +195,7 @@ class OktaSdkBridge: RCTEventEmitter {
     }
     
     @objc
-    func signOut(promiseResolver: @escaping RCTPromiseResolveBlock,
+    func signOut(_ promiseResolver: @escaping RCTPromiseResolveBlock,
                  promiseRejecter: @escaping RCTPromiseRejectBlock) {
         
         guard let currOktaOidc = oktaOidc else {
