@@ -2,7 +2,12 @@
 
 ### Bug Fix 
 
+- [#194](https://github.com/okta/okta-react-native/pull/194) Replaces jwt library (iOS)
+- [#197](https://github.com/okta/okta-react-native/pull/197) Replaces clear method (iOS)
 - [#199](https://github.com/okta/okta-react-native/pull/199) Fixes sign in results dispatch (Android)
+
+### Other 
+- OIDC ios dependencies update
 
 # 2.0.0
 
