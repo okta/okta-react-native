@@ -38,6 +38,16 @@
                ReferencedContainer = "container:E2EOktaReactNative.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9213D8D126F8DEA500EEE56A"
+               BuildableName = "E2EOktaReactNativeUITests.xctest"
+               BlueprintName = "E2EOktaReactNativeUITests"
+               ReferencedContainer = "container:E2EOktaReactNative.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

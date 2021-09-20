@@ -87,12 +87,14 @@ export default class CustomLogin extends React.Component {
           style={styles.input}
           placeholder='Username'
           onChangeText={input => this.setState({ username: input })}
+          testID="username_input"
         />
         <TextInput 
           style={styles.input}
           placeholder='Password'
           secureTextEntry={true}
           onChangeText={input => this.setState({ password: input })}
+          testID="password_input"
         />
         <Button onPress={this.signInCustom} title="Sign in" padding='122' />
       </View>  

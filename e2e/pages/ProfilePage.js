@@ -34,7 +34,7 @@ export default class ProfilePage extends React.Component {
 
   logout = () => {
     signOut().then(() => {
-      this.setState({ authenticated: false });
+      this.props.navigation.popToTop();
     }).catch(error => {
       console.log(error);
     });
@@ -44,7 +44,11 @@ export default class ProfilePage extends React.Component {
     return (
       <View style={styles.container}>
         <Text>Welcome back, {this.state.idToken.preferred_username}!</Text>
-        <Button onPress={this.logout}  title="Logout" />
+        <Button 
+          onPress={this.logout}
+          title="Logout"
+          testID="logout_login_button"
+        />
       </View>
     );
   }

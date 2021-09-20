@@ -28,7 +28,7 @@ import {
   signOut,
 } from '@okta/okta-react-native';
 
-import configFile from './config';
+import configFile from './../config';
 
 const SignInType = {
   NONE: 'none',
@@ -135,8 +135,16 @@ export default class Home extends React.Component {
     if (this.state.signInType == SignInType.NONE) {
       return (
         <View style={styles.container}>
-          <Button onPress={this.signInBrowser}  title="Browser sign-in" />
-          <Button onPress={() => { this.props.navigation.navigate('CustomLogin'); }}  title="Custom sign-in" />
+          <Button 
+            onPress={this.signInBrowser}  
+            title="Browser sign-in"
+            testID="browser_login_button"
+          />
+          <Button 
+            onPress={() => { this.props.navigation.navigate('CustomLogin'); }}
+            title="Custom sign-in" 
+            testID="custom_login_button"
+          />
         </View>  
       );
     } 
