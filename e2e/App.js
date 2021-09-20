@@ -10,136 +10,37 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React from 'react';
-import { 
-  Button, 
-  StyleSheet, 
-  Text,
-  View, 
-  Alert, 
-  ActivityIndicator 
-} from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import CustomLogin from './pages/CustomLogin';
+import Home from './pages/Home';
+import ProfilePage from './pages/ProfilePage';
 
-import {
-  createConfig,
-  introspectAccessToken,
-  introspectIdToken,
-  signInWithBrowser,
-  signOut,
-} from '@okta/okta-react-native';
+const Stack = createNativeStackNavigator();
 
-import configFile from './config';
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={Home}
+        />
+        <Stack.Screen
+          name="CustomLogin" 
+          component={CustomLogin} 
+        />
+        <Stack.Screen
+          name="ProfilePage" 
+          component={ProfilePage} 
+          options={{
+            headerShown: false
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { 
-      authenticated: false, 
-      idToken: '',
-      isLoading: false
-    };  
-  }
-  
-  async componentDidMount() {
-    await createConfig({
-      clientId: configFile.oidc.clientId,
-      redirectUri: configFile.oidc.redirectUri,
-      endSessionRedirectUri: configFile.oidc.endSessionRedirectUri,
-      discoveryUri: configFile.oidc.discoveryUri,
-      scopes: configFile.oidc.scopes,
-      requireHardwareBackedKeyStore:
-        configFile.oidc.requireHardwareBackedKeyStore
-    });
-
-    this.setInitialState();
-  }
-
-  setInitialState = () => {
-    this.setState({ isLoading: true });
-
-    introspectAccessToken()
-      .then(() => {
-        introspectIdToken()
-          .then(idToken => {
-            this.setState({ authenticated: true, idToken: idToken });
-          })
-          .catch(error => {
-            console.warn(error);
-            this.setState({ authenticated: true, idToken: '' });
-          })
-          .finally(() => {
-            this.setState({ isLoading: false }); 
-          });
-      })
-      .catch(() => {
-        this.setState({ authenticated: false, isLoading: false });
-      });
-  }
-
-  login = () => {
-    signInWithBrowser()
-      .then(() => {
-        this.setInitialState();
-      })
-      .catch(error => {
-        // Cancellation error
-        if (error.code == '-1200') {
-          return;
-        }
-
-        console.warn(error);
-
-        Alert.alert(
-          error.message,
-          [
-            { 
-              text: 'OK', 
-              style: 'cancel' 
-            }
-          ]
-        );
-      });
-  }
-
-  logout = () => {
-    signOut().then(() => {
-      this.setState({ authenticated: false });
-    }).catch(error => {
-      console.log(error);
-    });
-  }
-
-  render() {
-    if (this.state.authenticated) {
-      return (
-        <View style={styles.container}>
-          <Text>Welcome back, {this.state.idToken.preferred_username}!</Text>
-          <Button onPress={this.logout}  title="Logout" />
-        </View>
-      ); 
-    }
-
-    if (this.state.isLoading) {
-      return (
-        <View style={styles.container}>
-          <ActivityIndicator size="large" />
-        </View>
-      );
-    }
-
-    return (
-      <View style={styles.container}>
-        <Button onPress={this.login}  title="Login" />
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
