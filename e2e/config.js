@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { CLIENT_ID, REDIRECT_URI, LOGOUT_REDIRECT_URI, ISSUER } from '@env';
+// import { CLIENT_ID, REDIRECT_URI, LOGOUT_REDIRECT_URI, ISSUER } from '@env';
 
 /* 
   clientId, redirectUri, endSessionRedirectUri - these values can be found on the "General" tab of the application that you created earlier in Admin Console.
@@ -21,10 +21,10 @@ import { CLIENT_ID, REDIRECT_URI, LOGOUT_REDIRECT_URI, ISSUER } from '@env';
 
 export default {
   oidc: {
-    clientId: CLIENT_ID, // e.g.: `a0abcEf0gH123ssJS4o5`
-    redirectUri: REDIRECT_URI, // e.g.: `com.okta.example:/callback`
-    endSessionRedirectUri: LOGOUT_REDIRECT_URI, // e.g.: com.okta.example:/logout
-    discoveryUri: ISSUER, // e.g.: https://dev-1234.okta.com/oauth2/default
+    clientId: '0oaaq9bhqCWN0Cgch5d6', // e.g.: `a0abcEf0gH123ssJS4o5`
+    redirectUri: 'dev.okta.com:/callback', // e.g.: `com.okta.example:/callback`
+    endSessionRedirectUri: 'dev.okta.com:/logout', // e.g.: com.okta.example:/logout
+    discoveryUri: 'https://dev-31435904.okta.com/oauth2/default/', // e.g.: https://dev-1234.okta.com/
     scopes: ['openid', 'profile', 'offline_access'], 
     requireHardwareBackedKeyStore: false,
   },
