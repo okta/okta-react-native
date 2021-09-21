@@ -18,6 +18,12 @@
 
 Note: For more details, [follow migration guide](https://github.com/okta/okta-react-native/blob/master/README.md#migrating-between-versions).
 
+# 1.13.3
+
+### Bug Fix 
+
+- [#211](https://github.com/okta/okta-react-native/pull/211) Backport Fixes sign in results dispatch (Android)
+
 # 1.13.2
 
 ### Other 
