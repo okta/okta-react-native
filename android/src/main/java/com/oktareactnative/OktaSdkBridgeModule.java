@@ -12,6 +12,9 @@
 
 package com.oktareactnative;
 
+import static com.okta.oidc.OktaResultFragment.REQUEST_CODE_SIGN_IN;
+import static com.okta.oidc.OktaResultFragment.REQUEST_CODE_SIGN_OUT;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -439,7 +442,8 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             return;
         }
         if (webClient != null) {
-            webClient.handleActivityResult(requestCode & 0xffff, resultCode, data);
+            int rc = getRecalculatedRequestCodeForActivityResult(requestCode, resultCode, data);
+            webClient.handleActivityResult(rc, resultCode, data);
             registerCallback(activity);
         }
     }
@@ -623,5 +627,24 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
         } catch (IllegalArgumentException e) {
             return false;
         }
+    }
+
+    private int getRecalculatedRequestCodeForActivityResult(
+            final int initialRequestCode,
+            final int resultCode,
+            @Nullable Intent data
+    ) {
+        if (resultCode == Activity.RESULT_OK) {
+            final String callbackUri = data != null ? data.getDataString() : "";
+            if (callbackUri == null) return initialRequestCode;
+            if (callbackUri.startsWith(this.config.getRedirectUri().toString())) {
+                return REQUEST_CODE_SIGN_IN;
+            } else if (callbackUri.startsWith(this.config.getEndSessionRedirectUri().toString())) {
+                return REQUEST_CODE_SIGN_OUT;
+            }
+        } else if (resultCode == Activity.RESULT_CANCELED){
+            return REQUEST_CODE_SIGN_IN;
+        }
+        return initialRequestCode;
     }
 }
