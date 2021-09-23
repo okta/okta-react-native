@@ -1,3 +1,9 @@
+# 2.1.1
+
+### Bug Fix
+
+- [#214](https://github.com/okta/okta-react-native/pull/214) Fixes signOut crash (Android)
+
 # 2.1.0
 
 ### Bug Fix 

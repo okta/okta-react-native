@@ -533,9 +533,11 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                 WritableMap params = Arguments.createMap();
                 params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.OKTA_OIDC_ERROR.getErrorCode());
                 params.putString(OktaSdkConstant.ERROR_MSG_KEY, msg);
-                sendEvent(reactContext, OktaSdkConstant.ON_ERROR, params);
                 final Promise promise = queuedPromise;
-                promise.reject(OktaSdkError.SIGN_IN_FAILED.getErrorCode(), params);
+                if (promise != null) {
+                    promise.reject(OktaSdkError.SIGN_IN_FAILED.getErrorCode(), params.copy());
+                }
+                sendEvent(reactContext, OktaSdkConstant.ON_ERROR, params);
                 queuedPromise = null;
             }
         }, activity);
