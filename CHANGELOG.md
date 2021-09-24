@@ -3,6 +3,8 @@
 ### Bug Fix
 
 - [#214](https://github.com/okta/okta-react-native/pull/214) Fixes signOut crash (Android)
+- [#216](https://github.com/okta/okta-react-native/pull/216) Update okta-oidc-android to 1.1.0
+
 
 # 2.1.0
 
