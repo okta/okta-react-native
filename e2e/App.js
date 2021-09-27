@@ -34,6 +34,9 @@ const App = () => {
         <Stack.Screen
           name="ProfilePage" 
           component={ProfilePage} 
+          options={{
+            headerShown: false
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

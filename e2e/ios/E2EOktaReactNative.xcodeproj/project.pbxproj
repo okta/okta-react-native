@@ -12,9 +12,11 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		9213D8D526F8DEA500EEE56A /* E2EOktaReactNativeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9213D8D426F8DEA500EEE56A /* E2EOktaReactNativeUITests.swift */; };
+		9213D8D526F8DEA500EEE56A /* BrowserLoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9213D8D426F8DEA500EEE56A /* BrowserLoginTests.swift */; };
+		923FC20C26FE2115009E15EB /* LoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923FC20B26FE2115009E15EB /* LoginTests.swift */; };
 		927A7DF126F207E40073FE7A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A7DF026F207E40073FE7A /* Foundation.framework */; };
 		927A7DF426F208680073FE7A /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927A7DF326F208680073FE7A /* Dummy.swift */; };
+		92BEADDE26FE19EE00FD8E8B /* CustomLoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BEADDD26FE19EE00FD8E8B /* CustomLoginTests.swift */; };
 		96905EF65AED1B983A6B3ABC /* libPods-E2EOktaReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-E2EOktaReactNative.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 /* End PBXBuildFile section */
@@ -42,11 +44,13 @@
 		6C2E3173556A471DD304B334 /* Pods-E2EOktaReactNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-E2EOktaReactNative.debug.xcconfig"; path = "Target Support Files/Pods-E2EOktaReactNative/Pods-E2EOktaReactNative.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-E2EOktaReactNative.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-E2EOktaReactNative.release.xcconfig"; path = "Target Support Files/Pods-E2EOktaReactNative/Pods-E2EOktaReactNative.release.xcconfig"; sourceTree = "<group>"; };
 		9213D8D226F8DEA500EEE56A /* E2EOktaReactNativeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = E2EOktaReactNativeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9213D8D426F8DEA500EEE56A /* E2EOktaReactNativeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = E2EOktaReactNativeUITests.swift; sourceTree = "<group>"; };
+		9213D8D426F8DEA500EEE56A /* BrowserLoginTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserLoginTests.swift; sourceTree = "<group>"; };
 		9213D8D626F8DEA500EEE56A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		923FC20B26FE2115009E15EB /* LoginTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTests.swift; sourceTree = "<group>"; };
 		927A7DF026F207E40073FE7A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		927A7DF226F208680073FE7A /* E2EOktaReactNative-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "E2EOktaReactNative-Bridging-Header.h"; sourceTree = "<group>"; };
 		927A7DF326F208680073FE7A /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		92BEADDD26FE19EE00FD8E8B /* CustomLoginTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLoginTests.swift; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = E2EOktaReactNative/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -136,7 +140,9 @@
 		9213D8D326F8DEA500EEE56A /* E2EOktaReactNativeUITests */ = {
 			isa = PBXGroup;
 			children = (
-				9213D8D426F8DEA500EEE56A /* E2EOktaReactNativeUITests.swift */,
+				923FC20B26FE2115009E15EB /* LoginTests.swift */,
+				9213D8D426F8DEA500EEE56A /* BrowserLoginTests.swift */,
+				92BEADDD26FE19EE00FD8E8B /* CustomLoginTests.swift */,
 				9213D8D626F8DEA500EEE56A /* Info.plist */,
 			);
 			path = E2EOktaReactNativeUITests;
@@ -352,7 +358,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9213D8D526F8DEA500EEE56A /* E2EOktaReactNativeUITests.swift in Sources */,
+				923FC20C26FE2115009E15EB /* LoginTests.swift in Sources */,
+				9213D8D526F8DEA500EEE56A /* BrowserLoginTests.swift in Sources */,
+				92BEADDE26FE19EE00FD8E8B /* CustomLoginTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

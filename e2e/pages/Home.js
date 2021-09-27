@@ -12,11 +12,11 @@
 
 import React from 'react';
 import { 
-  Button, 
-  StyleSheet, 
+  Button,
+  StyleSheet,
   Text,
-  View, 
-  Alert, 
+  View,
+  Alert,
   ActivityIndicator 
 } from 'react-native';
 
@@ -71,7 +71,7 @@ export default class Home extends React.Component {
           .then(idToken => {
             this.setState({ authenticated: true, idToken: idToken });
 
-            this.props.navigation.navigate('ProfilePage', { idToken: idToken });
+            this.props.navigation.navigate('ProfilePage', { idToken: idToken, isBrowserScenario: true });
           })
           .catch(error => {
             console.warn(error);
@@ -92,7 +92,7 @@ export default class Home extends React.Component {
         this.setInitialState();
       })
       .catch(error => {
-        // Cancellation error
+        // Ignore cancellation error
         if (error.code == '-1200') {
           return;
         }
@@ -109,10 +109,6 @@ export default class Home extends React.Component {
           ]
         );
       });
-  }
-
-  signInCustom = () => {
-
   }
 
   logout = () => {

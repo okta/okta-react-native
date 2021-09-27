@@ -20,7 +20,10 @@ import {
 } from 'react-native';
 
 import {
-  signOut
+  signOut,
+  revokeAccessToken,
+  revokeIdToken,
+  clearTokens,
 } from '@okta/okta-react-native';
 
 export default class ProfilePage extends React.Component {
@@ -28,26 +31,36 @@ export default class ProfilePage extends React.Component {
     super(props);
 
     this.state = { 
-      idToken: props.route.params.idToken
+      idToken: props.route.params.idToken,
+      isBrowserScenario: props.route.params.isBrowserScenario
     };
   }
 
   logout = () => {
-    signOut().then(() => {
-      this.props.navigation.popToTop();
-    }).catch(error => {
-      console.log(error);
-    });
+    if (this.state.isBrowserScenario == true) {
+      signOut().then(() => {
+        this.props.navigation.popToTop();
+      }).catch(error => {
+        console.log(error);
+      });
+    }
+
+    Promise.all([revokeAccessToken(), revokeIdToken(), clearTokens()])
+      .then(() => {
+        this.props.navigation.popToTop();
+      }).catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Welcome back, {this.state.idToken.preferred_username}!</Text>
+        <Text testID="welcome_text">Welcome back, {this.state.idToken.preferred_username}!</Text>
         <Button 
           onPress={this.logout}
           title="Logout"
-          testID="logout_login_button"
+          testID="logout_button"
         />
       </View>
     );

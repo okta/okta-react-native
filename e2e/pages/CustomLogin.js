@@ -46,7 +46,7 @@ export default class CustomLogin extends React.Component {
       .then(() => {
         introspectIdToken()
           .then(idToken => {
-            this.props.navigation.navigate('ProfilePage', { idToken: idToken });
+            this.props.navigation.navigate('ProfilePage', { idToken: idToken, isBrowserScenario: false });
           }).finally(() => {
             this.setState({ 
               isLoading: false,
@@ -96,7 +96,11 @@ export default class CustomLogin extends React.Component {
           onChangeText={input => this.setState({ password: input })}
           testID="password_input"
         />
-        <Button onPress={this.signInCustom} title="Sign in" padding='122' />
+        <Button 
+          onPress={this.signInCustom} 
+          title="Sign in" 
+          testID='sign_in_button' 
+        />
       </View>  
     ); 
   }
