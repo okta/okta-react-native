@@ -13,8 +13,8 @@
 import XCTest
 
 class LoginTests: XCTestCase {
-  let username = "oleg.gnidets"
-  let password = "QWEqwe123!"
+  var username = ProcessInfo.processInfo.environment["USERNAME"]!
+  var password = ProcessInfo.processInfo.environment["PASSWORD"]!
 
   private static var stopAfterFirstFail = false
   private(set) var app: XCUIApplication!
