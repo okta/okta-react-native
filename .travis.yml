@@ -44,6 +44,7 @@ jobs:
       install:
         - gem install xcpretty
         - gem install cocoapods
+        - yarn build
         - cd e2e
         - yarn install
         - cd ios && pod install --project-directory=e2e/ios --repo-update && cd ..

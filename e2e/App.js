@@ -11,6 +11,7 @@
  */
 
 /* eslint-disable no-unused-vars */
+/* eslint-disable node/no-missing-import */
 
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
