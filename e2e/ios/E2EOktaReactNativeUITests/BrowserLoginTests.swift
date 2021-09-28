@@ -134,9 +134,3 @@ final class BrowserLoginTests: LoginTests {
     XCTAssertTrue(browserLoginButton.waitForExistence(timeout: .testing))
   }
 }
-
-extension TimeInterval {
-  
-  static let testing: TimeInterval = 20
-}
-

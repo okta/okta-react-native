@@ -12,6 +12,11 @@
 
 import XCTest
 
+extension TimeInterval {
+  
+  static let testing: TimeInterval = 30
+}
+
 class LoginTests: XCTestCase {
   var username = ProcessInfo.processInfo.environment["USERNAME"]!
   var password = ProcessInfo.processInfo.environment["PASSWORD"]!

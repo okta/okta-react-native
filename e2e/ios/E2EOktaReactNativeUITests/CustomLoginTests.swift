@@ -13,7 +13,6 @@
 import XCTest
 
 final class CustomLoginTests: LoginTests {
-  
   private var signInButton: XCUIElement {
     app.buttons["sign_in_button"]
   }
