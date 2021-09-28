@@ -1,7 +1,7 @@
 // https://eslint.org/docs/user-guide/configuring
 
 module.exports = {
-  ignorePatterns: ['node_modules/', 'dist/', 'e2e/node_modules'],
+  ignorePatterns: ['node_modules/', 'dist/', 'e2e'],
   extends: [
     'eslint:recommended',
     'plugin:node/recommended-script',
