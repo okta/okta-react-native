@@ -9,3 +9,5 @@
  *
  * See the License for the specific language governing permissions and limitations under the License.
  */
+
+// This is a dummy file to compile CocoaPods and tests. Because React Native project is created as Obj-C project.
