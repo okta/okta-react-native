@@ -4,11 +4,16 @@
 node_modules
 npm-debug.log
 yarn-error.*
+.env
 
 .watchmanconfig
 
 .vscode
 !.vscode/launch.json
+
+# Expo
+.expo/
+web-build/
 
 # Android/iOS related for react native
 .gradle/
