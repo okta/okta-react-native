@@ -38,6 +38,7 @@ jobs:
         - yarn install
         - cd ios && pod install --repo-update && cd ..
         - echo -e "CLIENT_ID=${CLIENT_ID}\nISSUER=${ISSUER}\nREDIRECT_URI=${REDIRECT_URI}\nLOGOUT_REDIRECT_URI=${LOGOUT_REDIRECT_URI}" > .env
+        - cat .env
         - cd ..
       script:
         - xcodebuild -workspace e2e/ios/E2EOktaReactNative.xcworkspace -scheme E2EOktaReactNative -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' -sdk iphonesimulator clean test | xcpretty        

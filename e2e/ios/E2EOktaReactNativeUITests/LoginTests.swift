@@ -14,7 +14,7 @@ import XCTest
 
 extension TimeInterval {
   
-  static let testing: TimeInterval = 30
+  static let testing: TimeInterval = 50
 }
 
 class LoginTests: XCTestCase {
