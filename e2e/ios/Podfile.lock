@@ -64,7 +64,7 @@ PODS:
   - OktaOidc/AppAuth (3.10.7)
   - OktaOidc/Okta (3.10.7):
     - OktaOidc/AppAuth
-  - OktaSdkBridgeReactNative (2.2.0):
+  - OktaSdkBridgeReactNative (2.1.1):
     - OktaOidc (= 3.10.7)
     - React
   - RCTRequired (0.63.4)
@@ -331,7 +331,7 @@ PODS:
     - React-RCTImage
   - UMAppLoader (2.2.0)
   - UMCore (7.1.2)
-  - UMReactNativeAdapter (6.3.7):
+  - UMReactNativeAdapter (6.3.9):
     - ExpoModulesCore
     - React-Core
     - UMCore
@@ -511,7 +511,7 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   OktaOidc: b45e7a32be33fd650ea002e8714d076e834ff6d3
-  OktaSdkBridgeReactNative: e6c8959eacba508bed6c79d4498dbba6813bf0b5
+  OktaSdkBridgeReactNative: cd6a5399328227e9624142c135ff29f04c287432
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
@@ -538,7 +538,7 @@ SPEC CHECKSUMS:
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
   UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
-  UMReactNativeAdapter: bb7922210cf6fdb5768f78685f3c3a2060299119
+  UMReactNativeAdapter: d03cefd0e4e4179ab8c490408589f1c8a6c8b785
   UMTaskManagerInterface: 2be431101b73604e64fbfffcf759336f9d8fccbb
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 

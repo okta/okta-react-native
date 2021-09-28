@@ -13,7 +13,8 @@
 import { CLIENT_ID, REDIRECT_URI, LOGOUT_REDIRECT_URI, ISSUER } from '@env';
 
 /* 
-  clientId, redirectUri, endSessionRedirectUri - these values can be found on the "General" tab of the application that you created earlier in Admin Console.
+  clientId, redirectUri, endSessionRedirectUri - these values can be found on the "General" tab 
+  of the application that you created earlier in Admin Console.
   discoveryUri - this is the URL of the authorization server that will perform authentication.
 
   For more details, https://developer.okta.com/docs/guides/sign-into-mobile-app/create-okta-application/

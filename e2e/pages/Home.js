@@ -30,12 +30,6 @@ import {
 
 import configFile from './../config';
 
-const SignInType = {
-  NONE: 'none',
-  BROWSER: 'BROWSER',
-  CUSTOM: 'CUSTOM',
-};
-
 export default class Home extends React.Component {
   
   constructor(props) {
@@ -44,7 +38,6 @@ export default class Home extends React.Component {
       authenticated: false, 
       idToken: '',
       isLoading: false,
-      signInType: SignInType.NONE
     };  
   }
   
@@ -128,22 +121,20 @@ export default class Home extends React.Component {
       );
     }
 
-    if (this.state.signInType == SignInType.NONE) {
-      return (
-        <View style={styles.container}>
-          <Button 
-            onPress={this.signInBrowser}  
-            title="Browser sign-in"
-            testID="browser_login_button"
-          />
-          <Button 
-            onPress={() => { this.props.navigation.navigate('CustomLogin'); }}
-            title="Custom sign-in" 
-            testID="custom_login_button"
-          />
-        </View>  
-      );
-    } 
+    return (
+      <View style={styles.container}>
+        <Button 
+          onPress={this.signInBrowser}  
+          title="Browser sign-in"
+          testID="browser_login_button"
+        />
+        <Button 
+          onPress={() => { this.props.navigation.navigate('CustomLogin'); }}
+          title="Custom sign-in" 
+          testID="custom_login_button"
+        />
+      </View>  
+    );
   }
 }
 

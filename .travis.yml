@@ -28,15 +28,29 @@ jobs:
     - language: objective-c
       os: osx
       osx_image: xcode12.5
-      stage: iOS
-      name: iOS Tests
+      stage: Unit Tests
+      name: iOS
       install:
         - gem install xcpretty
         - gem install cocoapods
-        - pod install --project-directory=ios
+        - pod install --project-directory=ios --repo-update
       script:
         - xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
-
+    - language: objective-c
+      os: osx
+      osx_image: xcode12.5
+      stage: E2E Tests
+      name: iOS
+      install:
+        - gem install xcpretty
+        - gem install cocoapods
+        - cd e2e
+        - yarn install
+        - cd ios && pod install --project-directory=e2e/ios --repo-update && cd ..
+        - echo -e "CLIENT_ID=${CLIENT_ID}\nISSUER=${ISSUER}\nREDIRECT_URI=${REDIRECT_URI}\nLOGOUT_REDIRECT_URI=${LOGOUT_REDIRECT_URI}" > .env
+        - cd ..
+      script:
+        - xcodebuild -workspace e2e/ios/E2EOktaReactNative.xcworkspace -scheme E2EOktaReactNative -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' -sdk iphonesimulator clean test | xcpretty
 
 notifications:
   slack:
