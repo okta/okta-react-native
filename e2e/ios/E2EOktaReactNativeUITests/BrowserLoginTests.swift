@@ -12,6 +12,14 @@
 
 import XCTest
 
+final class A1ColdStart: LoginTests {
+  
+  func testABC1ColdStart() {
+    // nothing here just for cold start
+    XCTAssertTrue(true)
+  }
+}
+
 final class BrowserLoginTests: LoginTests {
   private let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
   
