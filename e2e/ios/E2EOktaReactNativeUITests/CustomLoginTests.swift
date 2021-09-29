@@ -22,7 +22,7 @@ final class CustomLoginTests: LoginTests {
   }
   
   private var passwordTextField: XCUIElement {
-    app.secureTextFields["password_input"]
+    app.textFields["password_input"]
   }
   
   override func setUpWithError() throws {

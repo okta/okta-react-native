@@ -95,7 +95,6 @@ export default class CustomLogin extends React.Component {
         <TextInput 
           style={styles.input}
           placeholder='Password'
-          secureTextEntry={true}
           onChangeText={input => this.setState({ password: input })}
           testID="password_input"
         />
