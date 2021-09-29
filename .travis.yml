@@ -41,7 +41,7 @@ jobs:
         - cat .env
         - cd ..
       script:
-        - xcodebuild -workspace e2e/ios/E2EOktaReactNative.xcworkspace -scheme E2EOktaReactNative -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' -sdk iphonesimulator clean test | xcpretty        
+        - set -eo pipefail && xcodebuild -workspace e2e/ios/E2EOktaReactNative.xcworkspace -scheme E2EOktaReactNative -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' -sdk iphonesimulator clean test | xcpretty
     - language: objective-c
       os: osx
       osx_image: xcode12.5
@@ -52,7 +52,7 @@ jobs:
         - gem install cocoapods
         - pod install --project-directory=ios --repo-update
       script:
-        - xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
+        - set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
 
 notifications:
   slack:
