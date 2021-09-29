@@ -14,12 +14,12 @@ import XCTest
 
 extension TimeInterval {
   
-  static let testing: TimeInterval = 50
+  static let testing: TimeInterval = 60
 }
 
 class LoginTests: XCTestCase {
-  var username = "george@acme.com"
-  var password = "Abcd1234"
+  var username = ProcessInfo.processInfo.environment["USERNAME"]!
+  var password = ProcessInfo.processInfo.environment["PASSWORD"]!
 
   private static var stopAfterFirstFail = false
   private(set) var app: XCUIApplication!
@@ -44,10 +44,6 @@ class LoginTests: XCTestCase {
     try super.setUpWithError()
     
     continueAfterFailure = false
-    
-//    if Self.stopAfterFirstFail {
-//      XCTFail("Failed test")
-//    }
     
     app = XCUIApplication()
     app.launch()
