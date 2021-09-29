@@ -12,11 +12,19 @@
 
 import XCTest
 
-final class A1ColdStart: LoginTests {
+final class A1ColdStart: XCTestCase {
+  
+  private var app: XCUIApplication!
+  
+  override func setUpWithError() throws {
+    app = XCUIApplication()
+    app.launch()
+  }
   
   func testABC1ColdStart() {
     // nothing here just for cold start
     XCTAssertTrue(true)
+    XCTAssertTrue(app.buttons.firstMatch.waitForExistence(timeout: .testing))
   }
 }
 
