@@ -565,8 +565,8 @@ class OktaSdkBridge: RCTEventEmitter {
 extension OktaSdkBridge: OktaNetworkRequestCustomizationDelegate {
     func customizableURLRequest(_ request: URLRequest?) -> URLRequest? {
         guard let timeout = requestTimeout,
-              let request = request,
-              let mutableRequestCopy = (request as NSURLRequest).mutableCopy() as? NSMutableURLRequest else
+              let incommingRequest = request,
+              let mutableRequestCopy = (incommingRequest as NSURLRequest).mutableCopy() as? NSMutableURLRequest else
         {
             return request
         }

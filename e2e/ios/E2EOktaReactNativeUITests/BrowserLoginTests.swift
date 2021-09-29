@@ -27,10 +27,6 @@ final class BrowserLoginTests: LoginTests {
     app.buttons["Sign In"]
   }
   
-  override func setUpWithError() throws {
-    try super.setUpWithError()
-  }
-  
   func testLoginFlow() throws {
     // given
     XCTAssertTrue(browserLoginButton.waitForExistence(timeout: .testing))

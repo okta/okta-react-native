@@ -18,8 +18,8 @@ extension TimeInterval {
 }
 
 class LoginTests: XCTestCase {
-  var username = ProcessInfo.processInfo.environment["USERNAME"]!
-  var password = ProcessInfo.processInfo.environment["PASSWORD"]!
+  var username = "george@acme.com"
+  var password = "Abcd1234"
 
   private static var stopAfterFirstFail = false
   private(set) var app: XCUIApplication!
@@ -43,11 +43,11 @@ class LoginTests: XCTestCase {
   override func setUpWithError() throws {
     try super.setUpWithError()
     
-    if Self.stopAfterFirstFail {
-      XCTFail("Failed test")
-    }
-    
     continueAfterFailure = false
+    
+//    if Self.stopAfterFirstFail {
+//      XCTFail("Failed test")
+//    }
     
     app = XCUIApplication()
     app.launch()

@@ -41,6 +41,7 @@ jobs:
         - cat .env
         - cd ..
       script:
+        - open -a simulator
         - xcodebuild -workspace e2e/ios/E2EOktaReactNative.xcworkspace -scheme E2EOktaReactNative -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' -sdk iphonesimulator clean test | tee xcodebuild.log | xcpretty 
         - sed -n '/E2EOktaReactNativeUITests.BrowserLoginTests testCancelLoginFlow/,$p' xcodebuild.log
     - language: objective-c
