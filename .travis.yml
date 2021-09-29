@@ -41,8 +41,7 @@ jobs:
         - cat .env
         - cd ..
       script:
-        - set -eo pipefail && xcodebuild -workspace e2e/ios/E2EOktaReactNative.xcworkspace -scheme E2EOktaReactNative -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' -sdk iphonesimulator clean test | tee xcodebuild.log | xcpretty
-        - cat xcodebuild.log
+        - xcodebuild -workspace e2e/ios/E2EOktaReactNative.xcworkspace -scheme E2EOktaReactNative -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' -sdk iphonesimulator clean test
     - language: objective-c
       os: osx
       osx_image: xcode12.5
