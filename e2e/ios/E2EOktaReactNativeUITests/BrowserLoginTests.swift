@@ -18,13 +18,14 @@ final class A1ColdStart: XCTestCase {
   
   override func setUpWithError() throws {
     app = XCUIApplication()
-    app.launch()
   }
   
   func testABC1ColdStart() {
     // nothing here just for cold start
+    app.launch()
+    
     XCTAssertTrue(true)
-    XCTAssertTrue(app.buttons.firstMatch.waitForExistence(timeout: .testing))
+    XCTAssertTrue(app.buttons.firstMatch.waitForExistence(timeout: 120))
   }
 }
 
