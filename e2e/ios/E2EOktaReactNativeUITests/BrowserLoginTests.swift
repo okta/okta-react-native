@@ -12,23 +12,6 @@
 
 import XCTest
 
-final class A1ColdStart: XCTestCase {
-  
-  private var app: XCUIApplication!
-  
-  override func setUpWithError() throws {
-    app = XCUIApplication()
-  }
-  
-  func testABC1ColdStart() {
-    // nothing here just for cold start
-    app.launch()
-    
-    XCTAssertTrue(true)
-    XCTAssertTrue(app.buttons.firstMatch.waitForExistence(timeout: 120))
-  }
-}
-
 final class BrowserLoginTests: LoginTests {
   private let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
   
@@ -46,7 +29,7 @@ final class BrowserLoginTests: LoginTests {
   
   func testLoginFlow() throws {
     // given
-    XCTAssertTrue(browserLoginButton.waitForExistence(timeout: .testing))
+    XCTAssertFalse(browserLoginButton.waitForExistence(timeout: .testing))
     // when
     browserLoginButton.tap()
     // then

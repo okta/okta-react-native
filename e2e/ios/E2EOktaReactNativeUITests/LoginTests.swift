@@ -14,14 +14,13 @@ import XCTest
 
 extension TimeInterval {
   
-  static let testing: TimeInterval = 40
+  static let testing: TimeInterval = 30
 }
 
 class LoginTests: XCTestCase {
-  var username = ProcessInfo.processInfo.environment["USERNAME"]!
-  var password = ProcessInfo.processInfo.environment["PASSWORD"]!
+  let username = ProcessInfo.processInfo.environment["USERNAME"]!
+  let password = ProcessInfo.processInfo.environment["PASSWORD"]!
 
-  private static var stopAfterFirstFail = false
   private(set) var app: XCUIApplication!
   
   var logoutButton: XCUIElement {
@@ -47,14 +46,6 @@ class LoginTests: XCTestCase {
     
     app = XCUIApplication()
     app.launch()
-  }
-  
-  override func tearDownWithError() throws {
-    try super.tearDownWithError()
-
-    if testRun?.totalFailureCount != .zero {
-      Self.stopAfterFirstFail = true
-    }
   }
   
   func testRootScreen() throws {

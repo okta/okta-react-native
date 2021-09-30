@@ -41,9 +41,7 @@ jobs:
         - cat .env
         - cd ..
       script:
-        - open -a simulator
-        - xcodebuild -workspace e2e/ios/E2EOktaReactNative.xcworkspace -scheme E2EOktaReactNative -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' -sdk iphonesimulator clean test | tee xcodebuild.log | xcpretty
-        - sed -n '/E2EOktaReactNativeUITests.A1ColdStart testABC1ColdStart/,$p' xcodebuild.log        
+        - set -o pipefail && xcodebuild -workspace e2e/ios/E2EOktaReactNative.xcworkspace -scheme E2EOktaReactNative -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' -sdk iphonesimulator clean test | xcpretty
     # - language: objective-c
     #   os: osx
     #   osx_image: xcode12.5
