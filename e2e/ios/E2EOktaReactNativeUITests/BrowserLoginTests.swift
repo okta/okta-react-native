@@ -29,7 +29,7 @@ final class BrowserLoginTests: LoginTests {
   
   func testLoginFlow() throws {
     // given
-    XCTAssertFalse(browserLoginButton.waitForExistence(timeout: .testing))
+    XCTAssertTrue(browserLoginButton.waitForExistence(timeout: .testing))
     // when
     browserLoginButton.tap()
     // then

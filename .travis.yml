@@ -1,9 +1,3 @@
-addons:
-  chrome: stable
-
-jdk:
-  - default-jdk
-
 before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.13.0
   - export PATH="$HOME/.yarn/bin:$PATH"
@@ -11,20 +5,31 @@ before_install:
 
 jobs:
   include:
-    # - language: node_js
-    #   os: linux
-    #   services:
-    #     - xvfb
-    #   node_js: 14.15
-    #   stage: React Native
-    #   name: React Native Tests
-    #   install:
-    #     - sudo apt-get update
-    #     - sudo apt-get install -y libappindicator1
-    #   script:
-    #     - yarn lint
-    #     - yarn test
-    #     - bash ./scripts/snyk.sh
+    - language: node_js
+      os: linux
+      services:
+        - xvfb
+      node_js: 14.15
+      stage: React Native
+      name: React Native Tests
+      install:
+        - sudo apt-get update
+        - sudo apt-get install -y libappindicator1
+      script:
+        - yarn lint
+        - yarn test
+        - bash ./scripts/snyk.sh
+    - language: objective-c
+      os: osx
+      osx_image: xcode12.5
+      stage: Unit Tests
+      name: iOS
+      install:
+        - gem install xcpretty
+        - gem install cocoapods
+        - pod install --project-directory=ios --repo-update
+      script:
+        - set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty        
     - language: objective-c
       os: osx
       osx_image: xcode12.5
@@ -42,17 +47,6 @@ jobs:
         - cd ..
       script:
         - set -o pipefail && xcodebuild -workspace e2e/ios/E2EOktaReactNative.xcworkspace -scheme E2EOktaReactNative -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' -sdk iphonesimulator clean test | xcpretty
-    # - language: objective-c
-    #   os: osx
-    #   osx_image: xcode12.5
-    #   stage: Unit Tests
-    #   name: iOS
-    #   install:
-    #     - gem install xcpretty
-    #     - gem install cocoapods
-    #     - pod install --project-directory=ios --repo-update
-    #   script:
-    #     - set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
 
 notifications:
   slack:
