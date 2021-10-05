@@ -10,11 +10,11 @@ PODS:
     - React-jsi (= 0.64.2)
     - ReactCommon/turbomodule/core (= 0.64.2)
   - glog (0.3.5)
-  - OktaOidc (3.10.7):
-    - OktaOidc/AppAuth (= 3.10.7)
-    - OktaOidc/Okta (= 3.10.7)
-  - OktaOidc/AppAuth (3.10.7)
-  - OktaOidc/Okta (3.10.7):
+  - OktaOidc (3.10.6):
+    - OktaOidc/AppAuth (= 3.10.6)
+    - OktaOidc/Okta (= 3.10.6)
+  - OktaOidc/AppAuth (3.10.6)
+  - OktaOidc/Okta (3.10.6):
     - OktaOidc/AppAuth
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
@@ -377,7 +377,7 @@ SPEC CHECKSUMS:
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
   FBReactNativeSpec: 6423447c9462aa4c8c9a9ee0c0fef9d2d5dff506
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
-  OktaOidc: b45e7a32be33fd650ea002e8714d076e834ff6d3
+  OktaOidc: d6c5ce0be950f76360c15f67cf39973f4738abbf
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: 6d3e854f0e7260a648badd0d44fc364bc9da9728
   RCTTypeSafety: c1f31d19349c6b53085766359caac425926fafaa

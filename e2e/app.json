@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "E2E-Okta-React-Native",
+    "slug": "E2E-Okta-React-Native",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "E2E-Okta-React-Native"
+}
