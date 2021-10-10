@@ -154,6 +154,7 @@ import { createConfig, signIn, signOut, getAccessToken } from '@okta/okta-react-
 This method will create a configured client on the native modules. Resolves `true` if successfully configures a client.
 
 * `issuer` is an optional field in config, for more information please refer to [About the Issuer](https://github.com/okta/okta-auth-js/tree/master#about-the-issuer).
+* `redirectUri` and `endSessionRedirectUri` must not be the same, otherwise Android will throw an error on `signOut`.
 * `requireHardwareBackedKeyStore` is a configurable setting only on Android devices. If you're a developer testing on Android emulators, set this field to `false`. 
 * `androidChromeTabColor` is an optional field in config, and is used only by _Android_ for the Chrome Custom Tabs color for the OIDC flow.
 * `browserMatchAll` is an optional field in config, and is used only by _Android_ to match all Chrome Custom Tabs browsers.
