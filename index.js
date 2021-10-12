@@ -22,16 +22,16 @@ import jwt_decode from 'jwt-decode';
 // Fixes auth-js warning:
 // `Memory storage can only support simple single user use case on server side.`
 // OKTA-434739
-const myMemoryStore = {};
+const memoryState = {};
 const storageProvider = {
   getItem: function(key) {
-    return myMemoryStore[key];
+    return memoryState[key];
   },
   setItem: function(key, val) {
-    myMemoryStore[key] = val;
+    memoryState[key] = val;
   },
   removeItem: function(key) {
-    delete myMemoryStore[key];
+    delete memoryState[key];
   }
 };
 
