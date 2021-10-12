@@ -1,3 +1,9 @@
+# 2.1.2
+
+### Bug Fix
+
+- [#225](https://github.com/okta/okta-react-native/pull/225) Fixes TypeScript definitions for `getAuthClient`
+
 # 2.1.1
 
 ### Bug Fix

@@ -14,6 +14,7 @@
 /* eslint-disable node/no-missing-import, camelcase */
 import OktaSDK, { Okta } from './index';
 import { expectType } from 'tsd';
+import { OktaAuth  } from '@okta/okta-auth-js';
 
 expectType<Promise<boolean>>(OktaSDK.createConfig({
   issuer: '{issuer}',
@@ -30,7 +31,7 @@ expectType<Promise<boolean>>(OktaSDK.createConfig({
   oktaAuthConfig: {}
 }));
 
-expectType<Okta.StringAnyMap>(OktaSDK.getAuthClient());
+expectType<OktaAuth>(OktaSDK.getAuthClient());
 
 expectType<Promise<Okta.AuthenticationResponse>>(OktaSDK.signIn());
 
