@@ -1318,10 +1318,10 @@
     "@okta/okta-auth-js" "^4.0.0"
     lodash "^4.17.15"
 
-"@okta/okta-auth-js@5.6.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-5.6.0.tgz#0a0b46dbd679ab0777bf338e0ab81ff1dcca1a7f"
-  integrity sha512-FwGJ2tFAl7matIcIoWA6FuwHXkcaMJhV7b7ENPoB6ftcFQHFItm/S5vf5G7g6wIep0ZTHOA7I8loIOE+TtzEBw==
+"@okta/okta-auth-js@5.4.1":
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-5.4.1.tgz#1b25e6fcb862d1b8c95275bc206d4daa67cd2410"
+  integrity sha512-EMvHx454kkCZ+keLz1cxE1uROICS2C9lhiiZENRJVge6doZy6y4yNXxz+ja31kDULkcApqfPqJvhraK76u94og==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@okta/okta-idx-js" "0.19.0"
