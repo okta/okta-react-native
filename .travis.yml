@@ -7,7 +7,7 @@ jobs:
   include:
     - language: node_js
       node_js:
-        - lts/*
+        - 16
       os: linux
       services:
         - xvfb
