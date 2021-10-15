@@ -25,8 +25,6 @@ jobs:
       stage: Unit Tests
       name: iOS
       install:
-        - gem install xcpretty
-        - gem install cocoapods
         - pod install --project-directory=ios --repo-update
       script:
         - set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty        
@@ -36,8 +34,6 @@ jobs:
       stage: E2E Tests
       name: iOS
       install:
-        - gem install xcpretty
-        - gem install cocoapods
         - yarn build
         - cd e2e
         - yarn install
