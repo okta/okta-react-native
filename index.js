@@ -19,6 +19,22 @@ import { version, peerDependencies } from './package.json';
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode';
 
+// Fixes auth-js warning:
+// `Memory storage can only support simple single user use case on server side.`
+// OKTA-434739
+const memoryState = {};
+const storageProvider = {
+  getItem: function(key) {
+    return memoryState[key];
+  },
+  setItem: function(key, val) {
+    memoryState[key] = val;
+  },
+  removeItem: function(key) {
+    delete memoryState[key];
+  }
+};
+
 let authClient;
 
 class OktaAuthError extends Error {
@@ -62,6 +78,11 @@ export const createConfig = async({
 
   oktaAuthConfig = {
     ...oktaAuthConfig,
+    storageManager: {
+      token: {
+        storageProvider: storageProvider
+      }
+    },  
     issuer: issuer || origin,
     clientId,
     redirectUri,

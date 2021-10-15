@@ -139,7 +139,8 @@ describe('OktaReactNative', () => {
         redirectUri: 'dummy://redirect', 
         scopes: ['scope1'],
         mockConfig1: 'mock config 1',
-        mockConfig2: 'mock config 2'
+        mockConfig2: 'mock config 2',
+        storageManager: expect.anything()
       });
     });
     
