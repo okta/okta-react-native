@@ -1,7 +1,6 @@
 before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.13.0
   - export PATH="$HOME/.yarn/bin:$PATH"
-  - yarn install --frozen-lockfile  
 
 jobs:
   include:
@@ -15,6 +14,7 @@ jobs:
       stage: React Native
       name: React Native Tests
       install:
+        - yarn install --frozen-lockfile        
         - sudo apt-get update
         - sudo apt-get install -y libappindicator1
       script:
