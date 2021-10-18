@@ -216,7 +216,7 @@ export const getUser = async() => {
 
 export const getUserFromIdToken = async() => {
   let idTokenResponse = await getIdToken();
-  return jwt_decode(idTokenResponse.id_token);
+  return authClient.token.decode(idTokenResponse.id_token).payload;
 };
 
 export const isAuthenticated = async() => {
