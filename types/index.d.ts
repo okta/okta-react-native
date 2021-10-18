@@ -14,11 +14,11 @@
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable camelcase */
-import { OktaAuthOptions } from '@okta/okta-auth-js';
+import { OktaAuthOptions, OktaAuth  } from '@okta/okta-auth-js';
 
 export function createConfig(config: Okta.ConfigParameters): Promise<boolean>;
 
-export function getAuthClient(): Okta.StringAnyMap;
+export function getAuthClient(): OktaAuth;
 
 export function signIn(
   credentials?: Okta.Credentials
