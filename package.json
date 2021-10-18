@@ -74,7 +74,7 @@
   },
   "dependencies": {
     "@okta/configuration-validation": "^1.0.0",
-    "@okta/okta-auth-js": "5.4.1",
+    "@okta/okta-auth-js": "git+https://github.com/okta/okta-auth-js#sw-expose-react-native-entry",
     "jwt-decode": "^3.1.2",
     "url-parse": "^1.5.0"
   },
