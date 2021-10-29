@@ -524,7 +524,9 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                 params.putString(OktaSdkConstant.RESOLVE_TYPE_KEY, OktaSdkConstant.CANCELLED);
                 sendEvent(reactContext, OktaSdkConstant.ON_CANCELLED, params);
                 final Promise promise = queuedPromise;
-                promise.reject(OktaSdkError.CANCELLED.getErrorCode(), OktaSdkError.CANCELLED.getErrorMessage());
+                if (promise != null) {
+                    promise.reject(OktaSdkError.CANCELLED.getErrorCode(), OktaSdkError.CANCELLED.getErrorMessage());
+                }
                 queuedPromise = null;
             }
 
