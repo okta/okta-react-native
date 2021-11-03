@@ -1,3 +1,9 @@
+# 2.2.0
+
+### Bug Fix
+
+- [#239](https://github.com/okta/okta-react-native/pull/239) Fixes exception from `onCancel` callback (Android)
+
 # 2.1.2
 
 ### Bug Fix
