@@ -3,6 +3,12 @@
 ### Bug Fix
 
 - [#239](https://github.com/okta/okta-react-native/pull/239) Fixes exception from `onCancel` callback (Android)
+- [#229](https://github.com/okta/okta-react-native/pull/229) Fixes memory warning 
+
+### Other 
+
+- [#240](https://github.com/okta/okta-react-native/pull/240) Updates transitive dependency on okta-oidc-android dependencies (Android) 
+- [#232](https://github.com/okta/okta-react-native/pull/232) Updates React Native dependencies
 
 # 2.1.2
 
