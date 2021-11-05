@@ -48,7 +48,7 @@ jest.mock('@okta/okta-auth-js', () => {
   return {
     OktaAuth: jest.fn().mockImplementation(() => {
       return {
-        signIn: mockSignInOktaAuth, 
+        signInWithCredentials: mockSignInOktaAuth, 
         _oktaUserAgent: {
           addEnvironment: jest.fn(),
           getHttpHeader: jest.fn(),
