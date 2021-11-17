@@ -21,7 +21,7 @@ jobs:
         - bash ./scripts/snyk.sh
     - language: objective-c
       os: osx
-      osx_image: xcode12.5
+      osx_image: xcode13.1
       stage: Unit Tests
       name: iOS
       install:
@@ -30,7 +30,7 @@ jobs:
         - set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty        
     - language: objective-c
       os: osx
-      osx_image: xcode12.5
+      osx_image: xcode13.1
       stage: E2E Tests
       name: iOS
       install:
