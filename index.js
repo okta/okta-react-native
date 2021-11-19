@@ -147,7 +147,7 @@ export const getAuthClient = () => {
 export const signIn = async(options) => {
   // Custom sign in
   if (options && typeof options === 'object') {
-    return getAuthClient().signIn(options)
+    return getAuthClient().signInWithCredentials(options)
       .then((transaction) => {
         const { status, sessionToken } = transaction;
         if (status !== 'SUCCESS') {
