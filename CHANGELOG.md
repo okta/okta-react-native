@@ -1,3 +1,9 @@
+# 2.3.0
+
+### Bug Fix
+
+- [#248](https://github.com/okta/okta-react-native/pull/248) Updates iOS OIDC dependency
+
 # 2.2.0
 
 ### Bug Fix
