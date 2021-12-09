@@ -7,7 +7,6 @@ on:
 
 jobs:
   JSTests:
-    using: 'node12'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
