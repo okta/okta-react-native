@@ -1,0 +1,25 @@
+name: Okta OIDC iOS
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  JSTests:
+    using: 'node12'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 16
+    - run: npm install -g yarn 
+    - run: apt-get install -y libappindicator1
+    - name: Lint
+      run: yarn lint
+    - name: Test
+      run: yarn test
+    - name: Execute snyk.sh
+      run: bash ./scripts/snyk.sh
+      
