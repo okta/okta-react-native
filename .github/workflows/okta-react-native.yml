@@ -5,37 +5,34 @@ on:
     branches: [ master ]
   pull_request:
 
-on: 
-  iOSUnitTests:
-  JSTests:
-    - uses: actions/checkout@v2
+
+jobs:
+  setup_node_deps:
+    steps:
     - uses: actions/setup-node@v2
       with:
         node-version: 16
     - run: npm install -g yarn 
     - run: yarn install --frozen-lockfile
-
-jobs:
   JSTests:
+    needs: setup_node_deps
     runs-on: ubuntu-latest
     steps:
-    - run: sudo apt-get install -y libappindicator1
-    - run: echo 'Success'
-    # - name: Lint
-    #   run: yarn lint
-    # - name: Test
-    #   run: yarn test
-    # - name: Execute snyk.sh
-    #   run: bash ./scripts/snyk.sh
-  iOSUnitTests:
-    runs-on: macos-11
-    steps:
     - uses: actions/checkout@v2
-    # - name: Install CocoaPods
-    #   - pod install --project-directory=ios --repo-update
-    - name: iOS
-      run: echo 'Success'
-      # - set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
-      
+    - run: sudo apt-get install -y libappindicator1
+    - name: Lint
+      run: yarn lint
+    - name: Test
+      run: yarn test
+    - name: Execute snyk.sh
+      run: bash ./scripts/snyk.sh
+  # iOSUnitTests:
+  #   runs-on: macos-11
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Install CocoaPods
+  #     - pod install --project-directory=ios --repo-update
+  #   - name: iOS
+  #     - set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
   
       
