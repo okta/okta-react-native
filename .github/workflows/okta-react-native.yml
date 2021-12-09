@@ -15,6 +15,7 @@ jobs:
         node-version: 16
     - run: npm install -g yarn 
     - run: sudo apt-get install -y libappindicator1
+    - run: yarn install --frozen-lockfile
     - name: Lint
       run: yarn lint
     - name: Test
