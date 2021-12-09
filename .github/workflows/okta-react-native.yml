@@ -34,7 +34,8 @@ jobs:
     # - name: Install CocoaPods
     #   - pod install --project-directory=ios --repo-update
     - name: iOS
+      run: echo 'Success'
       # - set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
-      - echo 'Success'
+      
   
       
