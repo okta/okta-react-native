@@ -7,18 +7,12 @@ on:
 
 
 jobs:
-  setup_node_deps:
-    steps:
-    - uses: actions/setup-node@v2
-      with:
-        node-version: 16
-    - run: npm install -g yarn 
-    - run: yarn install --frozen-lockfile
   JSTests:
-    needs: setup_node_deps
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: ./.github/workflows/install_action
+      - node-version: 16
     - run: sudo apt-get install -y libappindicator1
     - name: Lint
       run: yarn lint
