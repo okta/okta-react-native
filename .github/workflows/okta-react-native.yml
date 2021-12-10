@@ -29,8 +29,24 @@ jobs:
       with:
         node-version: 16
     - name: Install CocoaPods deps
-      run: pod install --project-directory=ios --repo-update
+      run: pod install --project-directory=ios
     - name: iOS
       run: set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
+  # UIUnitTests:
+  #   runs-on: macos-11
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - uses: ./.github/workflows/composite/configure-node
+  #     with:
+  #       node-version: 16
+  #   - run: yarn build
+  #   - run: cd e2e
+  #   - run: yarn install
+  #   - run: cd ios && pod install && cd ..
+  #   - run: echo -e "CLIENT_ID=${{ secrets.CLIENT_ID }}\nISSUER=${{ secrets.ISSUER }}\nREDIRECT_URI=${{ secrets.REDIRECT_URI }}\nLOGOUT_REDIRECT_URI=${{secrets.LOGOUT_REDIRECT_URI}}" > .env
+  #   - run: cat .env
+  #   - run: cd ..
+  #   - name: iOS
+  #     run: et -o pipefail && xcodebuild -workspace e2e/ios/E2EOktaReactNative.xcworkspace -scheme E2EOktaReactNative -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' -sdk iphonesimulator clean test | xcpretty
   
       
