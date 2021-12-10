@@ -37,9 +37,9 @@ jobs:
       - name: Cache CocoaPods
         id: pods-cache
         uses: actions/cache@v2
-          with:
-            path: ios/Pods
-            key: pods-${{ hashFiles('ios/Podfile.lock') }}                  
+        with:
+          path: ios/Pods
+          key: pods-${{ hashFiles('ios/Podfile.lock') }}                  
       - name: Install CocoaPods deps
         if: steps.pods-cache.outputs.cache-hit != 'true'
         run: pod install --project-directory=ios
