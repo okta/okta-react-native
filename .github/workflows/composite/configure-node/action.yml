@@ -1,4 +1,4 @@
-name: 'Setup node and run yarn'
+name: 'Setup node, run yarn, cache node_modules'
 description: 'Checkout and run yarn install'
 author: 'okta'
 
@@ -10,7 +10,11 @@ inputs:
   node-path: 
     description: 'Path to node_modules'
     required: true
-    default: node_modules
+    default: ./node_modules
+  lock-path: 
+    description: 'Path to lockfile yarn.lock'
+    required: true
+    default: ./yarn.lock
 
 outputs:
   cache-hit:
@@ -32,7 +36,7 @@ runs:
     uses: actions/cache@v2
     with:
       path: ${{ inputs.node-path }}
-      key: node-modules-${{ inputs.node-version }}-${{ inputs.node-path }}-${{ hashFiles('${{ inputs.node-path }}/yarn.lock') }}
+      key: node-modules-${{ inputs.node-version }}-${{ inputs.node-path }}-${{ hashFiles('${{ inputs.lock-path }}') }}
   - name: Install deps
     if: steps.cache-node.outputs.cache-hit != 'true'
     run: yarn install --frozen-lockfile

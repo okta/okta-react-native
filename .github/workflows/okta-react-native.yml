@@ -15,6 +15,7 @@ jobs:
       with:
         node-version: 16
         node-path: ./node-path
+        lock-path: ./yarn.lock
     - run: sudo apt-get install -y libappindicator1
     - name: Lint
       run: yarn lint
