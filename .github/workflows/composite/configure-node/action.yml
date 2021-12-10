@@ -12,12 +12,13 @@ inputs:
     required: true
     default: ./node_modules
   lock-hash: 
-    description: 'Hash yarn.lock path'
+    # We should pass a full hash because `hashFiles('${{ inputs.lock-path }}/yarn.lock')` doesn't work
+    description: 'Hash of yarn.lock file'
     required: true
 
 outputs:
   cache-hit:
-    description: "Cached node_files: "
+    description: "Cache node_files succeeded"
     value: ${{ steps.cache-node.outputs.cache-hit }}
 
 runs:
@@ -30,7 +31,7 @@ runs:
   - name: Install yarn
     run: npm install -g yarn 
     shell: bash
-  - name: Cache Node Modules
+  - name: Retrieve/save cache node_modules
     id: cache-node
     uses: actions/cache@v2
     with:
