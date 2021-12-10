@@ -7,32 +7,33 @@ on:
 
 
 jobs:
-  # JSTests:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: ./.github/workflows/composite/configure-node
-  #     with:
-  #       node-version: 16
-  #   - run: sudo apt-get install -y libappindicator1
-  #   - name: Lint
-  #     run: yarn lint
-  #   - name: Test
-  #     run: yarn test
-  #   - name: Execute snyk.sh
-  #     run: bash ./scripts/snyk.sh
-  iOSUnitTests:
-    runs-on: macos-11
+  JSTests:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: ./.github/workflows/composite/configure-node
       with:
         node-version: 16
-    - name: Install CocoaPods deps
-      run: pod install --project-directory=ios
-    - name: iOS
-      run: set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
-  # UIUnitTests:
+        node-path: ./node-path
+    - run: sudo apt-get install -y libappindicator1
+    - name: Lint
+      run: yarn lint
+    - name: Test
+      run: yarn test
+    - name: Execute snyk.sh
+      run: bash ./scripts/snyk.sh
+  # iOSUnitTests:
+  #   runs-on: macos-11
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - uses: ./.github/workflows/composite/configure-node
+  #     with:
+  #       node-version: 16
+  #   - name: Install CocoaPods deps
+  #     run: pod install --project-directory=ios
+  #   - name: iOS
+  #     run: set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
+  # iOSUITests:
   #   runs-on: macos-11
   #   steps:
   #   - uses: actions/checkout@v2
