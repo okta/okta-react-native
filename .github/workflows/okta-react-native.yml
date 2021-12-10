@@ -1,4 +1,4 @@
-name: Okta OIDC iOS
+name: Okta React Native
 
 on:
   push:
@@ -7,33 +7,44 @@ on:
 
 
 jobs:
-  JSTests:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: ./.github/workflows/composite/configure-node
-      with:
-        node-version: 16
-        node-path: ./node_modules
-        lock-hash: ${{ hashFiles('yarn.lock') }}
-    - run: sudo apt-get install -y libappindicator1
-    - name: Lint
-      run: yarn lint
-    - name: Test
-      run: yarn test
-    - name: Execute snyk.sh
-      run: bash ./scripts/snyk.sh
-  # iOSUnitTests:
-  #   runs-on: macos-11
+  # JSTests:
+  #   runs-on: ubuntu-latest
   #   steps:
   #   - uses: actions/checkout@v2
-  #   - uses: ./.github/workflows/composite/configure-node
+  #   - name: Configure React Native dependencies (node_modules)
+  #     uses: ./.github/workflows/composite/configure-node
   #     with:
   #       node-version: 16
-  #   - name: Install CocoaPods deps
-  #     run: pod install --project-directory=ios
-  #   - name: iOS
-  #     run: set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
+  #       node-path: ./node_modules
+  #       lock-hash: ${{ hashFiles('yarn.lock') }}
+  #   - run: sudo apt-get install -y libappindicator1
+  #   - name: Lint
+  #     run: yarn lint
+  #   - name: Test
+  #     run: yarn test
+  #   - name: Execute snyk.sh
+  #     run: bash ./scripts/snyk.sh
+    iOSUnitTests:
+      runs-on: macos-11
+      steps:
+      - uses: actions/checkout@v2
+      - name: Configure React Native dependencies (node_modules)
+        uses: ./.github/workflows/composite/configure-node
+        with:
+          node-version: 16
+          node-path: ./node_modules
+          lock-hash: ${{ hashFiles('yarn.lock') }}
+      - name: Cache CocoaPods
+        uses: actions/cache@v2
+          id: pods-cache
+          with:
+            path: ios/Pods
+            key: pods-${{ hashFiles('ios/Podfile.lock') }}                  
+      - name: Install CocoaPods deps
+        if: steps.pods-cache.outputs.cache-hit != 'true'
+        run: pod install --project-directory=ios
+      - name: iOS
+        run: set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
   # iOSUITests:
   #   runs-on: macos-11
   #   steps:
