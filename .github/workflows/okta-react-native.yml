@@ -41,7 +41,17 @@ jobs:
     runs-on: macos-11
     steps:
     - uses: actions/checkout@v2
-    - uses: ./.github/workflows/composite/configure-node
+    - name: Cache ./node_modules    
+      uses: ./.github/workflows/composite/configure-node
+      with:  
+        node-path: ./node_modules
+        lock-hash: ${{ hashFiles('yarn.lock') }}
+    - name: Cache e2e/node_modules
+      uses: ./.github/workflows/composite/configure-node
+      with:  
+        node-path: ./e2e/node_modules
+        lock-hash: ${{ hashFiles('./e2e/yarn.lock') }}
+        install-path: ./e2e
     - name: Cache CocoaPods
       id: pods-cache
       uses: actions/cache@v2
@@ -51,10 +61,8 @@ jobs:
     - name: Prepare for iOS Build
       run: |
         yarn build 
-        cd e2e
-        yarn install
-        cd ios
-        pod install
+        cd e2e/ios
+        pod install --repo-update
         cd ../..
         echo -e "CLIENT_ID=${{ secrets.CLIENT_ID }}\nISSUER=${{ secrets.ISSUER }}\nREDIRECT_URI=${{ secrets.REDIRECT_URI }}\nLOGOUT_REDIRECT_URI=${{secrets.LOGOUT_REDIRECT_URI}}" > e2e/.env
         cat e2e/.env

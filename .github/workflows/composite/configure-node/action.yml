@@ -14,6 +14,11 @@ inputs:
     # We should pass a full hash because `hashFiles('${{ inputs.lock-path }}/yarn.lock')` doesn't work
     description: 'Hash of yarn.lock file'
     required: true
+  install-path: 
+    # We should pass a full hash because `hashFiles('${{ inputs.lock-path }}/yarn.lock')` doesn't work
+    description: 'yarn --cwd ${install-path} install'
+    required: false
+    default: ./    
 
 outputs:
   cache-hit:
@@ -38,5 +43,5 @@ runs:
       key: node-modules-${{ inputs.lock-hash }}
   - name: Install deps
     if: steps.cache-node.outputs.cache-hit != 'true'
-    run: yarn install --frozen-lockfile
+    run: yarn --cwd ${{ inputs.install-path }} install --frozen-lockfile
     shell: bash
