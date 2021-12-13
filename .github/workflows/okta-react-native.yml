@@ -39,6 +39,7 @@ jobs:
     #     run: set -eo pipefail && xcodebuild -workspace ios/ReactNativeOktaSdkBridge.xcworkspace -scheme "ReactNativeOktaSdkBridge" -destination "platform=iOS Simulator,OS=latest,name=iPhone 11" clean test | xcpretty
   iOSUITests:
     runs-on: macos-11
+    environment: github-ci
     steps:
     - uses: actions/checkout@v2
     - uses: ./.github/workflows/composite/configure-node
