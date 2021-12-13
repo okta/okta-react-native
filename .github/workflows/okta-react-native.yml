@@ -46,6 +46,8 @@ jobs:
       with:  
         node-path: ./node_modules
         lock-hash: ${{ hashFiles('yarn.lock') }}
+    - name: Build okta-react-native package
+      run: yarn build 
     - name: Cache e2e/node_modules
       uses: ./.github/workflows/composite/configure-node
       with:  
@@ -60,7 +62,6 @@ jobs:
         key: pods-${{ hashFiles('./e2e/ios/Podfile.lock') }}
     - name: Prepare for iOS Build
       run: |
-        yarn build 
         cd e2e/ios
         pod install --repo-update
         cd ../..

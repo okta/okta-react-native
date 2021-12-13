@@ -33,7 +33,7 @@ runs:
     with:
       node-version: ${{ inputs.node-version }}
   - name: Install yarn
-    run: npm install -g yarn 
+    run: npm install -g yarn
     shell: bash
   - name: Retrieve/save cache node_modules
     id: cache-node
