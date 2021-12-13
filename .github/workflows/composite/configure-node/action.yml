@@ -5,7 +5,7 @@ author: 'okta'
 inputs:
   node-version:
     description: 'Node version'
-    required: true
+    required: false
     default: 16
   node-path: 
     description: 'Path to node_modules'
