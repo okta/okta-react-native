@@ -68,6 +68,10 @@ jobs:
         echo -e "CLIENT_ID=${{ secrets.CLIENT_ID }}\nISSUER=${{ secrets.ISSUER }}\nREDIRECT_URI=${{ secrets.REDIRECT_URI }}\nLOGOUT_REDIRECT_URI=${{secrets.LOGOUT_REDIRECT_URI}}" > e2e/.env
         cat e2e/.env
     - name: iOS
+      env: 
+        OKTA_USERNAME: ${{ secrets.OKTA_USERNAME }}
+        OKTA_PASSWORD: ${{ secrets.OKTA_PASSWORD }}
       run: | 
+        echo "$OKTA_USERNAME"
         set -o pipefail 
         xcodebuild -workspace e2e/ios/E2EOktaReactNative.xcworkspace -scheme E2EOktaReactNative -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' -sdk iphonesimulator clean test | xcpretty
