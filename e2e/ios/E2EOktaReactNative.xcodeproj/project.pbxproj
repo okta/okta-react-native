@@ -12,6 +12,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		92059402276A5AAD00AEADAD /* ABColdStartTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923192CC2705AD1700C37AB7 /* ABColdStartTests.swift */; };
 		923FC20C26FE2115009E15EB /* LoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923FC20B26FE2115009E15EB /* LoginTests.swift */; };
 		927A7DF126F207E40073FE7A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A7DF026F207E40073FE7A /* Foundation.framework */; };
 		927A7DF426F208680073FE7A /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927A7DF326F208680073FE7A /* Dummy.swift */; };
@@ -360,6 +361,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				923FC20C26FE2115009E15EB /* LoginTests.swift in Sources */,
+				92059402276A5AAD00AEADAD /* ABColdStartTests.swift in Sources */,
 				92BEADDE26FE19EE00FD8E8B /* CustomLoginTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
