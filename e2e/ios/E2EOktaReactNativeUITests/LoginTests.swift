@@ -14,12 +14,12 @@ import XCTest
 
 extension TimeInterval {
   
-  static let testing: TimeInterval = 30
+  static let testing: TimeInterval = 60
 }
 
 class LoginTests: XCTestCase {
-  let username = ProcessInfo.processInfo.environment["USERNAME"]!
-  let password = ProcessInfo.processInfo.environment["PASSWORD"]!
+  let username = "oleg.gnidets@okta.com"
+  let password = "QWEqwe123!"
 
   private(set) var app: XCUIApplication!
   
@@ -41,8 +41,11 @@ class LoginTests: XCTestCase {
   
   override func setUpWithError() throws {
     try super.setUpWithError()
-    
+
     continueAfterFailure = false
+    
+    try XCTSkipIf(username.isEmpty, "Username is empty")
+    try XCTSkipIf(password.isEmpty, "Password is empty")
     
     app = XCUIApplication()
     app.launch()
