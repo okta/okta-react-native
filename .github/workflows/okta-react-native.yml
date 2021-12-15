@@ -62,6 +62,7 @@ jobs:
         key: pods-${{ hashFiles('./e2e/ios/Podfile.lock') }}
     - name: Prepare for iOS Build
       run: |
+        npm install -g react-native-cli
         cd e2e/ios
         pod install --repo-update
         cd ../..

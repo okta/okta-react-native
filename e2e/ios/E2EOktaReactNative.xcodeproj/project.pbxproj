@@ -12,7 +12,6 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		92059402276A5AAD00AEADAD /* ABColdStartTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923192CC2705AD1700C37AB7 /* ABColdStartTests.swift */; };
 		923FC20C26FE2115009E15EB /* LoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923FC20B26FE2115009E15EB /* LoginTests.swift */; };
 		927A7DF126F207E40073FE7A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A7DF026F207E40073FE7A /* Foundation.framework */; };
 		927A7DF426F208680073FE7A /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927A7DF326F208680073FE7A /* Dummy.swift */; };
@@ -340,7 +339,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || exit 1\n  fi\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -361,7 +360,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				923FC20C26FE2115009E15EB /* LoginTests.swift in Sources */,
-				92059402276A5AAD00AEADAD /* ABColdStartTests.swift in Sources */,
 				92BEADDE26FE19EE00FD8E8B /* CustomLoginTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
