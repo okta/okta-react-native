@@ -40,7 +40,7 @@ jobs:
           key: pods-${{ hashFiles('./ios/Podfile.lock') }}          
       - name: Preparation before iOS Build
         run: |
-          - pod install --project-directory=ios --repo-update
+          pod install --project-directory=ios --repo-update
       - name: iOS
         run: | 
           set -o pipefail
