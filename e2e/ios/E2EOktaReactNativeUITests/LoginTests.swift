@@ -18,8 +18,8 @@ extension TimeInterval {
 }
 
 class LoginTests: XCTestCase {
-  let username = "oleg.gnidets@okta.com"
-  let password = "QWEqwe123!"
+  let username = ProcessInfo.processInfo.environment["USERNAME"]!
+  let password = ProcessInfo.processInfo.environment["PASSWORD"]!
 
   private(set) var app: XCUIApplication!
   
