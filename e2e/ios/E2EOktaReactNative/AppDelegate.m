@@ -67,7 +67,11 @@
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
+#if CI
+  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+#else
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+#endif
 }
 
 - (void)appController:(EXUpdatesAppController *)appController didStartWithSuccess:(BOOL)success {

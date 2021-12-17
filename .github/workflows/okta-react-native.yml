@@ -63,7 +63,9 @@ jobs:
     - name: Prepare for iOS Build
       run: |
         npm install -g react-native-cli
-        cd e2e/ios
+        cd e2e
+        yarn bundle:ios
+        cd ios
         pod install --repo-update
         cd ../..
         echo -e "CLIENT_ID=${{ secrets.CLIENT_ID }}\nISSUER=${{ secrets.ISSUER }}\nREDIRECT_URI=${{ secrets.REDIRECT_URI }}\nLOGOUT_REDIRECT_URI=${{secrets.LOGOUT_REDIRECT_URI}}" > e2e/.env

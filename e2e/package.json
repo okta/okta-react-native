@@ -4,7 +4,8 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "web": "expo start --web",
-    "start": "react-native start --reset-cache"
+    "start": "react-native start --reset-cache",
+    "bundle:ios": "react-native bundle --entry-file index.js --bundle-output ios/main.jsbundle --dev false --platform ios --assets-dest ios"
   },
   "dependencies": {
     "@okta/okta-react-native": "file:./../dist",
