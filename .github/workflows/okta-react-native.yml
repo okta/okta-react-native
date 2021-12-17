@@ -32,6 +32,15 @@ jobs:
         with:
           node-path: ./node_modules
           lock-hash: ${{ hashFiles('yarn.lock') }}
+      - name: Cache CocoaPods
+        id: pods-cache
+        uses: actions/cache@v2
+        with:
+          path: ./ios/Pods
+          key: pods-${{ hashFiles('./ios/Podfile.lock') }}          
+      - name: Preparation before iOS Build
+        run: |
+          - pod install --project-directory=ios --repo-update
       - name: iOS
         run: | 
           set -o pipefail
