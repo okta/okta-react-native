@@ -14,8 +14,7 @@ inputs:
     # We should pass a full hash because `hashFiles('${{ inputs.lock-path }}/yarn.lock')` doesn't work
     description: 'Hash of yarn.lock file'
     required: true
-  install-path: 
-    # We should pass a full hash because `hashFiles('${{ inputs.lock-path }}/yarn.lock')` doesn't work
+  install-path:
     description: 'yarn --cwd ${install-path} install'
     required: false
     default: ./    
