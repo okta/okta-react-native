@@ -103,6 +103,7 @@ export default class CustomLogin extends React.Component {
           title="Sign in" 
           testID='sign_in_button' 
         />
+        <View style={styles.flexible}></View>
       </View>  
     ); 
   }
@@ -122,4 +123,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  flexible: {
+    flex: 1,
+  }
 });

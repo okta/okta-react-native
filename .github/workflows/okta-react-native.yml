@@ -77,4 +77,10 @@ jobs:
       run: | 
         echo "$OKTA_USERNAME"
         set -o pipefail 
-        xcodebuild -workspace e2e/ios/E2EOktaReactNative.xcworkspace -scheme E2EOktaReactNative -destination 'platform=iOS Simulator,OS=latest,name=iPhone 12' -sdk iphonesimulator clean test
+        xcodebuild \
+        -workspace e2e/ios/E2EOktaReactNative.xcworkspace \
+        -scheme E2EOktaReactNative \
+        -destination 'platform=iOS Simulator,OS=latest,name=iPhone 12' \
+        -configuration CI \
+        -sdk iphonesimulator \
+        clean test
