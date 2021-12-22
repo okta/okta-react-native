@@ -59,15 +59,20 @@ export default class CustomLogin extends React.Component {
           });
       })
       .catch(error => {
+        // For some reason the app crashes when only one button exist (only with loaded bundle, debug is OK) 🤦‍♂️
         Alert.alert(
-          error.message ?? 'Error occurred',
+          "Error",
+          error.message,
           [
-            { 
-              text: 'OK', 
-              style: 'cancel' 
-            }
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel"
+            },
+            { text: "OK", onPress: () => console.log("OK Pressed") }
           ]
         );
+    
 
         this.setState({
           isLoading: false
@@ -103,6 +108,7 @@ export default class CustomLogin extends React.Component {
           title="Sign in" 
           testID='sign_in_button' 
         />
+        <View style={styles.flexible}></View>
       </View>  
     ); 
   }
@@ -122,4 +128,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  flexible: {
+    flex: 1,
+  }
 });

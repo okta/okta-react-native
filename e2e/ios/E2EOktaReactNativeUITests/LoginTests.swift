@@ -14,7 +14,7 @@ import XCTest
 
 extension TimeInterval {
   
-  static let testing: TimeInterval = 30
+  static let testing: TimeInterval = 15
 }
 
 class LoginTests: XCTestCase {
@@ -41,8 +41,11 @@ class LoginTests: XCTestCase {
   
   override func setUpWithError() throws {
     try super.setUpWithError()
-    
+
     continueAfterFailure = false
+    
+    try XCTSkipIf(username.isEmpty, "Username is empty")
+    try XCTSkipIf(password.isEmpty, "Password is empty")
     
     app = XCUIApplication()
     app.launch()

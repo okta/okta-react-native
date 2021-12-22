@@ -31,7 +31,7 @@ final class CustomLoginTests: LoginTests {
   
   func testLoginFlow() throws {
     // given
-    XCTAssertTrue(customLoginButton.waitForExistence(timeout: .testing))
+    XCTAssertTrue(customLoginButton.waitForExistence(timeout: .testing), app.debugDescription)
     // when
     customLoginButton.tap()
     
@@ -63,7 +63,7 @@ final class CustomLoginTests: LoginTests {
   
   func testIncorrectLoginFlow() throws {
     // given
-    XCTAssertTrue(customLoginButton.waitForExistence(timeout: .testing))
+    XCTAssertTrue(customLoginButton.waitForExistence(timeout: .testing), app.debugDescription)
     // when
     customLoginButton.tap()
     // then

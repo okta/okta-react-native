@@ -1,0 +1,46 @@
+name: 'Setup node, run yarn, cache node_modules'
+description: 'Checkout and run yarn install'
+author: 'okta'
+
+inputs:
+  node-version:
+    description: 'Node version'
+    required: false
+    default: 16
+  node-path: 
+    description: 'Path to node_modules'
+    required: true
+  lock-hash: 
+    # We should pass a full hash because `hashFiles('${{ inputs.lock-path }}/yarn.lock')` doesn't work
+    description: 'Hash of yarn.lock file'
+    required: true
+  install-path:
+    description: 'yarn --cwd ${install-path} install'
+    required: false
+    default: ./    
+
+outputs:
+  cache-hit:
+    description: "Cache node_files succeeded"
+    value: ${{ steps.cache-node.outputs.cache-hit }}
+
+runs:
+  using: "composite"
+  steps:
+  - name: Checkout
+    uses: actions/setup-node@v2
+    with:
+      node-version: ${{ inputs.node-version }}
+  - name: Install yarn
+    run: npm install -g yarn
+    shell: bash
+  - name: Retrieve/save cache node_modules
+    id: cache-node
+    uses: actions/cache@v2
+    with:
+      path: ${{ inputs.node-path }}
+      key: node-modules-${{ inputs.lock-hash }}
+  - name: Install deps
+    if: steps.cache-node.outputs.cache-hit != 'true'
+    run: yarn --cwd ${{ inputs.install-path }} install --frozen-lockfile
+    shell: bash
