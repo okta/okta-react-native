@@ -35,7 +35,7 @@
 			<key>127.0.0.1</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<string>1</string>
+				<true/>
 			</dict>
 			<key>localhost</key>
 			<dict>
