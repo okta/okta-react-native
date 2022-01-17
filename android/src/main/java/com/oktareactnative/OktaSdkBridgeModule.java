@@ -59,6 +59,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     private WebAuthClient webClient;
     private AuthClient authClient;
     private Promise queuedPromise;
+    private LastRequestType mLastRequestType;
 
     public OktaSdkBridgeModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -190,6 +191,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             payloadBuilder.setIdp(options.getString("idp"));
         }
         queuedPromise = promise;
+        mLastRequestType = LastRequestType.SIGN_IN;
         webClient.signIn(currentActivity, payloadBuilder.build());
     }
 
@@ -367,6 +369,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
         }
 
         queuedPromise = promise;
+        mLastRequestType = LastRequestType.SIGN_OUT;
         webClient.signOutOfOkta(currentActivity);
     }
 
@@ -673,14 +676,23 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
         if (resultCode == Activity.RESULT_OK) {
             final String callbackUri = data != null ? data.getDataString() : "";
             if (callbackUri == null) return initialRequestCode;
-            if (callbackUri.startsWith(this.config.getRedirectUri().toString())) {
+            if (LastRequestType.SIGN_IN == mLastRequestType &&
+                callbackUri.startsWith(this.config.getRedirectUri().toString())
+            ) {
                 return REQUEST_CODE_SIGN_IN;
-            } else if (callbackUri.startsWith(this.config.getEndSessionRedirectUri().toString())) {
+            } else if (LastRequestType.SIGN_OUT == mLastRequestType &&
+                callbackUri.startsWith(this.config.getEndSessionRedirectUri().toString())
+            ) {
                 return REQUEST_CODE_SIGN_OUT;
             }
         } else if (resultCode == Activity.RESULT_CANCELED){
             return REQUEST_CODE_SIGN_IN;
         }
         return initialRequestCode;
+    }
+
+    private enum LastRequestType {
+        SIGN_IN,
+        SIGN_OUT;
     }
 }
