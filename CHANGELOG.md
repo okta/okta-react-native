@@ -3,6 +3,7 @@
 ### Bug Fix
 
 - [#248](https://github.com/okta/okta-react-native/pull/248) Updates iOS OIDC dependency
+- [#262](https://github.com/okta/okta-react-native/pull/262) Fixes deprecated maven plugin (Android)
 
 # 2.2.0
 
