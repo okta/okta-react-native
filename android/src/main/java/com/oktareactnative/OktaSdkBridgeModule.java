@@ -193,6 +193,9 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
         if (options.hasKey("prompt")) {
             payloadBuilder.addParameter(options.getString("prompt"));
         }
+        if (options.hasKey("login_hint")) {
+            payloadBuilder.addParameter(options.getString("login_hint"));
+        }
         queuedPromise = promise;
         mLastRequestType = LastRequestType.SIGN_IN;
         webClient.signIn(currentActivity, payloadBuilder.build());
