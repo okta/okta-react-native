@@ -313,7 +313,9 @@ class OktaSdkBridge: RCTEventEmitter {
             currStateManager.writeToSecureStorage()
             let dic = [
                 OktaSdkConstant.RESOLVE_TYPE_KEY: OktaSdkConstant.AUTHORIZED,
-                OktaSdkConstant.ACCESS_TOKEN_KEY: stateManager?.accessToken
+                OktaSdkConstant.ACCESS_TOKEN_KEY: stateManager?.accessToken,
+                OktaSdkConstant.ID_TOKEN_KEY: stateManager?.idToken,
+                OktaSdkConstant.REFRESH_TOKEN_KEY: stateManager?.refreshToken
             ]
             
             self.sendEvent(withName: OktaSdkConstant.SIGN_IN_SUCCESS, body: dic)

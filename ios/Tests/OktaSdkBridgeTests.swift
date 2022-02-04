@@ -182,6 +182,8 @@ final class OktaSdkBridgeTests: XCTestCase {
             let resultDictionary = bridge.eventsRegister[OktaSdkConstant.SIGN_IN_SUCCESS] as! [String: String?]
             XCTAssertEqual(resultDictionary[OktaSdkConstant.RESOLVE_TYPE_KEY]!, OktaSdkConstant.AUTHORIZED)
             XCTAssertNotNil(resultDictionary[OktaSdkConstant.ACCESS_TOKEN_KEY]!)
+            XCTAssertNotNil(resultDictionary[OktaSdkConstant.ID_TOKEN_KEY]!)
+            XCTAssertNotNil(resultDictionary[OktaSdkConstant.REFRESH_TOKEN_KEY]!)
             
             expectation.fulfill()
         } promiseRejecter: { (code, message, error) in
