@@ -202,6 +202,18 @@ await signInWithBrowser();
 await signInWithBrowser({ idp: 'your_idp_here' });
 ```
 
+**Note**: Prompt parameter can be specified by passing argument with the prompt parameter.
+
+```javascript
+await signInWithBrowser({ prompt: 'consent' });
+```
+
+**Note**: login_hint parameter can be specified by passing argument with the login_hint parameter.
+
+```javascript
+await signInWithBrowser({ login_hint: 'your_login_hint_here' });
+```
+
 **Note**: If you want to get rid of the system sign in and sign out alert on iOS, then pass the `noSSO` parameter when calling `signInWithBrowser`. The cookies will not be retained by the browser, so after logging out the user will be prompted to re-authenticate.
 
 ```javascript
