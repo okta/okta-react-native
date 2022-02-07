@@ -191,7 +191,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             payloadBuilder.setIdp(options.getString("idp"));
         }
         if (options.hasKey("prompt")) {
-            payloadBuilder.addParameter(options.getString("prompt"));
+            payloadBuilder.addParameter("prompt", options.getString("prompt"));
         }
         if (options.hasKey("login_hint")) {
             payloadBuilder.setLoginHint(options.getString("login_hint"));
