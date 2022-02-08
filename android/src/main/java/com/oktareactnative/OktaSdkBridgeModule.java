@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Okta, Inc. and/or its affiliates. All rights reserved.
+ * Copyright (c) 2019-Present, Okta, Inc. and/or its affiliates. All rights reserved.
  * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the "License.")
  *
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
@@ -15,9 +15,9 @@ package com.oktareactnative;
 import static com.okta.oidc.OktaResultFragment.REQUEST_CODE_SIGN_IN;
 import static com.okta.oidc.OktaResultFragment.REQUEST_CODE_SIGN_OUT;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,16 +75,16 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
     @ReactMethod
     public void createConfig(String clientId,
-            String redirectUri,
-            String endSessionRedirectUri,
-            String discoveryUri,
-            ReadableArray scopes,
-            String userAgentTemplate,
-            Boolean requireHardwareBackedKeyStore,
-            String androidChromeTabColor,
-            ReadableMap timeouts,
-            Boolean browserMatchAll,
-            Promise promise
+        String redirectUri,
+        String endSessionRedirectUri,
+        String discoveryUri,
+        ReadableArray scopes,
+        String userAgentTemplate,
+        Boolean requireHardwareBackedKeyStore,
+        String androidChromeTabColor,
+        ReadableMap timeouts,
+        Boolean browserMatchAll,
+        Promise promise
     ) {
 
         try {
@@ -105,27 +105,30 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                     .discoveryUri(discoveryUri)
                     .create();
 
-            Okta.WebAuthBuilder webAuthBuilder = new Okta.WebAuthBuilder();
-            configureBuilder(webAuthBuilder, userAgentTemplate, requireHardwareBackedKeyStore, connectTimeout, readTimeout);
-
-            if (androidChromeTabColor != null) {
-                try {
-                    webAuthBuilder.withTabColor(Color.parseColor(androidChromeTabColor));
-                } catch (IllegalArgumentException e) {
-                    // The color wasn't in the right format.
-                    promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
-                }
+            try {
+                this.webClient = WebAuthClientFactory.getWebAuthClient(
+                    config,
+                    reactContext,
+                    requireHardwareBackedKeyStore,
+                    androidChromeTabColor,
+                    browserMatchAll,
+                    userAgentTemplate,
+                    connectTimeout,
+                    readTimeout
+                );
+            } catch (IllegalArgumentException e) {
+                // The color wasn't in the right format.
+                promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
             }
 
-            if (browserMatchAll != null && browserMatchAll) {
-                webAuthBuilder.browserMatchAll(true);
-            }
-
-            this.webClient = webAuthBuilder.create();
-
-            Okta.AuthBuilder authClientBuilder = new Okta.AuthBuilder();
-            configureBuilder(authClientBuilder, userAgentTemplate, requireHardwareBackedKeyStore, connectTimeout, readTimeout);
-            this.authClient = authClientBuilder.create();
+            this.authClient = AuthClientFactory.getAuthClient(
+                config,
+                reactContext,
+                requireHardwareBackedKeyStore,
+                userAgentTemplate,
+                connectTimeout,
+                readTimeout
+            );
 
             promise.resolve(true);
         } catch (Exception e) {
@@ -145,20 +148,6 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
             return timeout;
         }
-    }
-
-    private <T extends OktaBuilder<?, T>> void configureBuilder(
-            T builder,
-            String userAgentTemplate,
-            boolean requireHardwareBackedKeyStore,
-            int connectTimeoutMs,
-            int readTimeoutMs
-    ) {
-        builder.withConfig(config)
-                .withOktaHttpClient(new HttpClientImpl(userAgentTemplate, connectTimeoutMs, readTimeoutMs))
-                .withContext(reactContext)
-                .withStorage(new SharedPreferenceStorage(reactContext))
-                .setRequireHardwareBackedKeyStore(requireHardwareBackedKeyStore);
     }
 
     @ReactMethod
@@ -674,6 +663,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private int getRecalculatedRequestCodeForActivityResult(
             final int initialRequestCode,
             final int resultCode,
@@ -699,6 +689,6 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
     private enum LastRequestType {
         SIGN_IN,
-        SIGN_OUT;
+        SIGN_OUT
     }
 }
