@@ -15,6 +15,7 @@ package com.oktareactnative;
 import static com.okta.oidc.OktaResultFragment.REQUEST_CODE_SIGN_IN;
 import static com.okta.oidc.OktaResultFragment.REQUEST_CODE_SIGN_OUT;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -475,6 +476,16 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
     }
 
+    @ReactMethod
+    public void addListener(String eventName) {
+        // Keep: Required for RN built in Event Emitter Calls.
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        // Keep: Required for RN built in Event Emitter Calls.
+    }
+
     /**
      * ================= Private Methods =================
      **/
@@ -674,6 +685,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private int getRecalculatedRequestCodeForActivityResult(
             final int initialRequestCode,
             final int resultCode,
@@ -699,6 +711,6 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
     private enum LastRequestType {
         SIGN_IN,
-        SIGN_OUT;
+        SIGN_OUT
     }
 }
