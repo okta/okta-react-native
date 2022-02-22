@@ -13,7 +13,7 @@
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -24,9 +24,10 @@ buildscript {
 }
 
 plugins {
-    id('com.android.library')
     id('maven-publish')
 }
+
+apply plugin: 'com.android.library'
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
@@ -66,12 +67,11 @@ repositories {
     }
     mavenCentral()
     google()
-    jcenter()
 }
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.okta.android:okta-oidc-android:1.2.1'
+    implementation 'com.okta.android:okta-oidc-android:1.2.2'
 }
 
 def configureReactNativePom(def pom) {
