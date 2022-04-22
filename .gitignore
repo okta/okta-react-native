@@ -6,6 +6,7 @@ npm-debug.log
 yarn-error.*
 .env
 *.hprof
+.idea/
 
 .watchmanconfig
 
@@ -25,6 +26,7 @@ build/
 local.properties
 *.iml
 xcuserdata/
+e2e/ios/main.jsbundle
 
 # General
 *.swp
