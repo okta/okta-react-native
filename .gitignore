@@ -27,6 +27,7 @@ local.properties
 *.iml
 xcuserdata/
 e2e/ios/main.jsbundle
+e2e/android/app/src/main/java/com/e2eoktareactnative/generated/
 
 # General
 *.swp
