@@ -70,7 +70,7 @@
 #if CI
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #else
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #endif
 }
 
