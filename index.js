@@ -61,6 +61,8 @@ export const createConfig = async({
   endSessionRedirectUri, 
   discoveryUri,
   scopes,
+  keychainService = 'Okta',
+  keychainAccessGroup = 'com.okta.mobile-sdk.shared',
   requireHardwareBackedKeyStore,
   androidChromeTabColor,
   httpConnectionTimeout,
@@ -110,6 +112,8 @@ export const createConfig = async({
       endSessionRedirectUri,
       discoveryUri,
       scopes,
+      keychainService,
+      keychainAccessGroup,
       userAgentTemplate,
       httpConnectionTimeout,
     );
