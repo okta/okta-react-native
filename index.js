@@ -256,3 +256,4 @@ export const clearTokens = async() => {
 };
 
 export const EventEmitter = new NativeEventEmitter(NativeModules.OktaSdkBridge);
+
