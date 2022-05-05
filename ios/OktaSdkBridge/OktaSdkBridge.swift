@@ -49,7 +49,46 @@ protocol StateManagerProtocol: AnyObject {
 }
 
 extension OktaOidcStateManager: StateManagerProtocol {
-    
+    func saveDeviceSecret(_ keychain: DeviceSecretKeychain) {
+        var tokens = ["id_token": self.idToken!]
+
+
+        // Only attempt to save the secret if the response includes a "device_secret" field
+        if let deviceSecret = self.authState.lastTokenResponse!.additionalParameters!["device_secret"] as? String {
+            tokens["device_secret"] = deviceSecret
+        }
+
+        keychain.save(tokens)
+    }
+}
+
+// MARK: - DeviceSecretKeychain
+
+struct DeviceSecretKeychain {
+    let service: String
+    let accessGroup: String
+
+    func save(_ tokens: [String: String]) {
+        for (kind, value) in tokens {
+            let deleteAttributes: [String: Any] = [
+                (kSecClass as String): kSecClassGenericPassword,
+                (kSecAttrService as String): service,
+                (kSecAttrAccessGroup as String): self.accessGroup,
+                (kSecAttrAccount as String): "Okta-\(kind)"
+            ]
+            SecItemDelete(deleteAttributes as CFDictionary)
+
+            let createAttributes: [String: Any] = [
+                (kSecClass as String): kSecClassGenericPassword,
+                (kSecAttrService as String): service,
+                (kSecAttrAccessGroup as String): self.accessGroup,
+                (kSecAttrAccount as String): "Okta-\(kind)",
+                (kSecValueData as String): value.data(using: .utf8)!
+            ]
+
+            SecItemAdd(createAttributes as CFDictionary, nil)
+        }
+    }
 }
 
 // MARK: - OktaSdkBridge
@@ -70,10 +109,11 @@ class OktaSdkBridge: RCTEventEmitter {
     }
     
     var oktaOidc: OktaOidcProtocol?
-    
+
     override var methodQueue: DispatchQueue { .main }
     
     private var requestTimeout: Int?
+    private var deviceSecretKeychain: DeviceSecretKeychain?
     
     func presentedViewController() -> UIViewController? {
         RCTPresentedViewController()
@@ -85,6 +125,8 @@ class OktaSdkBridge: RCTEventEmitter {
                       endSessionRedirectUri: String,
                       discoveryUri: String,
                       scopes: String,
+                      keychainService: String,
+                      keychainAccessGroup: String,
                       userAgentTemplate: String,
                       requestTimeout: Int,
                       promiseResolver: RCTPromiseResolveBlock,
@@ -105,6 +147,7 @@ class OktaSdkBridge: RCTEventEmitter {
             
             oktaOidc = try OktaOidc(configuration: config)
             self.requestTimeout = requestTimeout
+            self.deviceSecretKeychain = DeviceSecretKeychain(service: keychainService, accessGroup: keychainAccessGroup)
             
             promiseResolver(true)
         } catch let error {
@@ -184,6 +227,8 @@ class OktaSdkBridge: RCTEventEmitter {
             }
             
             currStateManager.writeToSecureStorage()
+            currStateManager.saveDeviceSecret(self.deviceSecretKeychain!)
+
             let result = [
                 OktaSdkConstant.RESOLVE_TYPE_KEY: OktaSdkConstant.AUTHORIZED,
                 OktaSdkConstant.ACCESS_TOKEN_KEY: stateManager?.accessToken
@@ -311,6 +356,8 @@ class OktaSdkBridge: RCTEventEmitter {
             }
             
             currStateManager.writeToSecureStorage()
+            currStateManager.saveDeviceSecret(self.deviceSecretKeychain!)
+
             let dic = [
                 OktaSdkConstant.RESOLVE_TYPE_KEY: OktaSdkConstant.AUTHORIZED,
                 OktaSdkConstant.ACCESS_TOKEN_KEY: stateManager?.accessToken
@@ -451,6 +498,8 @@ class OktaSdkBridge: RCTEventEmitter {
             }
             
             newStateManager.writeToSecureStorage()
+            newStateManager.saveDeviceSecret(self.deviceSecretKeychain!)
+
             let dic = [
                 OktaSdkConstant.ACCESS_TOKEN_KEY: newStateManager.accessToken,
                 OktaSdkConstant.ID_TOKEN_KEY: newStateManager.idToken,

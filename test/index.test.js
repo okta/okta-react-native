@@ -148,7 +148,14 @@ describe('OktaReactNative', () => {
       Platform.OS = 'ios';
       Platform.Version = '1.0.0';
       const processedScope = config.scopes.join(' ');
+
+      config = {
+        ...config,
+        keychainService: 'Test',
+        keychainAccessGroup: 'com.example.SharedItems',
+      }
       createConfig(config);
+
       expect(mockCreateConfig).toHaveBeenCalledTimes(1);
       expect(mockCreateConfig).toHaveBeenCalledWith(
         config.clientId,
@@ -156,6 +163,8 @@ describe('OktaReactNative', () => {
         config.endSessionRedirectUri,
         config.discoveryUri,
         processedScope,
+        config.keychainService,
+        config.keychainAccessGroup,
         `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} ios/1.0.0`,
         defaultTimeouts.httpConnectionTimeout,
       );

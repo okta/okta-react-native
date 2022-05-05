@@ -12,7 +12,7 @@
     "build": "node ./scripts/build.js",
     "lint": "eslint .",
     "lint:report": "eslint -f checkstyle -o ./test-reports/lint/eslint-checkstyle-result.xml .",
-    "prepare": "yarn build",
+    "prepare": "npm run build",
     "test": "jest && tsd",
     "tsd": "tsd",
     "test:debug": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand"
