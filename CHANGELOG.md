@@ -1,3 +1,18 @@
+# 2.5.0
+
+### Bug Fix
+- [#307](https://github.com/okta/okta-react-native/pull/307) Update okta-oidc-android to 1.2.5
+- Update dependencies
+
+# 2.4.0
+
+### Feature
+- [#267](https://github.com/okta/okta-react-native/pull/267) Add prompt parameter support
+
+### Bug Fix
+- Update dependencies 
+- [#270](https://github.com/okta/okta-react-native/pull/270) Fix payload forming on Android
+
 # 2.3.0
 
 ### Bug Fix
