@@ -316,3 +316,4 @@ Note: For more details, [follow migration guide](https://github.com/okta/okta-re
 - [`c8b7ab5a`](https://github.com/okta/okta-oidc-js/commit/c8b7ab5aacecf5793efb6a626c0a24a78147ded9#diff-b8cfe5f7aa410fb30a335b09346dc4d2) - Migrate dependencies to project root utilizing [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/).
 - [`c26ffa0`](https://github.com/okta/okta-oidc-js/pull/239/commits/c26ffa05c6d98deb49a8bcc917b1196aae41487e) - Locks react-native dependency to `0.55`.
 - [`e1eecba`](https://github.com/okta/okta-oidc-js/pull/219/commits/e1eecba3c484ba38d889e51e7c41b34ae9d6de63) - Callout [Expo](https://expo.io/) dependency.
+
