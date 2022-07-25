@@ -63,6 +63,8 @@ export namespace Okta {
     endSessionRedirectUri: string;
     discoveryUri: string;
     scopes: string[];
+    keychainService?: string;
+    keychainAccessGroup?: string;
     requireHardwareBackedKeyStore: boolean;
     androidChromeTabColor?: string;
     httpConnectionTimeout?: number;
