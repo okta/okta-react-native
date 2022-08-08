@@ -56,7 +56,7 @@ PODS:
   - OktaOidc/AppAuth (3.11.0)
   - OktaOidc/Okta (3.11.0):
     - OktaOidc/AppAuth
-  - OktaSdkBridgeReactNative (2.5.0):
+  - OktaSdkBridgeReactNative (2.6.0):
     - OktaOidc (= 3.11.0)
     - React
   - RCT-Folly (2021.06.28.00-v2):
@@ -546,7 +546,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
-  DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
+  DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EXApplication: 9ff2a206009d6e55bca6c20b3f33d07986b51ef3
   EXConstants: 4cb52b6d8f636c767104a44bf7db3873e9c01a6f
   EXErrorRecovery: 404d827bc7d42f306c062d58a60b06afc4d082b3
@@ -562,10 +562,10 @@ SPEC CHECKSUMS:
   FBLazyVector: 2c76493a346ef8cacf1f442926a39f805fffec1f
   FBReactNativeSpec: 371350f24afa87b6aba606972ec959dcd4a95c9a
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
+  glog: 3d02b25ca00c2d456734d0bcff864cbc62f6ae1a
   OktaOidc: 7a6a9a827722b26fded69c9715e606f5abc3a3a7
-  OktaSdkBridgeReactNative: d3c30aab64a0bdd7b13f57728a220ec1d9a25d1b
-  RCT-Folly: 803a9cfd78114b2ec0f140cfa6fa2a6bafb2d685
+  OktaSdkBridgeReactNative: 412230b38b8757dfb8ab4821c74b6c273948dfdd
+  RCT-Folly: b9d9fe1fc70114b751c076104e52f3b1b5e5a95a
   RCTRequired: 00581111c53531e39e3c6346ef0d2c0cf52a5a37
   RCTTypeSafety: 07e03ee7800e7dd65cba8e52ad0c2edb06c96604
   React: e61f4bf3c573d0c61c56b53dc3eb1d9daf0768a0
