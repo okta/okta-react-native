@@ -1,3 +1,8 @@
+# 2.5.1
+
+### Bug Fix
+- Updates iOS OIDC dependency
+
 # 2.5.0
 
 ### Bug Fix
