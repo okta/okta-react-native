@@ -1,7 +1,10 @@
-# 2.5.1
+# 2.6.0
 
-### Bug Fix
-- Updates iOS OIDC dependency
+### Other
+- [#314](https://github.com/okta/okta-react-native/pull/314) Update babel/core library to 7.18.9
+- [#317](https://github.com/okta/okta-react-native/pull/317) Update react-native to 0.68.3
+- [#321](https://github.com/okta/okta-react-native/pull/321) Updates iOS OIDC dependency
+- [#322](https://github.com/okta/okta-react-native/pull/322) Updates Android OIDC dependency
 
 # 2.5.0
 
