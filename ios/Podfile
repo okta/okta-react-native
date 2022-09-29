@@ -1,12 +1,12 @@
-platform :ios, '11.0'
-inhibit_all_warnings!
-
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 
+platform :ios, '12.4'
+inhibit_all_warnings!
+
 def shared_pods
   config = use_native_modules!
-  use_react_native!(:path => config["reactNativePath"])
+  use_react_native!(:path => config[:reactNativePath])
 
   use_native_modules!
 
