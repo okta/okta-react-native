@@ -69,13 +69,13 @@ $ npm install @okta/okta-react-native --save
 
 To setup iOS, there are three steps that you must take.
 
-1. [Make sure your iOS app's deployment target is `11.0` and above.](#set-ios-deployment-target)
+1. [Make sure your iOS app's deployment target is `12.4` and above.](#set-ios-deployment-target)
 2. [Install Okta Open ID Connect iOS.](#install-okta-open-id-connect-ios)
 3. [Make sure you also configure Swift.](#swift-configuration)
 
 #### Set iOS Deployment Target
 
-This library supports iOS version `11.0` and above. Go to your project -> `Build settings` -> `iOS Deployment Target`, and set it to at least version `11.0`.  
+This library supports iOS version `12.4` and above. Go to your project -> `Build settings` -> `iOS Deployment Target`, and set it to at least version `12.4`.  
 
 #### Install Okta Open ID Connect iOS
 This library depends on the native [Okta OIDC iOS](https://github.com/okta/okta-oidc-ios) library. It is not distributed as part of the React Native library to keep your dependency management consistent. 
@@ -91,7 +91,7 @@ You can currently add Okta OIDC iOS through CocoaPods:
    ```
    ***React Native < 0.60***: Make sure your `Podfile` looks like this:
     ```   
-   platform :ios, '11.0'
+   platform :ios, '12.4'
 
    target '{YourTargetName}' do
 
