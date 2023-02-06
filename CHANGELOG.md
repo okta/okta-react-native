@@ -1,7 +1,7 @@
 # 2.8.0
 
 ### Other
-- [#343](https://github.com/okta/okta-react-native/pull/314) Update okta-oidc-android to 1.3.4
+- [#343](https://github.com/okta/okta-react-native/pull/343) Update okta-oidc-android to 1.3.4
 
 # 2.7.0
 
