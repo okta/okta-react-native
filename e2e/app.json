@@ -5,7 +5,13 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.e2eoktareactnative"
+    },
+    "ios": {
+      "bundleIdentifier": "com.e2eoktareactnative"
+    }
   },
   "name": "E2E-Okta-React-Native"
 }

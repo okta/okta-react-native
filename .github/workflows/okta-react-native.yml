@@ -50,7 +50,7 @@ jobs:
           -destination "platform=iOS Simulator,OS=latest,name=iPhone 12" \
           clean test | xcpretty
     iOSUITests:
-      runs-on: macos-11
+      runs-on: macos-12
       steps:
       - uses: actions/checkout@v2
       - name: Cache ./node_modules    
@@ -90,7 +90,7 @@ jobs:
           xcodebuild \
           -workspace e2e/ios/E2EOktaReactNative.xcworkspace \
           -scheme E2EOktaReactNative \
-          -destination 'platform=iOS Simulator,OS=latest,name=iPhone 12' \
+          -destination 'platform=iOS Simulator,OS=latest,name=iPhone 14' \
           -configuration CI \
           -sdk iphonesimulator \
           clean test | xcpretty
