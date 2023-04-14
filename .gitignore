@@ -19,7 +19,6 @@ web-build/
 
 # Android/iOS related for react native
 .gradle/
-gradle/
 gradlew
 gradlew.bat
 build/
