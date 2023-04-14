@@ -1,3 +1,7 @@
+plugins {
+    id 'kotlin-android'
+}
+
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
@@ -123,6 +127,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     defaultConfig.manifestPlaceholders = [
@@ -172,6 +179,12 @@ android {
             }
 
         }
+    }
+
+    testOptions {
+        animationsDisabled true
+
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 }
 
@@ -236,6 +249,14 @@ dependencies {
     }
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
 
+    androidTestImplementation(libs.timber)
+    androidTestImplementation(libs.junit)
+    androidTestImplementation(libs.bundles.android.instrumentation.testing)
+    androidTestUtil(libs.androidx.test.orchestrator)
+    debugImplementation(libs.androidx.test.fragment) {
+        transitive false
+    }
+
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
@@ -251,5 +272,9 @@ static def parseScheme(String uri) {
     if (index == -1) {
         throw new IllegalStateException("Scheme is not in a valid format.")
     }
-    return uri.substring(0, index)
+    if (uri.startsWith("\"")) {
+        return uri.substring(1, index)
+    } else {
+        return uri.substring(0, index)
+    }
 }
