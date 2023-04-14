@@ -13,3 +13,8 @@ local.properties
 
 # Bundle artifacts
 *.jsbundle
+index.android.bundle
+
+# E2E credentials
+e2eCredentials.properties
+okta.properties
