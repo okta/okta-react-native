@@ -19,10 +19,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:7.4.1')
+        classpath libs.gradle
+        classpath libs.kotlin.gradle.plugin
         classpath('com.facebook.react:react-native-gradle-plugin')
         classpath('com.diffplug.spotless:spotless-plugin-gradle:6.12.0')
     }
+}
+
+plugins {
+    id 'org.jetbrains.kotlin.android' version "1.8.10" apply false
 }
 
 allprojects {

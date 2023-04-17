@@ -10,7 +10,7 @@ jobs:
     JSUnitTests:
       runs-on: ubuntu-latest
       steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure React Native dependencies (node_modules)
         uses: ./.github/workflows/composite/configure-node
         with:
@@ -24,9 +24,9 @@ jobs:
       - name: Execute snyk.sh
         run: bash ./scripts/snyk.sh
     iOSUnitTests:
-      runs-on: macos-11
+      runs-on: macos-12
       steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure React Native dependencies (node_modules)
         uses: ./.github/workflows/composite/configure-node
         with:
@@ -34,7 +34,7 @@ jobs:
           lock-hash: ${{ hashFiles('yarn.lock') }}
       - name: Cache CocoaPods
         id: pods-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ./ios/Pods
           key: pods-${{ hashFiles('./ios/Podfile.lock') }}          
@@ -47,12 +47,12 @@ jobs:
           xcodebuild \
           -workspace ios/ReactNativeOktaSdkBridge.xcworkspace \
           -scheme "ReactNativeOktaSdkBridge" \
-          -destination "platform=iOS Simulator,OS=latest,name=iPhone 12" \
+          -destination "platform=iOS Simulator,OS=latest,name=iPhone 14" \
           clean test | xcpretty
     iOSUITests:
       runs-on: macos-12
       steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Cache ./node_modules    
         uses: ./.github/workflows/composite/configure-node
         with:  
@@ -68,7 +68,7 @@ jobs:
           install-path: ./e2e
       - name: Cache CocoaPods
         id: pods-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ./e2e/ios/Pods
           key: pods-${{ hashFiles('./e2e/ios/Podfile.lock') }}

@@ -5,7 +5,8 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "expo start --dev-client",
-    "bundle:ios": "react-native bundle --entry-file index.js --bundle-output ios/main.jsbundle --dev false --platform ios --assets-dest ios"
+    "bundle:ios": "react-native bundle --entry-file index.js --bundle-output ios/main.jsbundle --dev false --platform ios --assets-dest ios",
+    "bundle:android": "mkdir -p android/app/src/main/assets; react-native bundle --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --dev false --platform android --assets-dest android/app/src/main/res"
   },
   "dependencies": {
     "@okta/okta-react-native": "file:./../dist",
