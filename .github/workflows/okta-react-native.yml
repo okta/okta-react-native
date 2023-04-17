@@ -24,7 +24,7 @@ jobs:
       - name: Execute snyk.sh
         run: bash ./scripts/snyk.sh
     iOSUnitTests:
-      runs-on: macos-11
+      runs-on: macos-12
       steps:
       - uses: actions/checkout@v3
       - name: Configure React Native dependencies (node_modules)
@@ -47,7 +47,7 @@ jobs:
           xcodebuild \
           -workspace ios/ReactNativeOktaSdkBridge.xcworkspace \
           -scheme "ReactNativeOktaSdkBridge" \
-          -destination "platform=iOS Simulator,OS=latest,name=iPhone 12" \
+          -destination "platform=iOS Simulator,OS=latest,name=iPhone 14" \
           clean test | xcpretty
     iOSUITests:
       runs-on: macos-12
