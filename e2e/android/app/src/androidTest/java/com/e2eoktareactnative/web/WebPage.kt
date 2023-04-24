@@ -22,8 +22,10 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiSelector
 import androidx.test.uiautomator.Until
 import com.e2eoktareactnative.dashboard.DashboardPage
+import com.e2eoktareactnative.test.clickButtonWithSelector
 import com.e2eoktareactnative.test.clickButtonWithText
 import com.e2eoktareactnative.test.clickButtonWithTextMatching
 import com.e2eoktareactnative.test.execShellCommand
@@ -34,9 +36,12 @@ import kotlin.time.Duration.Companion.seconds
 
 internal class WebPage<PreviousPage>(
     private val previousPage: PreviousPage,
-    initialText: String = "Sign in"
+    initialText: String = "Sign In"
 ) {
     companion object {
+        // The login button text can also be "Sign in" with lower case 'i', depending on backend
+        private val loginButtonSelector = UiSelector().text("Sign In").clickable(true)
+
         fun clearData() {
             execShellCommand("pm clear com.android.chrome")
             Thread.sleep(2.seconds.inWholeMilliseconds)
@@ -86,12 +91,12 @@ internal class WebPage<PreviousPage>(
     }
 
     fun login(): DashboardPage {
-        clickButtonWithText("Sign in")
+        clickButtonWithSelector(loginButtonSelector, timeout = 10.seconds.inWholeMilliseconds)
         return DashboardPage()
     }
 
     fun loginExpectingError(): WebPage<PreviousPage> {
-        clickButtonWithText("Sign in")
+        clickButtonWithSelector(loginButtonSelector, timeout = 10.seconds.inWholeMilliseconds)
         return this
     }
 

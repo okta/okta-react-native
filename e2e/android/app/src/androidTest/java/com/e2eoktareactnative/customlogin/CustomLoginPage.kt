@@ -15,10 +15,14 @@
  */
 package com.e2eoktareactnative.customlogin
 
+import androidx.test.uiautomator.UiSelector
 import com.e2eoktareactnative.dashboard.DashboardPage
+import com.e2eoktareactnative.test.applyOnViewWithSelector
 import com.e2eoktareactnative.test.clickButtonWithText
 import com.e2eoktareactnative.test.setTextForIndex
 import com.e2eoktareactnative.test.waitForText
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.MatcherAssert.assertThat
 import kotlin.time.Duration.Companion.seconds
 
 internal class CustomLoginPage {
@@ -52,8 +56,14 @@ internal class CustomLoginPage {
     }
 
     fun pressAlertOkButton(): CustomLoginPage {
-        clickButtonWithText("OK")
-        waitForText("CustomLogin", timeout = 10L.seconds.inWholeMilliseconds)
+        applyOnViewWithSelector(UiSelector().text("OK")) { uiObject ->
+            assertThat(uiObject.waitForExists(10.seconds.inWholeMilliseconds), equalTo(true))
+            // Checking if clicking "OK" was successful doesn't work on CI device. As an alternative,
+            // click OK button, and check if the button is no longer visible afterwards
+            uiObject.click()
+            assertThat(uiObject.waitForExists(2.seconds.inWholeMilliseconds), equalTo(false))
+        }
+        waitForText("CustomLogin", timeout = 10.seconds.inWholeMilliseconds)
         return this
     }
 }

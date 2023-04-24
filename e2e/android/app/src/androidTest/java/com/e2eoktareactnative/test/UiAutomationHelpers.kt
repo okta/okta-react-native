@@ -18,27 +18,27 @@ package com.e2eoktareactnative.test
 import android.widget.EditText
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiObject
 import androidx.test.uiautomator.UiSelector
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import kotlin.time.Duration.Companion.seconds
 
 fun clickButtonWithText(text: String, timeout: Long? = null) {
-    val uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-    val selector = UiSelector().text(text)
-    timeout?.let {
-        assertThat(uiDevice.findObject(selector).waitForExists(timeout), equalTo(true))
-    }
-    assertThat(uiDevice.findObject(selector).click(), equalTo(true))
+    clickButtonWithSelector(UiSelector().text(text), timeout)
 }
 
 fun clickButtonWithTextMatching(text: String, timeout: Long? = null) {
-    val uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-    val selector = UiSelector().textMatches(text)
-    timeout?.let {
-        assertThat(uiDevice.findObject(selector).waitForExists(timeout), equalTo(true))
+    clickButtonWithSelector(UiSelector().textMatches(text), timeout)
+}
+
+fun clickButtonWithSelector(selector: UiSelector, timeout: Long? = null) {
+    applyOnViewWithSelector(selector) { uiObject ->
+        timeout?.let {
+            assertThat(uiObject.waitForExists(timeout), equalTo(true))
+        }
+        assertThat(uiObject.click(), equalTo(true))
     }
-    assertThat(uiDevice.findObject(selector).click(), equalTo(true))
 }
 
 fun setTextForIndex(index: Int, text: String) {
@@ -48,25 +48,28 @@ fun setTextForIndex(index: Int, text: String) {
 }
 
 fun waitForText(text: String, timeout: Long = 10.seconds.inWholeMilliseconds) {
-    val uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-    val selector = UiSelector().text(text)
-    assertThat(uiDevice.findObject(selector).waitForExists(timeout), equalTo(true))
+    waitForViewWithSelector(UiSelector().text(text), timeout)
 }
 
 fun waitForTextMatching(text: String, timeout: Long = 10.seconds.inWholeMilliseconds) {
-    val uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-    val selector = UiSelector().textMatches(text)
-    assertThat(uiDevice.findObject(selector).waitForExists(timeout), equalTo(true))
+    waitForViewWithSelector(UiSelector().textMatches(text), timeout)
 }
 
 fun waitForResourceIdWithText(resourceId: String, text: String, timeout: Long = 10.seconds.inWholeMilliseconds) {
-    val uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-    val selector = UiSelector().resourceIdMatches(resourceId).text(text)
-    assertThat(uiDevice.findObject(selector).waitForExists(timeout), equalTo(true))
+    waitForViewWithSelector(UiSelector().resourceIdMatches(resourceId).text(text), timeout)
 }
 
 fun waitForResourceId(resourceId: String, timeout: Long = 10.seconds.inWholeMilliseconds) {
+    waitForViewWithSelector(UiSelector().resourceIdMatches(resourceId), timeout)
+}
+
+fun waitForViewWithSelector(selector: UiSelector, timeout: Long = 10.seconds.inWholeMilliseconds) {
+    applyOnViewWithSelector(selector) { uiObject ->
+        assertThat(uiObject.waitForExists(timeout), equalTo(true))
+    }
+}
+
+fun applyOnViewWithSelector(selector: UiSelector, uiObjectFunction: (UiObject) -> Unit) {
     val uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-    val selector = UiSelector().resourceIdMatches(resourceId)
-    assertThat(uiDevice.findObject(selector).waitForExists(timeout), equalTo(true))
+    uiObjectFunction(uiDevice.findObject(selector))
 }
