@@ -19,8 +19,6 @@ web-build/
 
 # Android/iOS related for react native
 .gradle/
-gradlew
-gradlew.bat
 build/
 local.properties
 *.iml
