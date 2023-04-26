@@ -1,0 +1,1 @@
+{"version":3,"file":"types.js","names":[],"sources":["../../../lib/crypto/types.ts"],"sourcesContent":["export interface CryptoAPI {\n  base64UrlToBuffer(b64u: string): Uint8Array;\n  bufferToBase64Url(bin: Uint8Array): string;\n}\n"],"mappings":""}

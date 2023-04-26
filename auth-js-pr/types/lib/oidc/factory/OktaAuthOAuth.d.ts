@@ -1,0 +1,4 @@
+import { StorageManagerConstructor } from '../../storage/types';
+import { OktaAuthConstructor, OktaAuthOptionsConstructor } from '../../base/types';
+import { OAuthTransactionMeta, OktaAuthOAuthInterface, OktaAuthOAuthOptions, OAuthStorageManagerInterface, PKCETransactionMeta, TransactionManagerConstructor, TransactionManagerInterface } from '../types';
+export declare function createOktaAuthOAuth<M extends OAuthTransactionMeta = PKCETransactionMeta, S extends OAuthStorageManagerInterface<M> = OAuthStorageManagerInterface<M>, O extends OktaAuthOAuthOptions = OktaAuthOAuthOptions, TM extends TransactionManagerInterface = TransactionManagerInterface>(StorageManagerConstructor: StorageManagerConstructor<S>, OptionsConstructor: OktaAuthOptionsConstructor<O>, TransactionManagerConstructor: TransactionManagerConstructor<TM>): OktaAuthConstructor<OktaAuthOAuthInterface<M, S, O, TM>>;

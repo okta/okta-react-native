@@ -1,0 +1,1 @@
+{"version":3,"file":"default.js","names":["OktaAuth"],"sources":["../../../../lib/exports/cdn/default.ts"],"sourcesContent":["import { OktaAuth } from '../default';\n\n// Export only a single object\nexport default OktaAuth;\n"],"mappings":";;;AAAA;AAEA;AAAA,eACeA,kBAAQ;AAAA;AAAA"}

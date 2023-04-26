@@ -1,0 +1,1 @@
+{"version":3,"file":"idx.js","names":["OktaAuth"],"sources":["../../../../lib/exports/cdn/idx.ts"],"sourcesContent":["import { OktaAuth } from '../idx';\n\n// Export only a single object\nexport default OktaAuth;\n"],"mappings":";;;AAAA;AAEA;AAAA,eACeA,aAAQ;AAAA;AAAA"}

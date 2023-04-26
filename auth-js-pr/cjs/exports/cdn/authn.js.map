@@ -1,0 +1,1 @@
+{"version":3,"file":"authn.js","names":["OktaAuth"],"sources":["../../../../lib/exports/cdn/authn.ts"],"sourcesContent":["import { OktaAuth } from '../authn';\n\n// Export only a single object\nexport default OktaAuth;\n"],"mappings":";;;AAAA;AAEA;AAAA,eACeA,eAAQ;AAAA;AAAA"}
