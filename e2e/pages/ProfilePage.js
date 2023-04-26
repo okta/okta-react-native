@@ -27,6 +27,8 @@ import {
   revokeAccessToken,
   revokeIdToken,
   clearTokens,
+  getAccessToken,
+  getAuthClient,
 } from '@okta/okta-react-native';
 
 export default class ProfilePage extends React.Component {
@@ -35,8 +37,33 @@ export default class ProfilePage extends React.Component {
 
     this.state = { 
       idToken: props.route.params.idToken,
-      isBrowserScenario: props.route.params.isBrowserScenario
+      isBrowserScenario: props.route.params.isBrowserScenario,
+      userInfo: {}
     };
+  }
+
+  async getUserInfo() {
+    const oktaAuth = getAuthClient();
+    const issuer = oktaAuth.options.issuer;
+    const baseUrl = issuer.indexOf('/oauth2') > 0 ? issuer : issuer + '/oauth2';
+    const accessToken = await getAccessToken();
+    const url = baseUrl + '/v1/userinfo';
+    const headers = {
+      'Authorization': 'Bearer ' + accessToken.access_token
+    };
+    const resp = await fetch(url, {
+      method: 'GET',
+      headers,
+    });
+    const userInfo = await resp.json();
+    this.setState({
+      ...this.state,
+      userInfo,
+    });
+  }
+
+  componentDidMount() {
+    this.getUserInfo();
   }
 
   logout = () => {
@@ -59,6 +86,7 @@ export default class ProfilePage extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text testID="user_name">{this.state.userInfo.name}</Text>
         <Text testID="welcome_text">Welcome back, {this.state.idToken.preferred_username}!</Text>
         <Button 
           onPress={this.logout}

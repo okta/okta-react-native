@@ -39,6 +39,10 @@ class LoginTests: XCTestCase {
     app.staticTexts["welcome_text"]
   }
   
+  var userNameLabel: XCUIElement {
+    app.staticTexts["user_name"]
+  }
+  
   override func setUpWithError() throws {
     try super.setUpWithError()
 

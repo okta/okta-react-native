@@ -49,11 +49,13 @@ final class CustomLoginTests: LoginTests {
     signInButton.tap()
     
     XCTAssertTrue(welcomeLabel.waitForExistence(timeout: .testing))
+    XCTAssertTrue(userNameLabel.waitForExistence(timeout: .testing))
     
     app.terminate()
     app.launch()
     
     XCTAssertTrue(welcomeLabel.waitForExistence(timeout: .testing))
+    XCTAssertTrue(userNameLabel.waitForExistence(timeout: .testing))
     
     XCTAssertTrue(logoutButton.exists)
     logoutButton.tap()

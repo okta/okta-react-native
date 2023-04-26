@@ -59,11 +59,13 @@ final class BrowserLoginTests: LoginTests {
     signInButton.tap()
     
     XCTAssertTrue(welcomeLabel.waitForExistence(timeout: .testing))
+    XCTAssertTrue(userNameLabel.waitForExistence(timeout: .testing))
     
     app.terminate()
     app.launch()
     
     XCTAssertTrue(welcomeLabel.waitForExistence(timeout: .testing))
+    XCTAssertTrue(userNameLabel.waitForExistence(timeout: .testing))
     
     logoutIfPossible(throwError: true)
   }
