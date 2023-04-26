@@ -8,7 +8,7 @@
     "main": "cjs/exports/default.js",
     "module": "esm/node/exports/exports/default.js",
     "browser": "umd/default.js",
-    "react-native": "esm/node/exports/exports/default.js",
+    "react-native": "esm/browser/exports/exports/default.js",
     "types": "types/lib/exports/default.d.ts",
     "exports": {
         ".": {
