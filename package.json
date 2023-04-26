@@ -74,7 +74,7 @@
   },
   "dependencies": {
     "@okta/configuration-validation": "^1.1.0",
-    "@okta/okta-auth-js": "7.2.0",
+    "@okta/okta-auth-js": "https://artifacts.aue1d.saasure.com/ui/api/v1/download?repoKey=npm-topic&path=%2540okta%252Fokta-auth-js%252F-%252F%2540okta%252Fokta-auth-js-7.3.0-gafa1f71.tgz&isNativeBrowsing=true",
     "jwt-decode": "^3.1.2",
     "url-parse": "^1.5.10"
   },
