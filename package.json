@@ -74,7 +74,7 @@
   },
   "dependencies": {
     "@okta/configuration-validation": "^1.1.0",
-    "@okta/okta-auth-js": "7.2.0",
+    "@okta/okta-auth-js": "file:./auth-js-pr",
     "jwt-decode": "^3.1.2",
     "url-parse": "^1.5.10"
   },
