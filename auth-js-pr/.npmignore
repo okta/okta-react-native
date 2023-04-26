@@ -1,8 +1,0 @@
-test
-build2
-.eslintrc.json
-.eslintignore
-.travis.yml
-ci-scripts
-webpack*config.js
-scripts

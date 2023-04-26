@@ -1,1 +1,0 @@
-{"version":3,"file":"core.js","names":["OktaAuth"],"sources":["../../../../lib/exports/cdn/core.ts"],"sourcesContent":["import { OktaAuth } from '../core';\n\n// Export only a single object\nexport default OktaAuth;\n"],"mappings":";;;AAAA;AAEA;AAAA,eACeA,cAAQ;AAAA;AAAA"}

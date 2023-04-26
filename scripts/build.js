@@ -55,7 +55,6 @@ delete packageJSON.workspaces; // remove yarn workspace section
     packageJSON[key] = packageJSON[key].replace(`${NPM_DIR}/`, '');
   }
 });
-packageJSON['dependencies']['@okta/okta-auth-js'] = "file:../auth-js-pr";
 
 fs.writeFileSync(`./${NPM_DIR}/package.json`, JSON.stringify(packageJSON, null, 4));
 
