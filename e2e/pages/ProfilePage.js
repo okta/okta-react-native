@@ -84,10 +84,12 @@ export default class ProfilePage extends React.Component {
   }
 
   render() {
+    const userName = this.state.userInfo.name;
+    const preferredUserName = this.state.idToken.preferred_username;
     return (
       <View style={styles.container}>
-        <Text testID="user_name">{this.state.userInfo.name}</Text>
-        <Text testID="welcome_text">Welcome back, {this.state.idToken.preferred_username}!</Text>
+        {userName && <Text testID="user_name">User: {userName}</Text>}
+        <Text testID="welcome_text">Welcome back, {preferredUserName}!</Text>
         <Button 
           onPress={this.logout}
           title="Logout"
