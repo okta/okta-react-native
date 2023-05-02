@@ -3,7 +3,7 @@
 export NVM_DIR="/root/.nvm"
 
 # Install required node version
-setup_service node v14.19.0
+setup_service node v16.19.0
 
 # Install yarn
 curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.17.3
