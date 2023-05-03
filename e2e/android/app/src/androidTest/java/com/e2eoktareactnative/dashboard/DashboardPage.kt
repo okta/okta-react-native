@@ -22,6 +22,7 @@ import com.e2eoktareactnative.test.waitForTextMatching
 internal class DashboardPage {
     init {
         waitForTextMatching("Welcome back, .*!")
+        waitForTextMatching("User: .*")
     }
 
     fun logout(): LoginPage {
