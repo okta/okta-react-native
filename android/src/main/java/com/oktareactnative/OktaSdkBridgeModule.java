@@ -59,6 +59,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     private OIDCConfig config;
     private WebAuthClient webClient;
     private AuthClient authClient;
+    private SessionClient sessionClient;
     private Promise queuedPromise;
     private LastRequestType mLastRequestType;
 
@@ -218,7 +219,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             public void onSuccess(@NonNull Result result) {
                 if (result.isSuccess()) {
                     try {
-                        SessionClient sessionClient = authClient.getSessionClient();
+                        sessionClient = authClient.getSessionClient();
                         Tokens tokens = sessionClient.getTokens();
                         String token = tokens.getAccessToken();
 
@@ -261,13 +262,12 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     @ReactMethod
     public void getAccessToken(final Promise promise) {
         try {
-            if (webClient == null) {
+            if (sessionClient == null) {
                 promise.reject(OktaSdkError.NOT_CONFIGURED.getErrorCode(), OktaSdkError.NOT_CONFIGURED.getErrorMessage());
                 return;
             }
 
             final WritableMap params = Arguments.createMap();
-            final SessionClient sessionClient = webClient.getSessionClient();
             final Tokens tokens = sessionClient.getTokens();
 
             final String accessToken = tokens == null || tokens.isAccessTokenExpired() ? null : tokens.getAccessToken();
@@ -285,13 +285,12 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     @ReactMethod
     public void getIdToken(Promise promise) {
         try {
-            if (webClient == null) {
+            if (sessionClient == null) {
                 promise.reject(OktaSdkError.NOT_CONFIGURED.getErrorCode(), OktaSdkError.NOT_CONFIGURED.getErrorMessage());
                 return;
             }
 
             final WritableMap params = Arguments.createMap();
-            SessionClient sessionClient = webClient.getSessionClient();
             Tokens tokens = sessionClient.getTokens();
             String idToken = tokens.getIdToken();
             if (idToken != null) {
@@ -307,12 +306,11 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
     @ReactMethod
     public void getUser(final Promise promise) {
-        if (webClient == null) {
+        if (sessionClient == null) {
             promise.reject(OktaSdkError.NOT_CONFIGURED.getErrorCode(), OktaSdkError.NOT_CONFIGURED.getErrorMessage());
             return;
         }
 
-        SessionClient sessionClient = webClient.getSessionClient();
         sessionClient.getUserProfile(new RequestCallback<UserInfo, AuthorizationException>() {
             @Override
             public void onSuccess(@NonNull UserInfo result) {
@@ -329,13 +327,12 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     @ReactMethod
     public void isAuthenticated(Promise promise) {
         try {
-            if (webClient == null) {
+            if (sessionClient == null) {
                 promise.reject(OktaSdkError.NOT_CONFIGURED.getErrorCode(), OktaSdkError.NOT_CONFIGURED.getErrorMessage());
                 return;
             }
 
             final WritableMap params = Arguments.createMap();
-            SessionClient sessionClient = webClient.getSessionClient();
             Tokens tokens = sessionClient.getTokens();
             if (tokens == null) {
                 params.putBoolean(OktaSdkConstant.AUTHENTICATED_KEY, false);
@@ -414,12 +411,12 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     public void refreshTokens(final Promise promise) {
         try {
 
-            if (webClient == null) {
+            if (sessionClient == null) {
                 promise.reject(OktaSdkError.NOT_CONFIGURED.getErrorCode(), OktaSdkError.NOT_CONFIGURED.getErrorMessage());
                 return;
             }
 
-            webClient.getSessionClient().refreshToken(new RequestCallback<Tokens, AuthorizationException>() {
+            sessionClient.refreshToken(new RequestCallback<Tokens, AuthorizationException>() {
                 @Override
                 public void onSuccess(@NonNull Tokens result) {
                     WritableMap params = Arguments.createMap();
@@ -449,6 +446,8 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             if (authClient != null) {
                 authClient.getSessionClient().clear();
             }
+
+            sessionClient = null;
             promise.resolve(true);
         } catch (Exception e) {
             promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
@@ -499,22 +498,22 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     }
 
     private void registerCallback(Activity activity) {
-        final SessionClient sessionClient = webClient.getSessionClient();
-
         webClient.registerCallback(new ResultCallback<AuthorizationStatus, AuthorizationException>() {
             @Override
             public void onSuccess(@NonNull AuthorizationStatus status) {
                 final Promise promise = queuedPromise;
+                final SessionClient localSessionClient = webClient.getSessionClient();
                 if (status == AuthorizationStatus.AUTHORIZED) {
                     try {
                         WritableMap params = Arguments.createMap();
-                        Tokens tokens = sessionClient.getTokens();
+                        Tokens tokens = localSessionClient.getTokens();
                         params.putString(OktaSdkConstant.RESOLVE_TYPE_KEY, OktaSdkConstant.AUTHORIZED);
                         params.putString(OktaSdkConstant.ACCESS_TOKEN_KEY, tokens.getAccessToken());
                         if (promise != null) {
                             promise.resolve(params.copy());
                         }
                         sendEvent(reactContext, OktaSdkConstant.SIGN_IN_SUCCESS, params);
+                        sessionClient = localSessionClient;
                         queuedPromise = null;
                     } catch (AuthorizationException e) {
                         WritableMap params = Arguments.createMap();
@@ -524,10 +523,12 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                             promise.reject(e);
                         }
                         sendEvent(reactContext, OktaSdkConstant.ON_ERROR, params);
+                        sessionClient = null;
                         queuedPromise = null;
                     }
                 } else if (status == AuthorizationStatus.SIGNED_OUT) {
-                    sessionClient.clear();
+                    localSessionClient.clear();
+                    sessionClient = null;
                     WritableMap params = Arguments.createMap();
                     params.putString(OktaSdkConstant.RESOLVE_TYPE_KEY, OktaSdkConstant.SIGNED_OUT);
                     if (promise != null) {
@@ -567,12 +568,11 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
     private void revokeToken(String tokenName, final Promise promise) {
         try {
-            if (webClient == null) {
+            if (sessionClient == null) {
                 promise.reject(OktaSdkError.NOT_CONFIGURED.getErrorCode(), OktaSdkError.NOT_CONFIGURED.getErrorMessage());
                 return;
             }
 
-            final SessionClient sessionClient = webClient.getSessionClient();
             Tokens tokens = sessionClient.getTokens();
             String token;
 
@@ -610,12 +610,11 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
     private void introspectToken(String tokenName, final Promise promise) {
         try {
-            if (webClient == null) {
+            if (sessionClient == null) {
                 promise.reject(OktaSdkError.NOT_CONFIGURED.getErrorCode(), OktaSdkError.NOT_CONFIGURED.getErrorMessage());
                 return;
             }
 
-            final SessionClient sessionClient = webClient.getSessionClient();
             Tokens tokens = sessionClient.getTokens();
             String token;
 
@@ -639,7 +638,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                     return;
             }
 
-            webClient.getSessionClient().introspectToken(token,
+            sessionClient.introspectToken(token,
                     tokenName, new RequestCallback<IntrospectInfo, AuthorizationException>() {
                         @Override
                         public void onSuccess(@NonNull IntrospectInfo result) {
