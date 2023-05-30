@@ -75,7 +75,7 @@ export default class ProfilePage extends React.Component {
       });
     }
 
-    Promise.all([revokeAccessToken(), revokeIdToken(), clearTokens()])
+    Promise.all([revokeAccessToken(), clearTokens()])
       .then(() => {
         this.props.navigation.popToTop();
       }).catch(error => {
