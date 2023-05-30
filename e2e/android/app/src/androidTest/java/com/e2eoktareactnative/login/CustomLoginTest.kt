@@ -48,4 +48,13 @@ internal class CustomLoginTest {
             .assertHasError("Sign in was not authorized")
             .pressAlertOkButton()
     }
+
+    @Test
+    fun testCustomLoginLogout() {
+        LoginPage().customLogin()
+            .username(testUsername)
+            .password(testPassword)
+            .login()
+            .logout()
+    }
 }

@@ -302,7 +302,6 @@ await signOut();
 
 ```javascript
 await revokeAccessToken(); // optional
-await revokeIdToken(); // optional
 await clearTokens();
 ```
 
