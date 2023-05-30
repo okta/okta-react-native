@@ -85,7 +85,7 @@ export default class ProfilePage extends React.Component {
 
   render() {
     const userName = this.state.userInfo.name;
-    const preferredUserName = this.state.idToken.preferred_username;
+    const preferredUserName = this.state.userInfo.preferred_username;
     return (
       <View style={styles.container}>
         {userName && <Text testID="user_name">User: {userName}</Text>}
