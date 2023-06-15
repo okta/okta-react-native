@@ -1,3 +1,9 @@
+# 2.9.0
+
+### Bug Fix
+- [#365](https://github.com/okta/okta-react-native/pull/365) Update AuthJS dependencies
+- [#367](https://github.com/okta/okta-react-native/pull/367) Fix logout in Android when using custom login
+
 # 2.8.0
 
 ### Other
