@@ -241,7 +241,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             public void onSuccess(@NonNull Result result) {
                 if (result.isSuccess()) {
                     try {
-                        sharedPreferencesEditor.putString(PREFS_KEY, SESSION_CLIENT_AUTH).commit();
+                        sharedPreferencesEditor.putString(PREFS_KEY, SESSION_CLIENT_AUTH).apply();
                         Tokens tokens = getSessionClient().getTokens();
                         String token = tokens.getAccessToken();
 
@@ -255,7 +255,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                         params.putString(OktaSdkConstant.ACCESS_TOKEN_KEY, token);
                         promise.resolve(params);
                     } catch (AuthorizationException e) {
-                        sharedPreferencesEditor.clear().commit();
+                        sharedPreferencesEditor.clear().apply();
                         WritableMap params = Arguments.createMap();
                         params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.SIGN_IN_FAILED.getErrorCode());
                         params.putString(OktaSdkConstant.ERROR_MSG_KEY, OktaSdkError.SIGN_IN_FAILED.getErrorMessage());
@@ -263,7 +263,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                         promise.reject(OktaSdkError.SIGN_IN_FAILED.getErrorCode(), OktaSdkError.SIGN_IN_FAILED.getErrorMessage());
                     }
                 } else {
-                    sharedPreferencesEditor.clear().commit();
+                    sharedPreferencesEditor.clear().apply();
                     WritableMap params = Arguments.createMap();
                     params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.SIGN_IN_FAILED.getErrorCode());
                     params.putString(OktaSdkConstant.ERROR_MSG_KEY, OktaSdkError.SIGN_IN_FAILED.getErrorMessage());
@@ -274,7 +274,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
 
             @Override
             public void onError(String error, AuthorizationException exception) {
-                sharedPreferencesEditor.clear().commit();
+                sharedPreferencesEditor.clear().apply();
                 WritableMap params = Arguments.createMap();
                 params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.OKTA_OIDC_ERROR.getErrorCode());
                 params.putString(OktaSdkConstant.ERROR_MSG_KEY, error);
@@ -468,7 +468,6 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                 getSessionClient().clear();
             }
 
-            sharedPreferencesEditor.clear().commit();
             promise.resolve(true);
         } catch (Exception e) {
             promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
@@ -523,7 +522,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             @Override
             public void onSuccess(@NonNull AuthorizationStatus status) {
                 final Promise promise = queuedPromise;
-                sharedPreferencesEditor.putString(PREFS_KEY, SESSION_CLIENT_WEB).commit();
+                sharedPreferencesEditor.putString(PREFS_KEY, SESSION_CLIENT_WEB).apply();
                 if (status == AuthorizationStatus.AUTHORIZED) {
                     try {
                         WritableMap params = Arguments.createMap();
@@ -543,12 +542,12 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                             promise.reject(e);
                         }
                         sendEvent(reactContext, OktaSdkConstant.ON_ERROR, params);
-                        sharedPreferencesEditor.clear().commit();
+                        sharedPreferencesEditor.clear().apply();
                         queuedPromise = null;
                     }
                 } else if (status == AuthorizationStatus.SIGNED_OUT) {
                     getSessionClient().clear();
-                    sharedPreferencesEditor.clear().commit();
+                    sharedPreferencesEditor.clear().apply();
                     WritableMap params = Arguments.createMap();
                     params.putString(OktaSdkConstant.RESOLVE_TYPE_KEY, OktaSdkConstant.SIGNED_OUT);
                     if (promise != null) {
