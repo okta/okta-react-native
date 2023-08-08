@@ -1,3 +1,8 @@
+# 2.9.1
+
+### Bug Fix
+- [#378](https://github.com/okta/okta-react-native/pull/378) Fix sessionClient being null when not calling login
+
 # 2.9.0
 
 ### Bug Fix
