@@ -39,7 +39,7 @@ jobs:
 workflows:
   security-scan:
     jobs:
-      - setup:
+      - setup
           #filters:
           #  branches:
           #    only:
