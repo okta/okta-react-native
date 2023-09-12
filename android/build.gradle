@@ -20,6 +20,7 @@ buildscript {
         // Matches recent template from React Native (0.59)
         // https://github.com/facebook/react-native/blob/0.59-stable/template/android/build.gradle#L16
         classpath 'com.android.tools.build:gradle:7.1.3'
+        classpath("com.facebook.react:react-native-gradle-plugin")
     }
 }
 
@@ -28,6 +29,7 @@ plugins {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: "com.facebook.react"
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
@@ -35,9 +37,9 @@ def safeExtGet(prop, fallback) {
 
 // Matches values in recent template from React Native (0.59)
 // https://github.com/facebook/react-native/blob/0.59-stable/template/android/build.gradle#L5-L9
-def DEFAULT_COMPILE_SDK_VERSION = 30
+def DEFAULT_COMPILE_SDK_VERSION = 33
 def DEFAULT_MIN_SDK_VERSION = 21
-def DEFAULT_TARGET_SDK_VERSION = 30
+def DEFAULT_TARGET_SDK_VERSION = 33
 
 android {
   compileSdkVersion safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
@@ -57,18 +59,12 @@ android {
 }
 
 repositories {
-    maven {
-        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-        // Matches recent template from React Native (0.59)
-        // https://github.com/facebook/react-native/blob/0.59-stable/template/android/build.gradle#L30
-        url "$projectDir/../node_modules/react-native/android"
-    }
     mavenCentral()
     google()
 }
 
 dependencies {
-    implementation 'com.facebook.react:react-native:+'
+    implementation "com.facebook.react:react-android:0.71.8"
     implementation 'com.okta.android:okta-oidc-android:1.3.4'
 }
 
