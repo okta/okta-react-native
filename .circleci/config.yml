@@ -16,6 +16,7 @@ commands:
     steps:
       - run: brew install wget
       - run: wget --quiet --output-document="$HOME/android-commandline.zip" https://dl.google.com/android/repository/commandlinetools-mac-10406996_latest.zip
+      - run: (cp .circleci/android_sdk_checksum $HOME/checksum; cd $HOME; shasum -a256 -c checksum)
       - run: set +o pipefail
       - run: unzip "$HOME/android-commandline.zip" -d "$HOME"
       - run: mkdir "$HOME/android-sdk"
