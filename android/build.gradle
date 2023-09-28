@@ -19,7 +19,7 @@ buildscript {
     dependencies {
         // Matches recent template from React Native (0.59)
         // https://github.com/facebook/react-native/blob/0.59-stable/template/android/build.gradle#L16
-        classpath 'com.android.tools.build:gradle:7.1.3'
+        classpath 'com.android.tools.build:gradle:7.4.2'
         classpath("com.facebook.react:react-native-gradle-plugin")
     }
 }
@@ -58,13 +58,24 @@ android {
   }
 }
 
-repositories {
-    mavenCentral()
-    google()
+allprojects {
+    repositories {
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url(new File(['node', '--print', "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim(), '../android'))
+        }
+        maven {
+            // Android JSC is installed from npm
+            url(new File(['node', '--print', "require.resolve('jsc-android/package.json')"].execute(null, rootDir).text.trim(), '../dist'))
+        }
+        mavenCentral()
+        google()
+        maven { url 'https://www.jitpack.io' }
+    }
 }
 
 dependencies {
-    implementation "com.facebook.react:react-android:0.71.8"
+    implementation "com.facebook.react:react-android:+"
     implementation 'com.okta.android:okta-oidc-android:1.3.4'
 }
 
