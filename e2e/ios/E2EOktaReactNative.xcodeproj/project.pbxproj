@@ -21,6 +21,7 @@
 		927A7DF426F208680073FE7A /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927A7DF326F208680073FE7A /* Dummy.swift */; };
 		92BEADDE26FE19EE00FD8E8B /* CustomLoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BEADDD26FE19EE00FD8E8B /* CustomLoginTests.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		D0789126377B43BE8AF6982D /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C6B16403B64A4D88FAEAEE /* noop-file.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		A6C6B16403B64A4D88FAEAEE /* noop-file.swift */ = {isa = PBXFileReference; name = "noop-file.swift"; path = "E2EOktaReactNative/noop-file.swift"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.swift; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
 				927A7DF326F208680073FE7A /* Dummy.swift */,
 				927A7DF226F208680073FE7A /* E2EOktaReactNative-Bridging-Header.h */,
+				A6C6B16403B64A4D88FAEAEE /* noop-file.swift */,
 			);
 			name = E2EOktaReactNative;
 			sourceTree = "<group>";
@@ -380,6 +383,7 @@
 				927A7DF426F208680073FE7A /* Dummy.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				0B55C68508C3C0F58BA1B4E1 /* ExpoModulesProvider.swift in Sources */,
+				D0789126377B43BE8AF6982D /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,12 +442,14 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = org.name.E2EOktaReactNative;
-				PRODUCT_NAME = E2EOktaReactNative;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.e2eoktareactnative";
+				PRODUCT_NAME = "E2EOktaReactNative";
 				SWIFT_OBJC_BRIDGING_HEADER = "E2EOktaReactNative-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+				TARGETED_DEVICE_FAMILY = "1";
+				CODE_SIGN_ENTITLEMENTS = E2EOktaReactNative/E2EOktaReactNative.entitlements;
 			};
 			name = Debug;
 		};
@@ -463,11 +469,13 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = org.name.E2EOktaReactNative;
-				PRODUCT_NAME = E2EOktaReactNative;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.e2eoktareactnative";
+				PRODUCT_NAME = "E2EOktaReactNative";
 				SWIFT_OBJC_BRIDGING_HEADER = "E2EOktaReactNative-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+				TARGETED_DEVICE_FAMILY = "1";
+				CODE_SIGN_ENTITLEMENTS = E2EOktaReactNative/E2EOktaReactNative.entitlements;
 			};
 			name = Release;
 		};
@@ -653,12 +661,14 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = org.name.E2EOktaReactNative;
-				PRODUCT_NAME = E2EOktaReactNative;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.e2eoktareactnative";
+				PRODUCT_NAME = "E2EOktaReactNative";
 				SWIFT_OBJC_BRIDGING_HEADER = "E2EOktaReactNative-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+				TARGETED_DEVICE_FAMILY = "1";
+				CODE_SIGN_ENTITLEMENTS = E2EOktaReactNative/E2EOktaReactNative.entitlements;
 			};
 			name = CI;
 		};
@@ -684,7 +694,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1";
 				TEST_TARGET_NAME = E2EOktaReactNative;
 			};
 			name = CI;
@@ -712,7 +722,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1";
 				TEST_TARGET_NAME = E2EOktaReactNative;
 			};
 			name = Debug;
@@ -739,7 +749,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1";
 				TEST_TARGET_NAME = E2EOktaReactNative;
 			};
 			name = Release;
