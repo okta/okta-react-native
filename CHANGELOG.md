@@ -1,3 +1,8 @@
+# 2.10.0
+
+### Other
+- [#393](https://github.com/okta/okta-react-native/pull/393) Log stack traces for android exceptions
+
 # 2.9.1
 
 ### Bug Fix

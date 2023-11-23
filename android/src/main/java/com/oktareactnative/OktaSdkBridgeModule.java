@@ -55,6 +55,9 @@ import com.okta.oidc.net.response.UserInfo;
 import com.okta.oidc.storage.SharedPreferenceStorage;
 import com.okta.oidc.util.AuthorizationException;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements ActivityEventListener {
 
     private static final String SESSION_CLIENT_SHARED_PREFS = "OKTA_SDK_BRIDGE_MODULE_SESSION_CLIENT";
@@ -254,8 +257,9 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                         WritableMap params = Arguments.createMap();
                         params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.SIGN_IN_FAILED.getErrorCode());
                         params.putString(OktaSdkConstant.ERROR_MSG_KEY, OktaSdkError.SIGN_IN_FAILED.getErrorMessage());
+                        params.putString(OktaSdkConstant.ERROR_STACK_TRACE_KEY, getStackTraceString(e));
                         sendEvent(reactContext, OktaSdkConstant.ON_ERROR, params);
-                        promise.reject(OktaSdkError.SIGN_IN_FAILED.getErrorCode(), OktaSdkError.SIGN_IN_FAILED.getErrorMessage());
+                        promise.reject(OktaSdkError.SIGN_IN_FAILED.getErrorCode(), OktaSdkError.SIGN_IN_FAILED.getErrorMessage(), e);
                     }
                 } else {
                     sharedPreferencesEditor.clear().apply();
@@ -273,8 +277,9 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                 WritableMap params = Arguments.createMap();
                 params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.OKTA_OIDC_ERROR.getErrorCode());
                 params.putString(OktaSdkConstant.ERROR_MSG_KEY, error);
+                params.putString(OktaSdkConstant.ERROR_STACK_TRACE_KEY, getStackTraceString(exception));
                 sendEvent(reactContext, OktaSdkConstant.ON_ERROR, params);
-                promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), OktaSdkError.OKTA_OIDC_ERROR.getErrorMessage());
+                promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), OktaSdkError.OKTA_OIDC_ERROR.getErrorMessage(), exception);
             }
         });
     }
@@ -539,6 +544,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                         WritableMap params = Arguments.createMap();
                         params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.SIGN_IN_FAILED.getErrorCode());
                         params.putString(OktaSdkConstant.ERROR_MSG_KEY, OktaSdkError.SIGN_IN_FAILED.getErrorMessage());
+                        params.putString(OktaSdkConstant.ERROR_STACK_TRACE_KEY, getStackTraceString(e));
                         if (promise != null) {
                             promise.reject(e);
                         }
@@ -576,6 +582,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                 WritableMap params = Arguments.createMap();
                 params.putString(OktaSdkConstant.ERROR_CODE_KEY, OktaSdkError.OKTA_OIDC_ERROR.getErrorCode());
                 params.putString(OktaSdkConstant.ERROR_MSG_KEY, msg);
+                params.putString(OktaSdkConstant.ERROR_STACK_TRACE_KEY, getStackTraceString(error));
                 final Promise promise = queuedPromise;
                 if (promise != null) {
                     promise.reject(OktaSdkError.SIGN_IN_FAILED.getErrorCode(), params.copy());
@@ -726,6 +733,14 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             return REQUEST_CODE_SIGN_IN;
         }
         return initialRequestCode;
+    }
+
+    private String getStackTraceString(Exception e) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        pw.flush();
+        return sw.toString();
     }
 
     private enum LastRequestType {
