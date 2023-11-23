@@ -31,6 +31,8 @@ final class OktaSdkConstant {
 
     static final String ERROR_MSG_KEY = "error_message";
 
+    static final String ERROR_STACK_TRACE_KEY = "error_stack_trace";
+
     static final String ACTIVE_KEY = "active";
 
     static final String TOKEN_TYPE_KEY = "token_type";
