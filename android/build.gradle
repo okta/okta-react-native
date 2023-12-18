@@ -20,7 +20,6 @@ buildscript {
         // Matches recent template from React Native (0.59)
         // https://github.com/facebook/react-native/blob/0.59-stable/template/android/build.gradle#L16
         classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath("com.facebook.react:react-native-gradle-plugin")
     }
 }
 
@@ -29,7 +28,6 @@ plugins {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: "com.facebook.react"
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
@@ -60,14 +58,6 @@ android {
 
 allprojects {
     repositories {
-        maven {
-            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url(new File(['node', '--print', "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim(), '../android'))
-        }
-        maven {
-            // Android JSC is installed from npm
-            url(new File(['node', '--print', "require.resolve('jsc-android/package.json')"].execute(null, rootDir).text.trim(), '../dist'))
-        }
         mavenCentral()
         google()
         maven { url 'https://www.jitpack.io' }
