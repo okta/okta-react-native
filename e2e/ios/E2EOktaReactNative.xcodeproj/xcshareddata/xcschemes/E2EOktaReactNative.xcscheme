@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1310"
+   LastUpgradeVersion = "1130"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -27,21 +27,23 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <PreActions>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0&#10;">
-            </ActionContent>
-         </ExecutionAction>
-      </PreActions>
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9213D8D126F8DEA500EEE56A"
+               BlueprintIdentifier = "00E356ED1AD99517003FC87E"
+               BuildableName = "E2EOktaReactNativeTests.xctest"
+               BlueprintName = "E2EOktaReactNativeTests"
+               ReferencedContainer = "container:E2EOktaReactNative.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A622CA812B30F1D60030F6F2"
                BuildableName = "E2EOktaReactNativeUITests.xctest"
                BlueprintName = "E2EOktaReactNativeUITests"
                ReferencedContainer = "container:E2EOktaReactNative.xcodeproj">
@@ -69,18 +71,6 @@
             ReferencedContainer = "container:E2EOktaReactNative.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "USERNAME"
-            value = "${OKTA_USERNAME}"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "PASSWORD"
-            value = "${OKTA_PASSWORD}"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

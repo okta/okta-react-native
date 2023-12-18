@@ -2,31 +2,26 @@
 
 buildscript {
     ext {
-        buildToolsVersion = findProperty('android.buildToolsVersion') ?: '33.0.0'
+        buildToolsVersion = findProperty('android.buildToolsVersion') ?: '34.0.0'
         minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '21')
-        compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '33')
-        targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '33')
+        compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '34')
+        targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '34')
         kotlinVersion = findProperty('android.kotlinVersion') ?: '1.8.10'
         frescoVersion = findProperty('expo.frescoVersion') ?: '2.5.0'
 
-        // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
-        ndkVersion = "23.1.7779620"
+        ndkVersion = "25.1.8937393"
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath libs.gradle
-        classpath libs.kotlin.gradle.plugin
+        classpath('com.android.tools.build:gradle')
         classpath('com.facebook.react:react-native-gradle-plugin')
-        classpath('com.diffplug.spotless:spotless-plugin-gradle:6.12.0')
     }
 }
 
-plugins {
-    id 'org.jetbrains.kotlin.android' version "1.8.10" apply false
-}
+apply plugin: "com.facebook.react.rootproject"
 
 allprojects {
     repositories {
@@ -36,41 +31,11 @@ allprojects {
         }
         maven {
             // Android JSC is installed from npm
-            url(new File(['node', '--print', "require.resolve('jsc-android/package.json')"].execute(null, rootDir).text.trim(), '../dist'))
+            url(new File(['node', '--print', "require.resolve('jsc-android/package.json', { paths: [require.resolve('react-native/package.json')] })"].execute(null, rootDir).text.trim(), '../dist'))
         }
 
         google()
         mavenCentral()
         maven { url 'https://www.jitpack.io' }
-    }
-    configureSpotless(it)
-}
-
-def configureSpotless(Project project) {
-    project.apply plugin: 'com.diffplug.spotless'
-
-    project.spotless {
-        format 'misc', {
-            target '**/*.gradle', '**/*.md', '**/.gitignore', '**/*.xml', '**/*.json', '**/*.properties', '**/*.yml', '**/*.kt'
-            targetExclude '.idea/**', '**/build/**', '.gradle/**'
-
-            trimTrailingWhitespace()
-            endWithNewline()
-
-        }
-    }
-
-    project.plugins.withId('kotlin-android') {
-        project.spotless {
-            kotlin {
-                target '**/*.kt'
-                targetExclude '**/build/**'
-                ktlint()
-                        .editorConfigOverride([
-                                ktlint_disabled_rules : "package-name"
-                        ])
-                licenseHeaderFile rootProject.file('licenseTemplate.txt')
-            }
-        }
     }
 }
