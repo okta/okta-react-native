@@ -1,6 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    configurations.configureEach { configuration ->
+        configuration.resolutionStrategy {
+            force 'commons-fileupload:commons-fileupload:1.5'
+            force 'com.google.guava:guava:32.1.3-android'
+        }
+    }
+
     ext {
         buildToolsVersion = findProperty('android.buildToolsVersion') ?: '34.0.0'
         minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '21')
@@ -24,6 +31,13 @@ buildscript {
 apply plugin: "com.facebook.react.rootproject"
 
 allprojects {
+    configurations.configureEach { configuration ->
+        configuration.resolutionStrategy {
+            force 'commons-fileupload:commons-fileupload:1.5'
+            force 'com.google.guava:guava:32.1.3-android'
+        }
+    }
+
     repositories {
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
