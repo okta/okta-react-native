@@ -50,11 +50,7 @@ final class BrowserLoginTests: LoginTests {
     
     let passwordField = webView.secureTextFields.allElementsBoundByIndex.first(where: { $0.frame.width >= usernameField.frame.width })!
     passwordField.tap()
-
-    // `typeText` works weird. Sometimes it doesn't type correct text.
-    UIPasteboard.general.string = password
-    passwordField.doubleTap()
-    app.menuItems["Paste"].tap()
+    passwordField.typeText(password)
   
     signInButton.tap()
     
@@ -108,10 +104,7 @@ final class BrowserLoginTests: LoginTests {
     
     let passwordField = webView.secureTextFields.allElementsBoundByIndex.first { $0.frame.width >= usernameField.frame.width }!
     passwordField.tap()
-
-    UIPasteboard.general.string = "1234567"
-    passwordField.doubleTap()
-    app.menuItems["Paste"].tap()
+    passwordField.typeText("1234567")
     
     signInButton.tap()
     

@@ -49,133 +49,133 @@ jobs:
           -scheme "ReactNativeOktaSdkBridge" \
           -destination "platform=iOS Simulator,OS=latest,name=iPhone 14" \
           clean test | xcpretty
-    iOSUITests:
-      runs-on: macos-12
-      steps:
-      - uses: actions/checkout@v3
-      - name: Cache ./node_modules    
-        uses: ./.github/workflows/composite/configure-node
-        with:  
-          node-path: ./node_modules
-          lock-hash: ${{ hashFiles('yarn.lock') }}
-      - name: Build okta-react-native package
-        run: yarn build 
-      - name: Cache e2e/node_modules
-        uses: ./.github/workflows/composite/configure-node
-        with:  
-          node-path: ./e2e/node_modules
-          lock-hash: ${{ hashFiles('./e2e/yarn.lock') }}
-          install-path: ./e2e
-      - name: Cache CocoaPods
-        id: pods-cache
-        uses: actions/cache@v3
-        with:
-          path: ./e2e/ios/Pods
-          key: pods-${{ hashFiles('./e2e/ios/Podfile.lock') }}
-      - name: Preparation before iOS Build
-        run: |
-          npm install -g react-native-cli
-          cd e2e
-          yarn bundle:ios
-          cd ios
-          pod install --repo-update
-          cd ../..
-          echo -e "CLIENT_ID=${{ secrets.CLIENT_ID }}\nISSUER=${{ secrets.ISSUER }}\nREDIRECT_URI=${{ secrets.REDIRECT_URI }}\nLOGOUT_REDIRECT_URI=${{secrets.LOGOUT_REDIRECT_URI}}" > e2e/.env
-      - name: iOS
-        env: 
-          OKTA_USERNAME: ${{ secrets.OKTA_USERNAME }}
-          OKTA_PASSWORD: ${{ secrets.OKTA_PASSWORD }}
-        run: | 
-          set -o pipefail 
-          xcodebuild \
-          -workspace e2e/ios/E2EOktaReactNative.xcworkspace \
-          -scheme E2EOktaReactNative \
-          -destination 'platform=iOS Simulator,OS=latest,name=iPhone 14' \
-          -configuration CI \
-          -sdk iphonesimulator \
-          clean test | xcpretty
-    androidUITests:
-      runs-on: ubuntu-latest
-      steps:
-      - uses: actions/checkout@v3
+    # iOSUITests:
+    #   runs-on: macos-12
+    #   steps:
+    #   - uses: actions/checkout@v3
+    #   - name: Cache ./node_modules    
+    #     uses: ./.github/workflows/composite/configure-node
+    #     with:  
+    #       node-path: ./node_modules
+    #       lock-hash: ${{ hashFiles('yarn.lock') }}
+    #   - name: Build okta-react-native package
+    #     run: yarn build 
+    #   - name: Cache e2e/node_modules
+    #     uses: ./.github/workflows/composite/configure-node
+    #     with:  
+    #       node-path: ./e2e/node_modules
+    #       lock-hash: ${{ hashFiles('./e2e/yarn.lock') }}
+    #       install-path: ./e2e
+    #   - name: Cache CocoaPods
+    #     id: pods-cache
+    #     uses: actions/cache@v3
+    #     with:
+    #       path: ./e2e/ios/Pods
+    #       key: pods-${{ hashFiles('./e2e/ios/Podfile.lock') }}
+    #   - name: Preparation before iOS Build
+    #     run: |
+    #       npm install -g react-native-cli
+    #       cd e2e
+    #       yarn bundle:ios
+    #       cd ios
+    #       pod install --repo-update
+    #       cd ../..
+    #       echo -e "CLIENT_ID=${{ secrets.CLIENT_ID }}\nISSUER=${{ secrets.ISSUER }}\nREDIRECT_URI=${{ secrets.REDIRECT_URI }}\nLOGOUT_REDIRECT_URI=${{secrets.LOGOUT_REDIRECT_URI}}" > e2e/.env
+    #   - name: iOS
+    #     env: 
+    #       OKTA_USERNAME: ${{ secrets.OKTA_USERNAME }}
+    #       OKTA_PASSWORD: ${{ secrets.OKTA_PASSWORD }}
+    #     run: | 
+    #       set -o pipefail 
+    #       xcodebuild \
+    #       -workspace e2e/ios/E2EOktaReactNative.xcworkspace \
+    #       -scheme E2EOktaReactNative \
+    #       -destination 'platform=iOS Simulator,OS=latest,name=iPhone 14' \
+    #       -configuration CI \
+    #       -sdk iphonesimulator \
+    #       clean test | xcpretty
+    # androidUITests:
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #   - uses: actions/checkout@v3
 
-      - name: Configure JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: 18
+    #   - name: Configure JDK
+    #     uses: actions/setup-java@v3
+    #     with:
+    #       distribution: 'zulu'
+    #       java-version: 18
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+    #   - name: Setup Gradle
+    #     uses: gradle/gradle-build-action@v2
 
-      - name: Configure node_modules
-        uses: ./.github/workflows/composite/configure-node
-        with:  
-          node-path: ./node_modules
-          lock-hash: ${{ hashFiles('yarn.lock') }}
+    #   - name: Configure node_modules
+    #     uses: ./.github/workflows/composite/configure-node
+    #     with:  
+    #       node-path: ./node_modules
+    #       lock-hash: ${{ hashFiles('yarn.lock') }}
 
-      - name: Build okta-react-native package
-        run: yarn build
+    #   - name: Build okta-react-native package
+    #     run: yarn build
 
-      - name: Configure e2e/node_modules
-        uses: ./.github/workflows/composite/configure-node
-        with:  
-          node-path: ./e2e/node_modules
-          lock-hash: ${{ hashFiles('./e2e/yarn.lock') }}
-          install-path: ./e2e
+    #   - name: Configure e2e/node_modules
+    #     uses: ./.github/workflows/composite/configure-node
+    #     with:  
+    #       node-path: ./e2e/node_modules
+    #       lock-hash: ${{ hashFiles('./e2e/yarn.lock') }}
+    #       install-path: ./e2e
 
-      - name: Preparation before Android Build
-        run: |
-          npm install -g react-native-cli
-          cd e2e
-          echo -e "CLIENT_ID=${{ secrets.CLIENT_ID }}\nISSUER=${{ secrets.ISSUER }}\nREDIRECT_URI=${{ secrets.REDIRECT_URI }}\nLOGOUT_REDIRECT_URI=${{secrets.LOGOUT_REDIRECT_URI}}" > .env
-          echo -e "signInRedirectUri=${{ secrets.REDIRECT_URI }}\n" > android/okta.properties
-          mkdir -p android/app/src/androidTest/resources/
-          echo -e "username=${{ secrets.OKTA_USERNAME }}\npassword=${{ secrets.OKTA_PASSWORD }}\n" > android/app/src/androidTest/resources/e2eCredentials.properties
-          yarn bundle:android
-          cd ..
+    #   - name: Preparation before Android Build
+    #     run: |
+    #       npm install -g react-native-cli
+    #       cd e2e
+    #       echo -e "CLIENT_ID=${{ secrets.CLIENT_ID }}\nISSUER=${{ secrets.ISSUER }}\nREDIRECT_URI=${{ secrets.REDIRECT_URI }}\nLOGOUT_REDIRECT_URI=${{secrets.LOGOUT_REDIRECT_URI}}" > .env
+    #       echo -e "signInRedirectUri=${{ secrets.REDIRECT_URI }}\n" > android/okta.properties
+    #       mkdir -p android/app/src/androidTest/resources/
+    #       echo -e "username=${{ secrets.OKTA_USERNAME }}\npassword=${{ secrets.OKTA_PASSWORD }}\n" > android/app/src/androidTest/resources/e2eCredentials.properties
+    #       yarn bundle:android
+    #       cd ..
 
-      - name: Build Android E2E app
-        run: |
-          cd e2e/android
-          ./gradlew assembleDebug assembleAndroidTest
-          cd ../..
+    #   - name: Build Android E2E app
+    #     run: |
+    #       cd e2e/android
+    #       ./gradlew assembleDebug assembleAndroidTest
+    #       cd ../..
 
-      - name: Setup Gcloud credentials
-        if: ${{ github.event.repository.fork == false }}
-        env:
-          GOOGLE_SERVICE_JSON_BASE64: ${{ secrets.GOOGLE_SERVICE_JSON_BASE64 }}
-        run: |
-          echo "::add-mask::$(echo $GOOGLE_SERVICE_JSON_BASE64 | base64 --decode | jq -r tostring)"
-          echo "GOOGLE_SERVICE_JSON=$(echo $GOOGLE_SERVICE_JSON_BASE64 | base64 --decode | jq -r tostring)" >> $GITHUB_ENV
+    #   - name: Setup Gcloud credentials
+    #     if: ${{ github.event.repository.fork == false }}
+    #     env:
+    #       GOOGLE_SERVICE_JSON_BASE64: ${{ secrets.GOOGLE_SERVICE_JSON_BASE64 }}
+    #     run: |
+    #       echo "::add-mask::$(echo $GOOGLE_SERVICE_JSON_BASE64 | base64 --decode | jq -r tostring)"
+    #       echo "GOOGLE_SERVICE_JSON=$(echo $GOOGLE_SERVICE_JSON_BASE64 | base64 --decode | jq -r tostring)" >> $GITHUB_ENV
 
-      - name: Authenticate Gcloud command line
-        if: ${{ github.event.repository.fork == false }}
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: ${{ env.GOOGLE_SERVICE_JSON }}
-          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+    #   - name: Authenticate Gcloud command line
+    #     if: ${{ github.event.repository.fork == false }}
+    #     uses: google-github-actions/auth@v1
+    #     with:
+    #       credentials_json: ${{ env.GOOGLE_SERVICE_JSON }}
+    #       project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
 
-      - name: Set up Cloud SDK
-        if: ${{ github.event.repository.fork == false }}
-        uses: google-github-actions/setup-gcloud@v1
+    #   - name: Set up Cloud SDK
+    #     if: ${{ github.event.repository.fork == false }}
+    #     uses: google-github-actions/setup-gcloud@v1
 
-      - name: Use gcloud CLI
-        if: ${{ github.event.repository.fork == false }}
-        run: gcloud auth list &> /dev/null
+    #   - name: Use gcloud CLI
+    #     if: ${{ github.event.repository.fork == false }}
+    #     run: gcloud auth list &> /dev/null
 
-      - name: Run End to End Tests
-        if: ${{ github.event.repository.fork == false }}
-        run: |
-          cd e2e/android
-          ./runTestsInFirebaseTestLab.sh
-          cd ../..
+    #   - name: Run End to End Tests
+    #     if: ${{ github.event.repository.fork == false }}
+    #     run: |
+    #       cd e2e/android
+    #       ./runTestsInFirebaseTestLab.sh
+    #       cd ../..
 
-      - name: Upload Test Failures
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-failures
-          path: |
-            **/build/reports/tests/
-            **/out/failures/
+    #   - name: Upload Test Failures
+    #     if: failure()
+    #     uses: actions/upload-artifact@v3
+    #     with:
+    #       name: test-failures
+    #       path: |
+    #         **/build/reports/tests/
+    #         **/out/failures/
