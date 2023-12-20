@@ -1,12 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    configurations.configureEach { configuration ->
-        configuration.resolutionStrategy {
-            force 'commons-fileupload:commons-fileupload:1.5'
-            force 'com.google.guava:guava:32.1.3-android'
-        }
-    }
+    apply from: 'forceVersions.gradle'
+    forceVersions(configurations)
 
     ext {
         buildToolsVersion = findProperty('android.buildToolsVersion') ?: '34.0.0'
@@ -30,13 +26,12 @@ buildscript {
 
 apply plugin: "com.facebook.react.rootproject"
 
+subprojects {
+    task allDeps(type: DependencyReportTask) {}
+}
+
 allprojects {
-    configurations.configureEach { configuration ->
-        configuration.resolutionStrategy {
-            force 'commons-fileupload:commons-fileupload:1.5'
-            force 'com.google.guava:guava:32.1.3-android'
-        }
-    }
+    forceVersions(configurations)
 
     repositories {
         maven {
