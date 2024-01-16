@@ -104,7 +104,7 @@ export const createConfig = async({
   if (Platform.OS === 'ios') {
     scopes = scopes.join(' ');
 
-    return NativeModules.OktaSdkBridge.createConfig(
+    NativeModules.OktaSdkBridge.createConfig(
       clientId,
       redirectUri,
       endSessionRedirectUri,
@@ -112,26 +112,39 @@ export const createConfig = async({
       scopes,
       userAgentTemplate,
       httpConnectionTimeout,
+      successResponse => {
+        return successResponse;
+      },
+      errorResponse => {
+        return errorResponse;
+      }
+    );
+  } else {
+
+    const timeouts = {
+      httpConnectionTimeout,
+      httpReadTimeout,
+    };
+      
+    NativeModules.OktaSdkBridge.createConfig(
+      clientId,
+      redirectUri,
+      endSessionRedirectUri,
+      discoveryUri,
+      scopes,
+      userAgentTemplate,
+      requireHardwareBackedKeyStore,
+      androidChromeTabColor,
+      timeouts,
+      browserMatchAll,
+      successResponse => {
+        return successResponse;
+      },
+      errorResponse => {
+        return errorResponse;
+      }
     );
   }
-
-  const timeouts = {
-    httpConnectionTimeout,
-    httpReadTimeout,
-  };
-    
-  return NativeModules.OktaSdkBridge.createConfig(
-    clientId,
-    redirectUri,
-    endSessionRedirectUri,
-    discoveryUri,
-    scopes,
-    userAgentTemplate,
-    requireHardwareBackedKeyStore,
-    androidChromeTabColor,
-    timeouts,
-    browserMatchAll,
-  );
 }; 
 
 export const getAuthClient = () => {

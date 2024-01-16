@@ -158,6 +158,8 @@ describe('OktaReactNative', () => {
         processedScope,
         `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} ios/1.0.0`,
         defaultTimeouts.httpConnectionTimeout,
+        expect.any(Function), // Native bridge success callback
+        expect.any(Function) // Native bridge error callback
       );
     });
 
@@ -177,6 +179,8 @@ describe('OktaReactNative', () => {
         undefined,
         defaultTimeouts,
         false,
+        expect.any(Function), // Native bridge success callback
+        expect.any(Function) // Native bridge error callback
       );
     });
 
@@ -198,6 +202,8 @@ describe('OktaReactNative', () => {
         '#FF00AA',
         defaultTimeouts,
         false,
+        expect.any(Function), // Native bridge success callback
+        expect.any(Function) // Native bridge error callback
       );
     });
     
@@ -219,6 +225,8 @@ describe('OktaReactNative', () => {
         undefined,
         defaultTimeouts,
         true,
+        expect.any(Function), // Native bridge success callback
+        expect.any(Function) // Native bridge error callback
       );
     });
 
@@ -240,6 +248,8 @@ describe('OktaReactNative', () => {
         undefined,
         { httpConnectionTimeout: 12, httpReadTimeout: 34 },
         false,
+        expect.any(Function), // Native bridge success callback
+        expect.any(Function) // Native bridge error callback
       );
     });
 

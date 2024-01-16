@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
@@ -99,7 +100,8 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             String androidChromeTabColor,
             ReadableMap timeouts,
             Boolean browserMatchAll,
-            Promise promise
+            Callback successCallback,
+            Callback errorCallback
     ) {
 
         try {
@@ -128,7 +130,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                     webAuthBuilder.withTabColor(Color.parseColor(androidChromeTabColor));
                 } catch (IllegalArgumentException e) {
                     // The color wasn't in the right format.
-                    promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
+                    errorCallback.invoke(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
                 }
             }
 
@@ -142,7 +144,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             configureBuilder(authClientBuilder, userAgentTemplate, requireHardwareBackedKeyStore, connectTimeout, readTimeout);
             this.authClient = authClientBuilder.create();
 
-            promise.resolve(true);
+            successCallback.invoke(true);
 
             if (SESSION_CLIENT_WEB.equals(sharedPreferences.getString(PREFS_KEY, SESSION_CLIENT_WEB))) {
                 sessionClient = this.webClient.getSessionClient();
@@ -150,7 +152,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                 sessionClient = this.authClient.getSessionClient();
             }
         } catch (Exception e) {
-            promise.reject(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
+            errorCallback.invoke(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
         }
     }
 
