@@ -1,3 +1,9 @@
+# 2.11.0
+
+### Other
+- [#404](https://github.com/okta/okta-react-native/pull/404) Use native callbacks instead of promise in createConfig. This can potentially avoid issue with the createConfig not returning sometimes.
+- [#397](https://github.com/okta/okta-react-native/pull/397) Update the SDK to use react-native 0.73. This also simplifies build logic for Android native modules.
+
 # 2.10.0
 
 ### Other
