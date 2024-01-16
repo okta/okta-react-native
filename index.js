@@ -112,38 +112,39 @@ export const createConfig = async({
       scopes,
       userAgentTemplate,
       httpConnectionTimeout,
-      successCallback => {
-        return successCallback
+      successResponse => {
+        return successResponse;
       },
-      errorCallback => {
-        return errorCallback
+      errorResponse => {
+        return errorResponse;
       }
-    )
-  }
+    );
+  } else {
 
-  const timeouts = {
-    httpConnectionTimeout,
-    httpReadTimeout,
-  };
-    
-  NativeModules.OktaSdkBridge.createConfig(
-    clientId,
-    redirectUri,
-    endSessionRedirectUri,
-    discoveryUri,
-    scopes,
-    userAgentTemplate,
-    requireHardwareBackedKeyStore,
-    androidChromeTabColor,
-    timeouts,
-    browserMatchAll,
-    successCallback => {
-      return successCallback
-    },
-    errorCallback => {
-      return errorCallback
-    }
-  );
+    const timeouts = {
+      httpConnectionTimeout,
+      httpReadTimeout,
+    };
+      
+    NativeModules.OktaSdkBridge.createConfig(
+      clientId,
+      redirectUri,
+      endSessionRedirectUri,
+      discoveryUri,
+      scopes,
+      userAgentTemplate,
+      requireHardwareBackedKeyStore,
+      androidChromeTabColor,
+      timeouts,
+      browserMatchAll,
+      successResponse => {
+        return successResponse;
+      },
+      errorResponse => {
+        return errorResponse;
+      }
+    );
+  }
 }; 
 
 export const getAuthClient = () => {

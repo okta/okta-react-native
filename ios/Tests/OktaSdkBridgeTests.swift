@@ -63,7 +63,7 @@ final class OktaSdkBridgeTests: XCTestCase {
                             requestTimeout: 20) { (result) in
             XCTAssertNotNil(result)
             expectation.fulfill()
-        } promiseRejecter: { (_, _, _) in
+        } errorCallback: { (_) in
             XCTAssert(false, "createConfig failed.")
         }
 
