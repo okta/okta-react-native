@@ -87,8 +87,8 @@ class OktaSdkBridge: RCTEventEmitter {
                       scopes: String,
                       userAgentTemplate: String,
                       requestTimeout: Int,
-                      promiseResolver: RCTPromiseResolveBlock,
-                      promiseRejecter: RCTPromiseRejectBlock) {
+                      successCallback: RCTResponseSenderBlock,
+                      errorCallback: RCTResponseSenderBlock) {
         do {
             let uaVersion = OktaUserAgent.userAgentVersion()
             let userAgent = userAgentTemplate.replacingOccurrences(of: "$UPSTREAM_SDK", with: "okta-oidc-ios/\(uaVersion)")
@@ -106,9 +106,9 @@ class OktaSdkBridge: RCTEventEmitter {
             oktaOidc = try OktaOidc(configuration: config)
             self.requestTimeout = requestTimeout
             
-            promiseResolver(true)
+            successCallback([true])
         } catch let error {
-            promiseRejecter(OktaReactNativeError.oktaOidcError.errorCode, error.localizedDescription, error)
+            errorCallback([OktaReactNativeError.oktaOidcError.errorCode, error.localizedDescription, error])
         }
     }
     

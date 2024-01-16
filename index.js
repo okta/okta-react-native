@@ -104,7 +104,7 @@ export const createConfig = async({
   if (Platform.OS === 'ios') {
     scopes = scopes.join(' ');
 
-    return NativeModules.OktaSdkBridge.createConfig(
+    NativeModules.OktaSdkBridge.createConfig(
       clientId,
       redirectUri,
       endSessionRedirectUri,
@@ -112,7 +112,13 @@ export const createConfig = async({
       scopes,
       userAgentTemplate,
       httpConnectionTimeout,
-    );
+      successCallback => {
+        return successCallback
+      },
+      errorCallback => {
+        return errorCallback
+      }
+    )
   }
 
   const timeouts = {
@@ -120,7 +126,7 @@ export const createConfig = async({
     httpReadTimeout,
   };
     
-  return NativeModules.OktaSdkBridge.createConfig(
+  NativeModules.OktaSdkBridge.createConfig(
     clientId,
     redirectUri,
     endSessionRedirectUri,
@@ -131,6 +137,12 @@ export const createConfig = async({
     androidChromeTabColor,
     timeouts,
     browserMatchAll,
+    successCallback => {
+      return successCallback
+    },
+    errorCallback => {
+      return errorCallback
+    }
   );
 }; 
 
