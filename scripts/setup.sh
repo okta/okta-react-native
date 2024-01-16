@@ -1,17 +1,27 @@
-#!/bin/bash -xe
+#!/bin/bash
 
 export NVM_DIR="/root/.nvm"
 
 # Install required node version
-setup_service node v16.19.0
+setup_service node v20.5.0
 
-# Install yarn
-curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.17.3
-# Link the installed yarn to be default
-ln -sf ~/.yarn/bin/yarn /usr/bin/yarn
+# determine the linux distro
+distro=$(awk -F= '$1=="ID" { print $2 ;}' /etc/os-release | tr -d '"')
+echo $distro
 
-# Add yarn to the $PATH so npm cli commands do not fail
-export PATH="${PATH}:$(yarn global bin)"
+# yarn installation is different, depending on distro
+if [ "$distro" = "centos" ]; then
+  # Use the cacert bundled with centos as okta root CA is self-signed and cause issues downloading from yarn
+  setup_service yarn 1.21.1 /etc/pki/tls/certs/ca-bundle.crt
+  # Add yarn to the $PATH so npm cli commands do not fail
+  export PATH="${PATH}:$(yarn global bin)"
+elif [ "$distro" = "amzn" ]; then
+  npm install -g yarn
+  export PATH="$PATH:$(npm config get prefix)/bin"
+else
+  echo "Unknown OS environment, exiting..."
+  exit ${FAILED_SETUP}
+fi
 
 cd ${OKTA_HOME}/${REPO}
 
@@ -25,28 +35,7 @@ git reset --hard $SHA
 git config --global user.email "oktauploader@okta.com"
 git config --global user.name "oktauploader-okta"
 
-#!/bin/bash
-YARN_REGISTRY=https://registry.yarnpkg.com
-OKTA_REGISTRY=${ARTIFACTORY_URL}/api/npm/npm-okta-master
-
-# Yarn does not utilize the npmrc/yarnrc registry configuration
-# if a lockfile is present. This results in `yarn install` problems
-# for private registries. Until yarn@2.0.0 is released, this is our current
-# workaround.
-#
-# Related issues:
-#  - https://github.com/yarnpkg/yarn/issues/5892
-#  - https://github.com/yarnpkg/yarn/issues/3330
-
-# Replace yarn registry with Okta's
-echo "Replacing $YARN_REGISTRY with $OKTA_REGISTRY within yarn.lock files..."
-sed -i "s#${YARN_REGISTRY}#${OKTA_REGISTRY}#" yarn.lock
-
 if ! yarn install ; then
   echo "yarn install failed! Exiting..."
   exit ${FAILED_SETUP}
 fi
-
-# Revert the original change(s)
-echo "Replacing $OKTA_REGISTRY with $YARN_REGISTRY within yarn.lock files..."
-sed -i "s#${OKTA_REGISTRY}#${YARN_REGISTRY}#" yarn.lock

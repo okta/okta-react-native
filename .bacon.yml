@@ -5,21 +5,21 @@ test_suites:
       timeout: '60'
       script_name: lint
       criteria: MERGE
-      queue_name: small
+      queue_name: ci-queue-productionJenga-AL2023
     - name: unit
       script_path: /root/okta/okta-react-native/scripts
       sort_order: '2'
       timeout: '10'
       script_name: unit
       criteria: MERGE
-      queue_name: small
+      queue_name: ci-queue-productionJenga-AL2023
     - name: publish
       script_path: /root/okta/okta-react-native/scripts
       sort_order: '3'
       timeout: '60'
       script_name: publish
       criteria: MERGE
-      queue_name: small
+      queue_name: ci-queue-productionJenga-AL2023
     - name: sast_scan
       script_path: /root/okta/okta-react-native/scripts
       script_name: sast_scan
