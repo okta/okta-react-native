@@ -23,8 +23,8 @@ RCT_EXTERN_METHOD(
   scopes:(NSString *)scopes 
   userAgentTemplate:(NSString *)userAgentTemplate
   requestTimeout:(NSInteger)requestTimeout
-  promiseResolver:(RCTPromiseResolveBlock *)promiseResolver 
-  promiseRejecter:(RCTPromiseRejectBlock *)promiseRejecter
+  successCallback:(RCTResponseSenderBlock *)successCallback
+  errorCallback:(RCTResponseSenderBlock *)errorCallback
 )
 
 RCT_EXTERN_METHOD(

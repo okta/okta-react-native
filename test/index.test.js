@@ -132,7 +132,10 @@ describe('OktaReactNative', () => {
           mockConfig2: 'mock config 2'
         }
       };
-      await createConfig(config);
+      let promise = createConfig(config);
+      let onSuccess = mockCreateConfig.mock.calls[0][7];
+      onSuccess(true);
+      await promise;
       expect(OktaAuth).toHaveBeenCalledWith({
         issuer: 'https://dummy_issuer',
         clientId: 'dummy_client_id',
@@ -254,7 +257,10 @@ describe('OktaReactNative', () => {
     });
 
     it('adds an environment to oktaAuth\'s _oktaUserAgent', async () => {
-      await createConfig(config);
+      let promise = createConfig(config);
+      let onSuccess = mockCreateConfig.mock.calls[0][10];
+      onSuccess(true);
+      await promise;
 
       let mockOktaUserAgentAddEnvironment = getAuthClient()._oktaUserAgent.addEnvironment;
       expect(mockOktaUserAgentAddEnvironment).toHaveBeenCalledTimes(1);
