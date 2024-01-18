@@ -130,7 +130,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                     webAuthBuilder.withTabColor(Color.parseColor(androidChromeTabColor));
                 } catch (IllegalArgumentException e) {
                     // The color wasn't in the right format.
-                    errorCallback.invoke(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
+                    errorCallback.invoke(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), getStackTraceString(e));
                 }
             }
 
@@ -152,7 +152,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                 sessionClient = this.authClient.getSessionClient();
             }
         } catch (Exception e) {
-            errorCallback.invoke(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), e);
+            errorCallback.invoke(OktaSdkError.OKTA_OIDC_ERROR.getErrorCode(), e.getLocalizedMessage(), getStackTraceString(e));
         }
     }
 

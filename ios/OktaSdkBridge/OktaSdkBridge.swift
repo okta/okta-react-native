@@ -108,7 +108,7 @@ class OktaSdkBridge: RCTEventEmitter {
             
             successCallback([true])
         } catch let error {
-            errorCallback([OktaReactNativeError.oktaOidcError.errorCode, error.localizedDescription, error])
+            errorCallback([OktaReactNativeError.oktaOidcError.errorCode!, error.localizedDescription, Thread.callStackSymbols])
         }
     }
     

@@ -54,7 +54,8 @@ class OktaStatusError extends Error {
   }
 }
 
-export const createConfig = async({
+/* eslint-disable max-params */
+export function createConfigWithCallbacks(
   issuer,
   clientId,
   redirectUri, 
@@ -66,9 +67,10 @@ export const createConfig = async({
   httpConnectionTimeout,
   httpReadTimeout,
   browserMatchAll = false,
-  oktaAuthConfig = {}
-}) => {
-
+  oktaAuthConfig = {},
+  onSuccess,
+  onError
+) {
   assertIssuer(discoveryUri);
   assertClientId(clientId);
   assertRedirectUri(redirectUri);
@@ -112,12 +114,8 @@ export const createConfig = async({
       scopes,
       userAgentTemplate,
       httpConnectionTimeout,
-      successResponse => {
-        return successResponse;
-      },
-      errorResponse => {
-        return errorResponse;
-      }
+      onSuccess,
+      onError
     );
   } else {
 
@@ -137,14 +135,49 @@ export const createConfig = async({
       androidChromeTabColor,
       timeouts,
       browserMatchAll,
-      successResponse => {
-        return successResponse;
-      },
-      errorResponse => {
-        return errorResponse;
-      }
+      onSuccess,
+      onError
     );
   }
+}
+/* eslint-enable max-params */
+
+export const createConfig = async({
+  issuer,
+  clientId,
+  redirectUri, 
+  endSessionRedirectUri, 
+  discoveryUri,
+  scopes,
+  requireHardwareBackedKeyStore,
+  androidChromeTabColor,
+  httpConnectionTimeout,
+  httpReadTimeout,
+  browserMatchAll = false,
+  oktaAuthConfig = {}
+}) => {
+  return await new Promise((resolve, reject) => {
+    createConfigWithCallbacks(
+      issuer,
+      clientId,
+      redirectUri, 
+      endSessionRedirectUri, 
+      discoveryUri,
+      scopes,
+      requireHardwareBackedKeyStore,
+      androidChromeTabColor,
+      httpConnectionTimeout,
+      httpReadTimeout,
+      browserMatchAll,
+      oktaAuthConfig,
+      successResponse => {
+        resolve(successResponse);
+      },
+      (errorCode, localizedMessage, stackTrace) => {
+        reject([errorCode, localizedMessage, stackTrace]);
+      }
+    );
+  });
 }; 
 
 export const getAuthClient = () => {
