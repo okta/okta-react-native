@@ -1,3 +1,8 @@
+# 2.11.1
+
+### Bug Fix
+- [#407](https://github.com/okta/okta-react-native/pull/407) Fix createConfig crash in release 2.11.0 on iOS
+
 # 2.11.0
 
 ### Other
