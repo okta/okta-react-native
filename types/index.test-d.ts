@@ -43,6 +43,10 @@ expectType<Promise<Okta.AuthenticationResponse>>(OktaSDK.signInWithBrowser({ idp
 
 expectType<Promise<Okta.AuthenticationResponse>>(OktaSDK.signInWithBrowser({ noSSO: true }));
 
+expectType<Promise<Okta.AuthenticationResponse>>(OktaSDK.signInWithBrowser({ login_hint: 'some@email.com' }));
+
+expectType<Promise<Okta.AuthenticationResponse>>(OktaSDK.signInWithBrowser({ prompt: 'Prompt' }));
+
 expectType<Promise<Okta.AuthenticationResponse>>(OktaSDK.authenticate({ sessionToken: 'sessionToken' }));
 
 expectType<Promise<{ resolve_type: string; }>>(OktaSDK.signOut());
