@@ -1,3 +1,13 @@
+# 2.12.0
+
+### Other
+- [#409](https://github.com/okta/okta-react-native/pull/409) Update signInWithBrowser typescript parameters to include login_hint and prompt. Thanks to [arelstone](https://github.com/arelstone) for this contribution!
+
+# 2.11.1
+
+### Bug Fix
+- [#407](https://github.com/okta/okta-react-native/pull/407) Fix createConfig crash in release 2.11.0 on iOS
+
 # 2.11.0
 
 ### Other
