@@ -24,7 +24,11 @@
     "react-native-reanimated": "^3.6.1",
     "react-native-safe-area-context": "4.7.4",
     "react-native-screens": "~3.27.0",
-    "react-native-web": "~0.19.9"
+    "react-native-web": "~0.19.9",
+    "semver": "^7.6.0"
+  },
+  "resolutions": {
+    "glob": "^9.3.5"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2"
