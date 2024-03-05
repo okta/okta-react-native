@@ -6,6 +6,12 @@ def forceVersions(ConfigurationContainer configurations) {
             force 'org.xerial:sqlite-jdbc:3.44.1.0'
             force 'com.google.code.gson:gson:2.10.1'
             force 'org.json:json:20231013'
+            force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10'
+            force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10'
+            force 'org.bouncycastle:bcutil-jdk15to18:1.77'
+            force 'org.bouncycastle:bcprov-jdk15to18:1.77'
+            force 'junit:junit:4.13.2'
+            force 'commons-io:commons-io:2.15.1'
         }
     }
 }
