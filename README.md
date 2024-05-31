@@ -5,40 +5,41 @@
 
 # Okta React Native
 
-  - [Prerequisites](#prerequisites)
-  - [Configure an OpenID Connect Client](#configure-an-openid-connect-client-in-okta)
-  - [Getting started](#getting-started)
-    - [iOS Setup](#ios-setup)
-    - [Android Setup](#android-setup)
-  - [Usage guide](#usage)
-  - [Migrating between versions](#migrating-between-versions)
-  - [Contributing](#contributing)
+- [Prerequisites](#prerequisites)
+- [Configure an OpenID Connect Client](#configure-an-openid-connect-client-in-okta)
+- [Getting started](#getting-started)
+  - [iOS Setup](#ios-setup)
+  - [Android Setup](#android-setup)
+- [Usage guide](#usage)
+- [Migrating between versions](#migrating-between-versions)
+- [Contributing](#contributing)
 
 The Okta React Native library makes it easy to add authentication to your React Native app. This library is a wrapper around [Okta OIDC Android](https://github.com/okta/okta-oidc-android) and [Okta OIDC iOS](https://github.com/okta/okta-oidc-ios).
 
 This library follows the current best practice for native apps using:
 
-* [OAuth 2.0 Authorization Code Flow](https://tools.ietf.org/html/rfc6749#section-1.3.1)
-* [Proof Key for Code Exchange (PKCE)](https://tools.ietf.org/html/rfc7636)
+- [OAuth 2.0 Authorization Code Flow](https://tools.ietf.org/html/rfc6749#section-1.3.1)
+- [Proof Key for Code Exchange (PKCE)](https://tools.ietf.org/html/rfc7636)
 
 This library also exposes APIs to interact with [Authentication API](https://developer.okta.com/docs/api/resources/authn) directly to implement native UI for authentication. The library supports two flows in your React Native application:
-* **[Browser Sign In](#browser-sign-in)** - redirects the user to the Okta browser login page of your Org for authentication. The user is redirected back to the React Native application after authenticating.
-* **[Custom Sign In](#custom-sign-in)** - A React Native application that adopts native authorization to take control over authorization flow and/or provide custom UI.
+
+- **[Browser Sign In](#browser-sign-in)** - redirects the user to the Okta browser login page of your Org for authentication. The user is redirected back to the React Native application after authenticating.
+- **[Custom Sign In](#custom-sign-in)** - A React Native application that adopts native authorization to take control over authorization flow and/or provide custom UI.
 
 You can learn more on the [Okta + ReactNative](https://developer.okta.com/code/react-native/) page in our documentation. You can also download our [sample applications](https://github.com/okta/samples-js-react-native).
 
 ## Prerequisites
 
-* If you do not already have a **Developer Edition Account**, you can create one at [https://developer.okta.com/signup/](https://developer.okta.com/signup/).
-* If you don't have a React Native app, or are new to React Native, please continue with the [React Native CLI Quickstart](https://facebook.github.io/react-native/docs/getting-started) guide. It will walk you through the creation of a React Native app and other application development essentials.
-* If you are developing with an Android device emulator, make sure to check out the [React Native - Android Development](https://facebook.github.io/react-native/docs/getting-started.html#android-development-environment) setup instructions.
+- If you do not already have a **Developer Edition Account**, you can create one at [https://developer.okta.com/signup/](https://developer.okta.com/signup/).
+- If you don't have a React Native app, or are new to React Native, please continue with the [React Native CLI Quickstart](https://facebook.github.io/react-native/docs/getting-started) guide. It will walk you through the creation of a React Native app and other application development essentials.
+- If you are developing with an Android device emulator, make sure to check out the [React Native - Android Development](https://facebook.github.io/react-native/docs/getting-started.html#android-development-environment) setup instructions.
 
 ## Configure an OpenID Connect Client in Okta
 
 In Okta, applications are OpenID Connect clients that can use Okta Authorization servers to authenticate users.  Your Okta Org already has a default authorization server, so you just need to create an OIDC client that will use it.
 
-* Log into the Okta Developer Dashboard, click **Applications** then **Add Application**.
-* Choose **Native** as the platform, then submit the form the default values, which should look similar to this:
+- Log into the Okta Developer Dashboard, click **Applications** then **Add Application**.
+- Choose **Native** as the platform, then submit the form the default values, which should look similar to this:
 
 | Setting             | Value                                        |
 | ------------------- | -------------------------------------------- |
@@ -62,7 +63,7 @@ These values will be used in your React application to setup the OpenID Connect 
 This library is available through [npm](https://www.npmjs.com/package/@okta/okta-react-native). To install it, simply add it to your project:
 
 ```
-$ npm install @okta/okta-react-native --save
+npm install @okta/okta-react-native --save
 ```
 
 ### iOS Setup
@@ -78,19 +79,23 @@ To setup iOS, there are three steps that you must take.
 This library supports iOS version `12.4` and above. Go to your project -> `Build settings` -> `iOS Deployment Target`, and set it to at least version `12.4`.  
 
 #### Install Okta Open ID Connect iOS
-This library depends on the native [Okta OIDC iOS](https://github.com/okta/okta-oidc-ios) library. It is not distributed as part of the React Native library to keep your dependency management consistent. 
+
+This library depends on the native [Okta OIDC iOS](https://github.com/okta/okta-oidc-ios) library. It is not distributed as part of the React Native library to keep your dependency management consistent.
 
 You can currently add Okta OIDC iOS through CocoaPods:
 
 1. [**CocoaPods**]((https://guides.cocoapods.org/using/getting-started.html))
 
    ***React Native >= 0.60***: With React Native 0.60 pods are added to `Podfile` automatically. Run the commands to install dependencies:
+
    ```
    cd ios
    pod install --repo-update
    ```
+
    ***React Native < 0.60***: Make sure your `Podfile` looks like this:
-    ```   
+
+    ```
    platform :ios, '12.4'
 
    target '{YourTargetName}' do
@@ -101,13 +106,14 @@ You can currently add Okta OIDC iOS through CocoaPods:
    ```
 
    Then run `pod install`.
-   
+
 2. **Carthage**
    With [Carthage](https://github.com/Carthage/Carthage), add the following line to your Cartfile:
 
     ```
     github "okta/okta-oidc-ios" ~> 3.10.4
     ```
+
    Then run `carthage update --platform iOS`.
 
    Open project settings and choose your application target. Then open `Build Phases` and add `OktaOidc.framework` from `ios/Carthage/Build/iOS` into `Embed Frameworks` section
@@ -115,22 +121,26 @@ You can currently add Okta OIDC iOS through CocoaPods:
 ### Android Setup
 
 For Android, there are two steps that you must take:
+
 1. [Installing Okta Open Id Connect Android.](#install-okta-open-id-connect-android)
 2. [Add a redirect scheme to your project.](#add-redirect-scheme)
 
 #### Install Okta Open ID Connect Android
+
 This library depends on the native [Okta OIDC Android](https://github.com/okta/okta-oidc-android) library. You have to add this library through Gradle. Follow the following steps:
 
 1. Add this line to `android/build.gradle`, under `allprojects` -> `repositories`.
+
     ```
     mavenCentral()
     ```
-    
+
 2. Make sure your `minSdkVersion` is `21` in `android/build.gradle`.
 
 #### Add redirect scheme
 
 Defining a redirect scheme to capture the authorization redirect. In `android/app/build.gradle`, under `android` -> `defaultConfig`, add:
+
 ```
 manifestPlaceholders = [
   appAuthRedirectScheme: 'com.sampleapplication'
@@ -143,7 +153,7 @@ You will need the values from the OIDC client that you created in the previous s
 
 Before calling any other method, it is important that you call `createConfig` to set up the configuration properly on the native modules.
 
-Importing methods would follow this pattern: 
+Importing methods would follow this pattern:
 
 ```javascript
 import { createConfig, signIn, signOut, getAccessToken } from '@okta/okta-react-native';
@@ -153,13 +163,13 @@ import { createConfig, signIn, signOut, getAccessToken } from '@okta/okta-react-
 
 This method will create a configured client on the native modules. Resolves `true` if successfully configures a client.
 
-* `issuer` is an optional field in config, for more information please refer to [About the Issuer](https://github.com/okta/okta-auth-js/tree/master#about-the-issuer).
-* `redirectUri` and `endSessionRedirectUri` must not be the same, otherwise Android will throw an error on `signOut`.
-* `requireHardwareBackedKeyStore` is a configurable setting only on Android devices. If you're a developer testing on Android emulators, set this field to `false`. 
-* `androidChromeTabColor` is an optional field in config, and is used only by _Android_ for the Chrome Custom Tabs color for the OIDC flow.
-* `browserMatchAll` is an optional field in config, and is used only by _Android_ to match all Chrome Custom Tabs browsers.
-* `httpConnectionTimeout` is an optional field in config, represented in seconds. Available on _iOS_ and _Android_.
-* `httpReadTimeout` is an optional field in config, represented in seconds. Available only on _Android_.
+- `issuer` is an optional field in config, for more information please refer to [About the Issuer](https://github.com/okta/okta-auth-js/tree/master#about-the-issuer).
+- `redirectUri` and `endSessionRedirectUri` must not be the same, otherwise Android will throw an error on `signOut`.
+- `requireHardwareBackedKeyStore` is a configurable setting only on Android devices. If you're a developer testing on Android emulators, set this field to `false`.
+- `androidChromeTabColor` is an optional field in config, and is used only by *Android* for the Chrome Custom Tabs color for the OIDC flow.
+- `browserMatchAll` is an optional field in config, and is used only by *Android* to match all Chrome Custom Tabs browsers.
+- `httpConnectionTimeout` is an optional field in config, represented in seconds. Available on *iOS* and *Android*.
+- `httpReadTimeout` is an optional field in config, represented in seconds. Available only on *Android*.
 
 ```javascript
 await createConfig({
@@ -175,7 +185,7 @@ await createConfig({
   httpConnectionTimeout: 15, // Optional
   httpReadTimeout: 10, // Optional
 });
-``` 
+```
 
 ### `getAuthClient`
 
@@ -188,7 +198,8 @@ This method will handle both `browser-sign-in` and `custom-sign-in` scenarios ba
 This async method will automatically redirect users to your Okta organziation for authentication. It will emit an event once a user successfully signs in. Make sure your event listeners are mounted and unmounted. Note: on iOS there isn't a `onCancelled` event. If the sign in process is cancelled, `onError` will be triggered.
 
 #### `browser-sign-in`
-`browser-sign-in` leverages device's native browser to automatically redirect users to your Okta organziation for authentication. By providing no argument, this method will trigger the `browser-sign-in` flow. It will emit an event once a user successfully signs in. Make sure your event listeners are mounted and unmounted. 
+
+`browser-sign-in` leverages device's native browser to automatically redirect users to your Okta organziation for authentication. By providing no argument, this method will trigger the `browser-sign-in` flow. It will emit an event once a user successfully signs in. Make sure your event listeners are mounted and unmounted.
 
 **Note**: on iOS there isn't a `onCancelled` event. If the sign in process is cancelled, `onError` will be triggered.
 
@@ -221,6 +232,7 @@ await signInWithBrowser({ noSSO: true });
 ```
 
 ##### Sample Usage
+
 ```javascript
 signInWithBrowser({ noSSO: true })
   .then(result => {
@@ -233,10 +245,12 @@ signInWithBrowser({ noSSO: true })
 ```
 
 #### `custom-sign-in`
-`custom-sign-in` provides the way to authenticate the user within the native application. By providing `options` object with username and password fields, this method will retrieve `sessionToken` then exchange it for `accessToken`. 
+
+`custom-sign-in` provides the way to authenticate the user within the native application. By providing `options` object with username and password fields, this method will retrieve `sessionToken` then exchange it for `accessToken`.
 Both `Promise` and `Event listeners` are supported. This method is leveraging `@okta/okta-auth-js` SDK to perform authentication API request. For more information, please checkout [Okta AuthJs signIn options](https://github.com/okta/okta-auth-js#signinoptions) section.
 
 ##### Sample Usage
+
 ```javascript
 signIn({ username: "{username}", password: "{password}" })
   .then(token => {
@@ -251,20 +265,20 @@ signIn({ username: "{username}", password: "{password}" })
 ##### Sample Usage
 
 ```javascript
-import { signIn, EventEmitter } from '@okta/okta-react-native';
+import { signIn, addListener } from '@okta/okta-react-native';
 
 componentDidMount() {
-  this.signInSuccess = EventEmitter.addListener('signInSuccess', function(e: Event) {
+  this.signInSuccess = addListener('signInSuccess', function(e: Event) {
     console.log(e.access_token);
     // Do something ...
   });
-  this.signOutSuccess = EventEmitter.addListener('signOutSuccess', function(e: Event) {
+  this.signOutSuccess = addListener('signOutSuccess', function(e: Event) {
     //...
   });
-  this.onError = EventEmitter.addListener('onError', function(e: Event) {
+  this.onError = addListener('onError', function(e: Event) {
     //...
   });
-  this.onCancelled = EventEmitter.addListener('onCancelled', function(e: Event) {
+  this.onCancelled = addListener('onCancelled', function(e: Event) {
     //...
   });
 }
@@ -276,14 +290,14 @@ componentWillUnmount() {
   this.onCancelled.remove();
 }
 
-``` 
+```
 
 ### `authenticate`
 
 If you already logged in to Okta and have a valid session token, you can complete authorization by calling `authenticate` method. It will emit an event once a user successfully signs in. Make sure your event listeners are mounted and unmounted. Note: on iOS there isn't a `onCancelled` event. If the `authenticate` process is cancelled, `onError` will be triggered.
 
 ```javascript
-await authenticate({sessionToken: sessionToken});
+await authenticate(sessionToken);
 ```
 
 ### `signOut`
@@ -317,15 +331,13 @@ await isAuthenticated();
 
 ##### Sample Response
 
-If authenticated: 
+If authenticated:
 
 ```javascript
 {
   "authenticated": true
 }
 ```
-
-
 
 ### `getAccessToken`
 
@@ -347,7 +359,7 @@ If the access token is available:
 
 ### `getIdToken`
 
-This method returns a promise that will return the identity token as a string. The promise will be rejected if no ID token is available. 
+This method returns a promise that will return the identity token as a string. The promise will be rejected if no ID token is available.
 
 ```javascript
 await getIdToken();
@@ -455,7 +467,7 @@ await clearTokens();
 
 ### `introspectAccessToken`
 
-Introspect the access token. 
+Introspect the access token.
 
 ```javascript
 await introspectAccessToken();
@@ -467,7 +479,7 @@ Sample responses can be found [here](https://developer.okta.com/docs/reference/a
 
 ### `introspectIdToken`
 
-Introspect the ID token. 
+Introspect the ID token.
 
 ```javascript
 await introspectIdToken();
@@ -479,7 +491,7 @@ Sample responses can be found [here](https://developer.okta.com/docs/reference/a
 
 ### `introspectRefreshToken`
 
-Introspect the id token. 
+Introspect the id token.
 
 ```javascript
 await introspectRefreshToken();
@@ -489,10 +501,9 @@ await introspectRefreshToken();
 
 Sample responses can be found [here](https://developer.okta.com/docs/reference/api/oidc/#response-properties-3).
 
-
 ### `refreshTokens`
 
-Refreshes all tokens. Resolves with the refreshed tokens. 
+Refreshes all tokens. Resolves with the refreshed tokens.
 
 ```javascript
 await refreshTokens();
@@ -526,6 +537,7 @@ signInWithBrowser().then(result => {
     // { code: '', message: '', detail: { message: '', status: '' } }
 })
 ```
+
 - `signOut` returns Promise.
 
 **Note:** Events `signOutSuccess`, `onError` are still triggered.
@@ -550,10 +562,13 @@ Additionally, `signInWithBrowser` and `signOut` throws the error: `{ code: '-120
 **Solution:** Navigate through Terminal to the folder `ios` and execute the command: `pod install —repo-update`.
 
 ## Contributing
+
 We welcome contributions to all of our open-source packages. Please see the [contribution guide](https://github.com/okta/okta-react-native/blob/master/CONTRIBUTING.md) to understand how to structure a contribution.
 
 ### Installing dependencies for contributions
+
 We use [yarn](https://yarnpkg.com) for dependency management when developing this package:
+
 ```
 yarn install
 ```
