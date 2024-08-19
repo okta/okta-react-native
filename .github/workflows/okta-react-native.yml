@@ -10,7 +10,10 @@ jobs:
     JSUnitTests:
       runs-on: ubuntu-latest
       steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          lfs: true
       - name: Configure React Native dependencies (node_modules)
         uses: ./.github/workflows/composite/configure-node
         with:
@@ -26,7 +29,10 @@ jobs:
     iOSUnitTests:
       runs-on: macos-12
       steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          lfs: true
       - name: Configure React Native dependencies (node_modules)
         uses: ./.github/workflows/composite/configure-node
         with:

@@ -17,7 +17,7 @@ import Url from 'url-parse';
 import { version, peerDependencies } from './package.json';
 
 // eslint-disable-next-line camelcase
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 // Fixes auth-js warning:
 // `Memory storage can only support simple single user use case on server side.`
@@ -262,7 +262,7 @@ export const getUser = async() => {
 
 export const getUserFromIdToken = async() => {
   let idTokenResponse = await getIdToken();
-  return jwt_decode(idTokenResponse.id_token);
+  return jwtDecode(idTokenResponse.id_token);
 };
 
 export const isAuthenticated = async() => {

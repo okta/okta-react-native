@@ -28,7 +28,7 @@ expectType<Promise<boolean>>(OktaSDK.createConfig({
   httpConnectionTimeout: 15,
   httpReadTimeout: 10,
   browserMatchAll: false,
-  oktaAuthConfig: {}
+  oktaAuthConfig: { issuer: '{issuer}' }
 }));
 
 expectType<OktaAuth>(OktaSDK.getAuthClient());

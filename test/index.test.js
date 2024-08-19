@@ -116,7 +116,7 @@ describe('OktaReactNative', () => {
 
     it('authClient returns the error', () => {
       expect(() => { getAuthClient(); })
-        .toThrowError({ 
+        .toThrow({ 
           code: '-100', 
           message: 'OktaOidc client isn\'t configured, check if you have created a configuration with createConfig'
         });
