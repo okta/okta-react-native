@@ -42,3 +42,8 @@ if ! yarn install ; then
   echo "yarn install failed! Exiting..."
   exit ${FAILED_SETUP}
 fi
+
+if ! yarn build ; then
+  echo "yarn build failed! Exiting..."
+  exit ${FAILED_SETUP}
+fi

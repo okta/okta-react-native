@@ -1491,7 +1491,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.0, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.6.2":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.0, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.6.2":
   version: 7.24.0
   resolution: "@babel/runtime@npm:7.24.0"
   dependencies:
@@ -2720,7 +2720,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/normalize-colors@npm:0.74.83, @react-native/normalize-colors@npm:^0.74.1, @react-native/normalize-colors@npm:~0.74.83":
+"@react-native/normalize-colors@npm:0.74.83, @react-native/normalize-colors@npm:~0.74.83":
   version: 0.74.83
   resolution: "@react-native/normalize-colors@npm:0.74.83"
   checksum: 10c0/e1821e395c289c8aea3748044d3d0e39f792123e58281b8ae2d805ed4ac5517071d5b6325da1ceb9f45444c5cdad2b3ac2a6cd302d4f4a247aed68e10dcfedee
@@ -4030,15 +4030,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-in-js-utils@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "css-in-js-utils@npm:3.1.0"
-  dependencies:
-    hyphenate-style-name: "npm:^1.0.3"
-  checksum: 10c0/8bb042e8f7701a7edadc3cce5ce2d5cf41189631d7e2aed194d5a7059b25776dded2a0466cb9da1d1f3fc6c99dcecb51e45671148d073b8a2a71e34755152e52
-  languageName: node
-  linkType: hard
-
 "dag-map@npm:~1.0.0":
   version: 1.0.2
   resolution: "dag-map@npm:1.0.2"
@@ -4242,7 +4233,6 @@ __metadata:
     react-native-reanimated: "npm:^3.11.0"
     react-native-safe-area-context: "npm:4.10.1"
     react-native-screens: "npm:~3.31.1"
-    react-native-web: "npm:~0.19.12"
     semver: "npm:^7.6.2"
   languageName: unknown
   linkType: soft
@@ -4681,13 +4671,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-loops@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "fast-loops@npm:1.1.3"
-  checksum: 10c0/ba71c001704c44a617053ed34b1a8c0d2ed9723022eb7b93c98299d9862f93213609b32c9daec7d606625ab318769d11da8bb06e9ddd9c28e3bda1249fb6e36d
-  languageName: node
-  linkType: hard
-
 "fast-text-encoding@npm:^1.0.6":
   version: 1.0.6
   resolution: "fast-text-encoding@npm:1.0.6"
@@ -4740,7 +4723,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fbjs@npm:^3.0.0, fbjs@npm:^3.0.4":
+"fbjs@npm:^3.0.0":
   version: 3.0.5
   resolution: "fbjs@npm:3.0.5"
   dependencies:
@@ -5208,13 +5191,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hyphenate-style-name@npm:^1.0.3":
-  version: 1.0.4
-  resolution: "hyphenate-style-name@npm:1.0.4"
-  checksum: 10c0/b19c3e2cd1dc426f6f893752fec08140abf79058a1b6238422e45373ed81389f02e1a2ba2ef4e9b2430d4e900a0f5ba12307de82320604e81ac1b722abd2ee62
-  languageName: node
-  linkType: hard
-
 "iconv-lite@npm:^0.6.2":
   version: 0.6.3
   resolution: "iconv-lite@npm:0.6.3"
@@ -5284,16 +5260,6 @@ __metadata:
   version: 1.3.8
   resolution: "ini@npm:1.3.8"
   checksum: 10c0/ec93838d2328b619532e4f1ff05df7909760b6f66d9c9e2ded11e5c1897d6f2f9980c54dd638f88654b00919ce31e827040631eab0a3969e4d1abefa0719516a
-  languageName: node
-  linkType: hard
-
-"inline-style-prefixer@npm:^6.0.1":
-  version: 6.0.4
-  resolution: "inline-style-prefixer@npm:6.0.4"
-  dependencies:
-    css-in-js-utils: "npm:^3.1.0"
-    fast-loops: "npm:^1.1.3"
-  checksum: 10c0/d3d42bf0c48d621ea4bcfb077b5d370b106995422300a3a472674f96c9b489d96b4aac6f29dea3bb26ff2dfd7293e4752098bc2b53407769eafdb66c6c4c1764
   languageName: node
   linkType: hard
 
@@ -6223,13 +6189,6 @@ __metadata:
   version: 5.2.1
   resolution: "memoize-one@npm:5.2.1"
   checksum: 10c0/fd22dbe9a978a2b4f30d6a491fc02fb90792432ad0dab840dc96c1734d2bd7c9cdeb6a26130ec60507eb43230559523615873168bcbe8fafab221c30b11d54c1
-  languageName: node
-  linkType: hard
-
-"memoize-one@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "memoize-one@npm:6.0.0"
-  checksum: 10c0/45c88e064fd715166619af72e8cf8a7a17224d6edf61f7a8633d740ed8c8c0558a4373876c9b8ffc5518c2b65a960266adf403cc215cb1e90f7e262b58991f54
   languageName: node
   linkType: hard
 
@@ -7313,13 +7272,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-value-parser@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "postcss-value-parser@npm:4.2.0"
-  checksum: 10c0/f4142a4f56565f77c1831168e04e3effd9ffcc5aebaf0f538eee4b2d465adfd4b85a44257bb48418202a63806a7da7fe9f56c330aebb3cac898e46b4cbf49161
-  languageName: node
-  linkType: hard
-
 "postcss@npm:~8.4.32":
   version: 8.4.35
   resolution: "postcss@npm:8.4.35"
@@ -7662,25 +7614,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/899a02751ecbc6231ce3c869268fb510e5b53428c788135ae46f4bbd768efe78bf74f17fec5becc4c4c1e81a5f224a907dc890ba2406181ff9e21830dda95dec
-  languageName: node
-  linkType: hard
-
-"react-native-web@npm:~0.19.12":
-  version: 0.19.12
-  resolution: "react-native-web@npm:0.19.12"
-  dependencies:
-    "@babel/runtime": "npm:^7.18.6"
-    "@react-native/normalize-colors": "npm:^0.74.1"
-    fbjs: "npm:^3.0.4"
-    inline-style-prefixer: "npm:^6.0.1"
-    memoize-one: "npm:^6.0.0"
-    nullthrows: "npm:^1.1.1"
-    postcss-value-parser: "npm:^4.2.0"
-    styleq: "npm:^0.1.3"
-  peerDependencies:
-    react: ^18.0.0
-    react-dom: ^18.0.0
-  checksum: 10c0/90f4221cebd834d550c477b00e5f972f8e3afbbea6708f8346fc394a38c8589a5d87d5e8be37a0ac421cc5e8a898cd94e0a6e6b2db982d3164e011f7ac9581da
   languageName: node
   linkType: hard
 
@@ -8580,13 +8513,6 @@ __metadata:
   version: 0.4.1
   resolution: "structured-headers@npm:0.4.1"
   checksum: 10c0/b7d326f6fec7e7f7901d1e0542577293b5d029bf3e1fb84995e33d9aabe47d03259f64ca2d778ef5c427f6f00c78bafa051b6f233131e1556f8bb9102b11ed64
-  languageName: node
-  linkType: hard
-
-"styleq@npm:^0.1.3":
-  version: 0.1.3
-  resolution: "styleq@npm:0.1.3"
-  checksum: 10c0/975d951792e65052f1f6e41aaad46492642ce4922b3dc36d4b49b37c8509f9a776794d8f275360f00116a5e6ab1e31514bdcd5840656c4e3213da6803fa12941
   languageName: node
   linkType: hard
 
