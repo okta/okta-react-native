@@ -2328,7 +2328,7 @@ __metadata:
 
 "@okta/okta-react-native@file:../dist::locator=e2e%40workspace%3A.":
   version: 2.13.0
-  resolution: "@okta/okta-react-native@file:../dist#../dist::hash=83611a&locator=e2e%40workspace%3A."
+  resolution: "@okta/okta-react-native@file:../dist#../dist::hash=441271&locator=e2e%40workspace%3A."
   dependencies:
     "@babel/plugin-transform-async-to-generator": "npm:^7.24.7"
     "@okta/configuration-validation": "npm:^1.1.0"
@@ -2340,7 +2340,7 @@ __metadata:
     events: ^3.1.0
     react: ^16.13.0 || ^17.0.0 || ^18.0.0
     react-native: ">=0.70.1"
-  checksum: 10c0/c5d598bff7cac6f3cd5bdf0a0e3342823523edba873a2f39e59a4e96b1baf8b840b429e4a687a39e4d0e856d881fb2750eaa6114565fa0df813e6de83c3158d4
+  checksum: 10c0/349ed084c858372c50b7c17267057b94452fcddce32658f8801351a8b61a06362e468ddd2d5cfaf6c608110b6caef7ec59f045f5d563b21dd6653cfcc4a720d4
   languageName: node
   linkType: hard
 

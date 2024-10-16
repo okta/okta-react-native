@@ -36,6 +36,9 @@ jobs:
           install-yarn: true
           node-version: 'latest'
       - install_android_sdk
+      - run: brew install git-lfs
+      - run: git lfs install
+      - run: git lfs pull
       - run: yarn install --frozen-lockfile
       - run: yarn build
       - run: gem install cocoapods
