@@ -1,3 +1,8 @@
+# 2.13.0
+
+### Other
+- [#431](https://github.com/okta/okta-react-native/pull/431) Use OkHttp for networking calls in Android
+
 # 2.12.0
 
 ### Other
