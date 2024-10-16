@@ -12,37 +12,39 @@
 
 package com.oktareactnative;
 
-import android.annotation.SuppressLint;
+import static com.okta.oidc.net.ConnectionParameters.USER_AGENT;
+
 import android.net.Uri;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
 
 import com.okta.oidc.BuildConfig;
 import com.okta.oidc.net.ConnectionParameters;
 import com.okta.oidc.net.OktaHttpClient;
-import com.okta.oidc.net.request.TLSSocketFactory;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
-import javax.net.ssl.HttpsURLConnection;
-
-import static com.okta.oidc.net.ConnectionParameters.USER_AGENT;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class HttpClientImpl implements OktaHttpClient {
     private final String userAgentTemplate;
     private final int connectTimeoutMs;
     private final int readTimeoutMs;
-
-    private HttpURLConnection mUrlConnection;
+    protected static OkHttpClient sOkHttpClient;
+    protected volatile Call mCall;
+    protected Response mResponse;
+    protected Exception mException;
 
     HttpClientImpl(String userAgentTemplate, int connectTimeoutMs, int readTimeoutMs) {
         this.userAgentTemplate = userAgentTemplate;
@@ -50,128 +52,121 @@ public class HttpClientImpl implements OktaHttpClient {
         this.readTimeoutMs = readTimeoutMs;
     }
 
-    /*
-     * TLS v1.1, v1.2 in Android supports starting from API 16.
-     * But it enabled by default starting from API 20.
-     * This method enable these TLS versions on API < 20.
-     * */
-    @SuppressLint("RestrictedApi")
-    private void enableTlsV1_2(HttpURLConnection urlConnection) {
-        try {
-            ((HttpsURLConnection) urlConnection)
-                    .setSSLSocketFactory(new TLSSocketFactory());
-        } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            throw new RuntimeException("Cannot create SSLContext.", e);
-        }
-    }
-
     private String getUserAgent() {
         String sdkVersion = "okta-oidc-android/" + BuildConfig.VERSION_NAME;
         return userAgentTemplate.replace("$UPSTREAM_SDK", sdkVersion);
     }
 
-    protected HttpURLConnection openConnection(URL url, ConnectionParameters params)
-            throws IOException {
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        if (mUrlConnection instanceof HttpsURLConnection &&
-                Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-            enableTlsV1_2(mUrlConnection);
+    protected Request buildRequest(Uri uri, ConnectionParameters param) {
+        if (sOkHttpClient == null) {
+            sOkHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(connectTimeoutMs, TimeUnit.MILLISECONDS)
+                    .readTimeout(readTimeoutMs, TimeUnit.MILLISECONDS)
+                    .build();
         }
-
-        conn.setConnectTimeout(connectTimeoutMs);
-        conn.setReadTimeout(readTimeoutMs);
-        conn.setInstanceFollowRedirects(false);
-
-        Map<String, String> requestProperties = params.requestProperties();
-        String userAgent = getUserAgent();
-        requestProperties.put(USER_AGENT, userAgent);
-        for (String property : requestProperties.keySet()) {
-            conn.setRequestProperty(property, requestProperties.get(property));
+        Request.Builder requestBuilder = new Request.Builder().url(uri.toString());
+        requestBuilder.addHeader(USER_AGENT, getUserAgent());
+        for (Map.Entry<String, String> headerEntry : param.requestProperties().entrySet()) {
+            String key = headerEntry.getKey();
+            requestBuilder.addHeader(key, headerEntry.getValue());
         }
-
-        ConnectionParameters.RequestMethod requestMethod = params.requestMethod();
-        Map<String, String> postParameters = params.postParameters();
-        conn.setRequestMethod(requestMethod.name());
-        if (requestMethod == ConnectionParameters.RequestMethod.GET) {
-            conn.setDoInput(true);
-        } else if (requestMethod == ConnectionParameters.RequestMethod.POST) {
-            conn.setDoOutput(true);
-            if (postParameters != null && !postParameters.isEmpty()) {
-                DataOutputStream out = new DataOutputStream(conn.getOutputStream());
-                out.write(params.getEncodedPostParameters());
-                out.close();
+        if (param.requestMethod() == ConnectionParameters.RequestMethod.GET) {
+            requestBuilder = requestBuilder.get();
+        } else {
+            Map<String, String> postParameters = param.postParameters();
+            if (postParameters != null) {
+                FormBody.Builder formBuilder = new FormBody.Builder();
+                for (Map.Entry<String, String> postEntry : postParameters.entrySet()) {
+                    String key = postEntry.getKey();
+                    formBuilder.add(key, postEntry.getValue());
+                }
+                RequestBody formBody = formBuilder.build();
+                requestBuilder.post(formBody);
+            } else {
+                requestBuilder.post(RequestBody.create(null, ""));
             }
         }
-        return conn;
+        return requestBuilder.build();
     }
 
     @Override
     public InputStream connect(@NonNull Uri uri, @NonNull ConnectionParameters params)
             throws Exception {
+        Request request = buildRequest(uri, params);
+        mCall = sOkHttpClient.newCall(request);
+        final CountDownLatch latch = new CountDownLatch(1);
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mException = e;
+                latch.countDown();
+            }
 
-        mUrlConnection = openConnection(new URL(uri.toString()), params);
-        mUrlConnection.connect();
-        try {
-            return mUrlConnection.getInputStream();
-        } catch (IOException e) {
-            return mUrlConnection.getErrorStream();
+            @Override
+            public void onResponse(Call call, Response response) {
+                mResponse = response;
+                latch.countDown();
+            }
+        });
+        latch.await();
+        if (mException != null) {
+            throw mException;
         }
+        if (mResponse != null && mResponse.body() != null) {
+            return mResponse.body().byteStream();
+        }
+        return null;
     }
-
 
     @Override
     public void cleanUp() {
-        mUrlConnection = null;
+        //NO-OP
     }
 
     @Override
     public void cancel() {
-        if (mUrlConnection != null) {
-            mUrlConnection.disconnect();
+        if (mCall != null) {
+            mCall.cancel();
         }
     }
 
     @Override
     public Map<String, List<String>> getHeaderFields() {
-        if (mUrlConnection != null) {
-            return mUrlConnection.getHeaderFields();
+        if (mResponse != null) {
+            return mResponse.headers().toMultimap();
         }
         return null;
     }
 
     @Override
     public String getHeader(String header) {
-        if (mUrlConnection != null) {
-            return mUrlConnection.getHeaderField(header);
+        if (mResponse != null) {
+            return mResponse.header(header);
         }
         return null;
     }
 
     @Override
     public int getResponseCode() throws IOException {
-        if (mUrlConnection != null) {
-            return mUrlConnection.getResponseCode();
+        if (mResponse != null) {
+            return mResponse.code();
         }
         return -1;
     }
 
     @Override
     public int getContentLength() {
-        if (mUrlConnection != null) {
-            return mUrlConnection.getContentLength();
+        if (mResponse != null && mResponse.body() != null) {
+            return (int) mResponse.body().contentLength();
         }
         return -1;
     }
 
     @Override
     public String getResponseMessage() throws IOException {
-        if (mUrlConnection != null) {
-            return mUrlConnection.getResponseMessage();
+        if (mResponse != null) {
+            return mResponse.message();
         }
         return null;
-    }
-
-    public HttpURLConnection getUrlConnection() {
-        return mUrlConnection;
     }
 }

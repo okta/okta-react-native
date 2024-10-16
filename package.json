@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "@okta/okta-react-native",
   "title": "React Native Okta Sdk Bridge",
   "version": "2.13.0",
