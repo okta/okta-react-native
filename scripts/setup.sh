@@ -16,6 +16,8 @@ if [ "$distro" = "centos" ]; then
   # Add yarn to the $PATH so npm cli commands do not fail
   export PATH="${PATH}:$(yarn global bin)"
 elif [ "$distro" = "amzn" ]; then
+  yum install -y git-lfs
+  git-lfs install
   npm install -g yarn
   export PATH="$PATH:$(npm config get prefix)/bin"
 else
@@ -30,6 +32,7 @@ git checkout -- scripts
 
 # ensure we're in a branch on the correct sha
 git checkout $BRANCH
+git-lfs pull
 git reset --hard $SHA
 
 git config --global user.email "oktauploader@okta.com"
