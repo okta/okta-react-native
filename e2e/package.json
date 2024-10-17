@@ -38,6 +38,5 @@
   },
   "private": true,
   "name": "e2e",
-  "version": "1.0.0",
-  "packageManager": "yarn@4.2.2"
+  "version": "1.0.0"
 }

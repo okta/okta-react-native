@@ -5,6 +5,10 @@ source $OKTA_HOME/$REPO/scripts/setup.sh
 export TEST_SUITE_TYPE="build"
 export REGISTRY="${ARTIFACTORY_URL}/api/npm/npm-topic"
 
+# Install required dependencies
+export PATH="${PATH}:$(yarn global bin)"
+yarn global add @okta/ci-append-sha
+
 if [ -n "${action_branch}" ];
 then
   echo "Publishing from bacon task using branch ${action_branch}"
@@ -16,7 +20,7 @@ fi
 
 pushd ./dist
 
-if ! yarn dlx @okta/ci-append-sha; then
+if ! ci-append-sha; then
   echo "ci-append-sha failed! Exiting..."
   exit ${FAILED_SETUP}
 fi
