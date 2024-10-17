@@ -3,7 +3,7 @@
 export NVM_DIR="/root/.nvm"
 
 # Install required node version
-setup_service node v20.5.0
+setup_service node v20.9.0
 
 # determine the linux distro
 distro=$(awk -F= '$1=="ID" { print $2 ;}' /etc/os-release | tr -d '"')
