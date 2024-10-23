@@ -1,3 +1,8 @@
+# 2.14.0
+
+### Bug Fix
+- [#437](https://github.com/okta/okta-react-native/pull/437) Update OktaOidc to 3.11.7 to fix xcprivacy compile errors on iOS
+
 # 2.13.0
 
 ### Other
