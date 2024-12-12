@@ -73,8 +73,7 @@
   },
   "dependencies": {
     "@babel/plugin-transform-async-to-generator": "^7.24.7",
-    "@okta/configuration-validation": "^1.1.0",
-    "@okta/okta-auth-js": "7.7.0",
+    "@okta/okta-auth-js": "7.8.1",
     "jscodeshift": "^0.15.2",
     "jwt-decode": "^4.0.0",
     "url-parse": "^1.5.10"
