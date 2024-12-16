@@ -3,14 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3B7112959EB2FE8A2C567087 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B70F696570E47C787BCF73 /* libPods-Tests.a */; };
-		494740EBD8F4933878E7FA43 /* libPods-ReactNativeOktaSdkBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A46F012620B6B7002340F9 /* libPods-ReactNativeOktaSdkBridge.a */; };
+		08207A865251B212963B0D68 /* libPods-ReactNativeOktaSdkBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A61EABFE2D10B6B6004BCC6E /* libPods-ReactNativeOktaSdkBridge.a */; };
 		923AF9B82625A7D000EE4CF4 /* OktaReactNativeErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923AF9B72625A7D000EE4CF4 /* OktaReactNativeErrorTests.swift */; };
-		923AF9BA2625A7D000EE4CF4 /* libReactNativeOktaSdkBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A46EAB2620B4CB002340F9 /* libReactNativeOktaSdkBridge.a */; };
 		923AF9E62625BCD700EE4CF4 /* OktaSdkConstantTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923AF9E52625BCD700EE4CF4 /* OktaSdkConstantTests.swift */; };
 		923AF9EC2625F48A00EE4CF4 /* OktaSdkBridgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923AF9EB2625F48A00EE4CF4 /* OktaSdkBridgeTests.swift */; };
 		92A46ED52620B534002340F9 /* OktaSdkConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99754E122C3FC5800503B21 /* OktaSdkConstant.swift */; };
@@ -21,11 +19,12 @@
 		92F22CA3262872FE00EE57FD /* OktaOidcStateManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F22CA2262872FE00EE57FD /* OktaOidcStateManagerMock.swift */; };
 		92F22CA72628731E00EE57FD /* OktaOidcMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F22CA62628731E00EE57FD /* OktaOidcMock.swift */; };
 		92F22CD22629AB1000EE57FD /* OktaOidcStateManager+Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F22CD12629AB1000EE57FD /* OktaOidcStateManager+Factory.swift */; };
-		E475EFD6B7A6A388E312A131 /* libPods-ReactNativeOktaSdkBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD2E375BCCF907E09079927D /* libPods-ReactNativeOktaSdkBridge.a */; };
+		A61EAC002D10B6D0004BCC6E /* libReactNativeOktaSdkBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A46EAB2620B4CB002340F9 /* libReactNativeOktaSdkBridge.a */; };
+		F325D133B6DF5685C2150F2B /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B70F696570E47C787BCF73 /* libPods-Tests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		923AF9BB2625A7D000EE4CF4 /* PBXContainerItemProxy */ = {
+		A61EABFC2D10A484004BCC6E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 58B511D31A9E6C8500147676 /* Project object */;
 			proxyType = 1;
@@ -58,16 +57,15 @@
 		923AF9E52625BCD700EE4CF4 /* OktaSdkConstantTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaSdkConstantTests.swift; sourceTree = "<group>"; };
 		923AF9EB2625F48A00EE4CF4 /* OktaSdkBridgeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaSdkBridgeTests.swift; sourceTree = "<group>"; };
 		92A46EAB2620B4CB002340F9 /* libReactNativeOktaSdkBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeOktaSdkBridge.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		92A46F012620B6B7002340F9 /* libPods-ReactNativeOktaSdkBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-ReactNativeOktaSdkBridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		92F22C9E262872D400EE57FD /* OktaSdkBridgeMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaSdkBridgeMock.swift; sourceTree = "<group>"; };
 		92F22CA2262872FE00EE57FD /* OktaOidcStateManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaOidcStateManagerMock.swift; sourceTree = "<group>"; };
 		92F22CA62628731E00EE57FD /* OktaOidcMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaOidcMock.swift; sourceTree = "<group>"; };
 		92F22CD12629AB1000EE57FD /* OktaOidcStateManager+Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OktaOidcStateManager+Factory.swift"; sourceTree = "<group>"; };
+		A61EABFE2D10B6B6004BCC6E /* libPods-ReactNativeOktaSdkBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-ReactNativeOktaSdkBridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A997533822BAC05700503B21 /* ReactNativeOktaSdkBridge-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactNativeOktaSdkBridge-Bridging-Header.h"; sourceTree = "<group>"; };
 		A997533922BAC05800503B21 /* OktaSdkBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaSdkBridge.swift; sourceTree = "<group>"; };
 		A99754DF22C124B400503B21 /* OktaSDKError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaSDKError.swift; sourceTree = "<group>"; };
 		A99754E122C3FC5800503B21 /* OktaSdkConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OktaSdkConstant.swift; sourceTree = "<group>"; };
-		AD2E375BCCF907E09079927D /* libPods-ReactNativeOktaSdkBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNativeOktaSdkBridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5891CC2AC0600A0062D /* ReactNativeOktaSdkBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactNativeOktaSdkBridge.m; sourceTree = "<group>"; };
 		B524F68C0EA67613ACAF9985 /* Pods-OktaReactNative-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OktaReactNative-iOS.release.xcconfig"; path = "Target Support Files/Pods-OktaReactNative-iOS/Pods-OktaReactNative-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		F3D19959D97AEC37C213DBF8 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -78,8 +76,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				923AF9BA2625A7D000EE4CF4 /* libReactNativeOktaSdkBridge.a in Frameworks */,
-				3B7112959EB2FE8A2C567087 /* libPods-Tests.a in Frameworks */,
+				A61EAC002D10B6D0004BCC6E /* libReactNativeOktaSdkBridge.a in Frameworks */,
+				F325D133B6DF5685C2150F2B /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,8 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E475EFD6B7A6A388E312A131 /* libPods-ReactNativeOktaSdkBridge.a in Frameworks */,
-				494740EBD8F4933878E7FA43 /* libPods-ReactNativeOktaSdkBridge.a in Frameworks */,
+				08207A865251B212963B0D68 /* libPods-ReactNativeOktaSdkBridge.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,8 +150,7 @@
 		AC38741264B6ECCCA9501AAB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				92A46F012620B6B7002340F9 /* libPods-ReactNativeOktaSdkBridge.a */,
-				AD2E375BCCF907E09079927D /* libPods-ReactNativeOktaSdkBridge.a */,
+				A61EABFE2D10B6B6004BCC6E /* libPods-ReactNativeOktaSdkBridge.a */,
 				83B70F696570E47C787BCF73 /* libPods-Tests.a */,
 			);
 			name = Frameworks;
@@ -189,7 +185,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				923AF9BC2625A7D000EE4CF4 /* PBXTargetDependency */,
+				A61EABFD2D10A484004BCC6E /* PBXTargetDependency */,
 			);
 			name = Tests;
 			productName = Tests;
@@ -220,8 +216,9 @@
 		58B511D31A9E6C8500147676 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1620;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					923AF9B42625A7D000EE4CF4 = {
@@ -359,10 +356,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		923AF9BC2625A7D000EE4CF4 /* PBXTargetDependency */ = {
+		A61EABFD2D10A484004BCC6E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 92A46EAA2620B4CB002340F9 /* ReactNativeOktaSdkBridge */;
-			targetProxy = 923AF9BB2625A7D000EE4CF4 /* PBXContainerItemProxy */;
+			targetProxy = A61EABFC2D10A484004BCC6E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -487,7 +484,11 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = okta.com.Tests;
@@ -514,7 +515,11 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = okta.com.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
