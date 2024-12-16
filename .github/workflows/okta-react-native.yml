@@ -27,7 +27,7 @@ jobs:
       - name: Execute snyk.sh
         run: bash ./scripts/snyk.sh
     iOSUnitTests:
-      runs-on: macos-12
+      runs-on: macos-13
       steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -43,7 +43,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./ios/Pods
-          key: pods-${{ hashFiles('./ios/Podfile.lock') }}          
+          key: pods-${{ hashFiles('./ios/Podfile.lock') }}
       - name: Preparation before iOS Build
         run: |
           pod install --project-directory=ios --repo-update
@@ -56,19 +56,19 @@ jobs:
           -destination "platform=iOS Simulator,OS=latest,name=iPhone 14" \
           clean test | xcpretty
     # iOSUITests:
-    #   runs-on: macos-12
+    #   runs-on: macos-13
     #   steps:
     #   - uses: actions/checkout@v3
-    #   - name: Cache ./node_modules    
+    #   - name: Cache ./node_modules
     #     uses: ./.github/workflows/composite/configure-node
-    #     with:  
+    #     with:
     #       node-path: ./node_modules
     #       lock-hash: ${{ hashFiles('yarn.lock') }}
     #   - name: Build okta-react-native package
-    #     run: yarn build 
+    #     run: yarn build
     #   - name: Cache e2e/node_modules
     #     uses: ./.github/workflows/composite/configure-node
-    #     with:  
+    #     with:
     #       node-path: ./e2e/node_modules
     #       lock-hash: ${{ hashFiles('./e2e/yarn.lock') }}
     #       install-path: ./e2e
@@ -88,11 +88,11 @@ jobs:
     #       cd ../..
     #       echo -e "CLIENT_ID=${{ secrets.CLIENT_ID }}\nISSUER=${{ secrets.ISSUER }}\nREDIRECT_URI=${{ secrets.REDIRECT_URI }}\nLOGOUT_REDIRECT_URI=${{secrets.LOGOUT_REDIRECT_URI}}" > e2e/.env
     #   - name: iOS
-    #     env: 
+    #     env:
     #       OKTA_USERNAME: ${{ secrets.OKTA_USERNAME }}
     #       OKTA_PASSWORD: ${{ secrets.OKTA_PASSWORD }}
-    #     run: | 
-    #       set -o pipefail 
+    #     run: |
+    #       set -o pipefail
     #       xcodebuild \
     #       -workspace e2e/ios/E2EOktaReactNative.xcworkspace \
     #       -scheme E2EOktaReactNative \
@@ -116,7 +116,7 @@ jobs:
 
     #   - name: Configure node_modules
     #     uses: ./.github/workflows/composite/configure-node
-    #     with:  
+    #     with:
     #       node-path: ./node_modules
     #       lock-hash: ${{ hashFiles('yarn.lock') }}
 
@@ -125,7 +125,7 @@ jobs:
 
     #   - name: Configure e2e/node_modules
     #     uses: ./.github/workflows/composite/configure-node
-    #     with:  
+    #     with:
     #       node-path: ./e2e/node_modules
     #       lock-hash: ${{ hashFiles('./e2e/yarn.lock') }}
     #       install-path: ./e2e
