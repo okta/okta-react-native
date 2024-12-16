@@ -54,8 +54,8 @@ class OktaStatusError extends Error {
 }
 
 class ConfigurationValidationError extends Error {}
-const findDomainURL = 'https://bit.ly/finding-okta-domain';
-const findAppCredentialsURL = 'https://bit.ly/finding-okta-app-credentials';
+const findDomainURL = 'https://developer.okta.com/docs/guides/find-your-domain/';
+const findAppCredentialsURL = 'https://developer.okta.com/docs/guides/find-your-app-credentials/';
 const copyCredentialsMessage = 'You can copy it from the Okta Developer Console ' +
   'in the details for the Application you created. ' +
   `Follow these instructions to find it: ${findAppCredentialsURL}`;
