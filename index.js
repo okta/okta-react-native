@@ -61,7 +61,7 @@ const copyCredentialsMessage = 'You can copy it from the Okta Developer Console 
   `Follow these instructions to find it: ${findAppCredentialsURL}`;
 
 const isHttps = new RegExp('^https://');
-const hasDomainAdmin = /-admin.(okta|oktapreview|okta-emea).com/;
+const hasDomainAdmin = new RegExp('admin.(okta|oktapreview|okta-emea).com');
 
 function assertIssuer(issuer, testing = {}){
   const copyMessage = 'You can copy your domain from the Okta Developer ' +
