@@ -10,11 +10,13 @@ def forceVersions(ConfigurationContainer configurations) {
             force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22'
             force 'org.bouncycastle:bcutil-jdk15to18:1.78.1'
             force 'org.bouncycastle:bcprov-jdk15to18:1.78.1'
+            force 'org.bouncycastle:bcprov-jdk18on:1.78.1'
             force 'org.robolectric:robolectric:4.12.2'
             force 'junit:junit:4.13.2'
             force 'commons-io:commons-io:2.15.1'
             force 'commons-codec:commons-codec:1.17.0'
-            force 'io.netty:netty-common:4.1.93.Final'
+            force 'io.netty:netty-handler:4.1.108.Final'
+            force 'io.netty:netty-codec-http:4.1.108.Final'
         }
     }
 }

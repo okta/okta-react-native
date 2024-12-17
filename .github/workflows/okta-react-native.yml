@@ -27,7 +27,7 @@ jobs:
       - name: Execute snyk.sh
         run: bash ./scripts/snyk.sh
     iOSUnitTests:
-      runs-on: macos-12
+      runs-on: macos-15
       steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -53,7 +53,7 @@ jobs:
           xcodebuild \
           -workspace ios/ReactNativeOktaSdkBridge.xcworkspace \
           -scheme "ReactNativeOktaSdkBridge" \
-          -destination "platform=iOS Simulator,OS=latest,name=iPhone 14" \
+          -destination "platform=iOS Simulator,OS=latest,name=iPhone 16" \
           clean test | xcpretty
     # iOSUITests:
     #   runs-on: macos-12

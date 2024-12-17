@@ -1,4 +1,7 @@
-# 2.14.0
+# 2.16.0
+- Fix vulnerabilities and remove jsonpath-plus. Thanks to [vero1024](https://github.com/vero1024) for contribution in this release!
+
+# 2.15.0
 
 ### Bug Fix
 - [#437](https://github.com/okta/okta-react-native/pull/437) Update OktaOidc to 3.11.7 to fix xcprivacy compile errors on iOS

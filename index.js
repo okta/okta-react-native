@@ -11,7 +11,6 @@
  */
 
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
-import { assertIssuer, assertClientId, assertRedirectUri } from '@okta/configuration-validation';
 import { OktaAuth } from '@okta/okta-auth-js';
 import Url from 'url-parse';
 import { version, peerDependencies } from './package.json';
@@ -54,12 +53,66 @@ class OktaStatusError extends Error {
   }
 }
 
+class ConfigurationValidationError extends Error {}
+const findDomainURL = 'https://developer.okta.com/docs/guides/find-your-domain/';
+const findAppCredentialsURL = 'https://developer.okta.com/docs/guides/find-your-app-credentials/';
+const copyCredentialsMessage = 'You can copy it from the Okta Developer Console ' +
+  'in the details for the Application you created. ' +
+  `Follow these instructions to find it: ${findAppCredentialsURL}`;
+
+const isHttps = new RegExp('^https://');
+const hasDomainAdmin = new RegExp('admin.(okta|oktapreview|okta-emea).com');
+
+function assertIssuer(issuer, testing = {}){
+  const copyMessage = 'You can copy your domain from the Okta Developer ' +
+    'Console. Follow these instructions to find it: ' + findDomainURL;
+
+  if (testing.disableHttpsCheck) {
+    const httpsWarning = 'Warning: HTTPS check is disabled. ' +
+      'This allows for insecure configurations and is NOT recommended for production use.';
+    /* eslint-disable-next-line no-console */
+    console.warn(httpsWarning);
+  }
+
+  if (!issuer) {
+    throw new ConfigurationValidationError('Your Okta URL is missing. ' + copyMessage);
+  } else if (!testing.disableHttpsCheck && !issuer.match(isHttps)) {
+    throw new ConfigurationValidationError(
+      'Your Okta URL must start with https. ' +
+      `Current value: ${issuer}. ${copyMessage}`
+    );
+  } else if (issuer.match(/{yourOktaDomain}/)) {
+    throw new ConfigurationValidationError('Replace {yourOktaDomain} with your Okta domain. ' + copyMessage);
+  } else if (issuer.match(hasDomainAdmin)) {
+    throw new ConfigurationValidationError(
+      'Your Okta domain should not contain -admin. ' +
+      `Current value: ${issuer}. ${copyMessage}`
+    );
+  }
+}
+
+function assertClientId(clientId){
+  if (!clientId) {
+    throw new ConfigurationValidationError('Your client ID is missing. ' + copyCredentialsMessage);
+  } else if (clientId.match(/{clientId}/)) {
+    throw new ConfigurationValidationError('Replace {clientId} with the client ID of your Application. ' + copyCredentialsMessage);
+  }
+}
+
+function assertRedirectUri(redirectUri){
+  if (!redirectUri) {
+    throw new ConfigurationValidationError('Your redirect URI is missing.');
+  } else if (redirectUri.match(/{redirectUri}/)) {
+    throw new ConfigurationValidationError('Replace {redirectUri} with the redirect URI of your Application.');
+  }
+}
+
 /* eslint-disable max-params */
 export function createConfigWithCallbacks(
   issuer,
   clientId,
-  redirectUri, 
-  endSessionRedirectUri, 
+  redirectUri,
+  endSessionRedirectUri,
   discoveryUri,
   scopes,
   requireHardwareBackedKeyStore,
@@ -84,18 +137,18 @@ export function createConfigWithCallbacks(
       token: {
         storageProvider: storageProvider
       }
-    },  
+    },
     issuer: issuer || origin,
     clientId,
     redirectUri,
     scopes
   };
-  
+
   authClient = new OktaAuth(oktaAuthConfig);
 
   const reactNativeVersion = peerDependencies['react-native'];
   const userAgentTemplate = `okta-react-native/${version} $UPSTREAM_SDK react-native/${reactNativeVersion} ${Platform.OS}/${Platform.Version}`;
-  
+
   if (authClient._oktaUserAgent) {
     authClient._oktaUserAgent.addEnvironment(userAgentTemplate.replace('$UPSTREAM_SDK ', ''));
   }
@@ -123,7 +176,7 @@ export function createConfigWithCallbacks(
       httpConnectionTimeout,
       httpReadTimeout,
     };
-      
+
     NativeModules.OktaSdkBridge.createConfig(
       clientId,
       redirectUri,
@@ -145,8 +198,8 @@ export function createConfigWithCallbacks(
 export const createConfig = async({
   issuer,
   clientId,
-  redirectUri, 
-  endSessionRedirectUri, 
+  redirectUri,
+  endSessionRedirectUri,
   discoveryUri,
   scopes,
   requireHardwareBackedKeyStore,
@@ -160,8 +213,8 @@ export const createConfig = async({
     createConfigWithCallbacks(
       issuer,
       clientId,
-      redirectUri, 
-      endSessionRedirectUri, 
+      redirectUri,
+      endSessionRedirectUri,
       discoveryUri,
       scopes,
       requireHardwareBackedKeyStore,
@@ -178,12 +231,12 @@ export const createConfig = async({
       }
     );
   });
-}; 
+};
 
 export const getAuthClient = () => {
   if (!authClient) {
     throw new OktaAuthError(
-      '-100', 
+      '-100',
       'OktaOidc client isn\'t configured, check if you have created a configuration with createConfig'
     );
   }
@@ -198,10 +251,10 @@ export const signIn = async(options) => {
         const { status, sessionToken } = transaction;
         if (status !== 'SUCCESS') {
           throw new OktaStatusError(
-            'Transaction status other than "SUCCESS" has been returned. Check transaction.status and handle accordingly.', 
+            'Transaction status other than "SUCCESS" has been returned. Check transaction.status and handle accordingly.',
             status
           );
-        } 
+        }
 
         return authenticate({ sessionToken });
       })
@@ -222,8 +275,8 @@ export const signIn = async(options) => {
 };
 
 export const signInWithBrowser = async(options = {}) => {
-  if (typeof options.noSSO === 'boolean') { 
-    options.noSSO = options.noSSO.toString(); 
+  if (typeof options.noSSO === 'boolean') {
+    options.noSSO = options.noSSO.toString();
   }
 
   return NativeModules.OktaSdkBridge.signIn(options);
@@ -282,23 +335,23 @@ export const revokeRefreshToken = async() => {
 };
 
 export const introspectAccessToken = async() => {
-  return NativeModules.OktaSdkBridge.introspectAccessToken(); 
+  return NativeModules.OktaSdkBridge.introspectAccessToken();
 };
 
 export const introspectIdToken = async() => {
-  return NativeModules.OktaSdkBridge.introspectIdToken(); 
+  return NativeModules.OktaSdkBridge.introspectIdToken();
 };
 
 export const introspectRefreshToken = async() => {
-  return NativeModules.OktaSdkBridge.introspectRefreshToken(); 
+  return NativeModules.OktaSdkBridge.introspectRefreshToken();
 };
 
 export const refreshTokens = async() => {
-  return NativeModules.OktaSdkBridge.refreshTokens(); 
+  return NativeModules.OktaSdkBridge.refreshTokens();
 };
 
 export const clearTokens = async() => {
-  return NativeModules.OktaSdkBridge.clearTokens(); 
+  return NativeModules.OktaSdkBridge.clearTokens();
 };
 
 export const EventEmitter = new NativeEventEmitter(NativeModules.OktaSdkBridge);
