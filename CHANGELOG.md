@@ -1,3 +1,6 @@
+# 2.17.0
+- Don't follow redirects for OkHttp. This fixes MFA issues when using classic Okta and session token login.
+
 # 2.16.0
 - Fix vulnerabilities and remove jsonpath-plus. Thanks to [vero1024](https://github.com/vero1024) for contribution in this release!
 
