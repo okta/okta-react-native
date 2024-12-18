@@ -62,6 +62,7 @@ public class HttpClientImpl implements OktaHttpClient {
             sOkHttpClient = new OkHttpClient.Builder()
                     .connectTimeout(connectTimeoutMs, TimeUnit.MILLISECONDS)
                     .readTimeout(readTimeoutMs, TimeUnit.MILLISECONDS)
+                    .followRedirects(false)
                     .build();
         }
         Request.Builder requestBuilder = new Request.Builder().url(uri.toString());
