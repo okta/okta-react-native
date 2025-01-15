@@ -75,23 +75,17 @@ workflows:
   security-scan:
     jobs:
       - setup:
-          filters:
-           branches:
-             only:
-               - master
-      - general-platform-helpers/job-snyk-prepare:
-          name: prepare-snyk
-          filters:
-           branches:
-             only:
-               - master
-          requires:
-            - setup
+           filters:
+            branches:
+              only:
+                - master
       - snyk-scan:
           name: execute-snyk
+          context:
+            - static-analysis
           filters:
-           branches:
-             only:
-               - master
+            branches:
+              only:
+                - master
           requires:
-            - prepare-snyk
+            - setup
