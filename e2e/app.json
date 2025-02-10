@@ -11,7 +11,21 @@
     },
     "ios": {
       "bundleIdentifier": "com.e2eoktareactnative"
-    }
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./app_logo.png",
+          "dark": {
+            "image": "./app_logo.png",
+            "backgroundColor": "#000000"
+          },
+          "imageWidth": 200
+        }
+      ]
+    ]
   },
   "name": "E2E-Okta-React-Native"
 }

@@ -5,87 +5,55 @@ orbs:
   node: circleci/node@5.1.0
 
 executors:
-  apple-ci-arm-medium:
-    macos:
-      xcode: 14.3.1
-    resource_class: macos.m1.medium.gen1
+  linux:
+    machine:
+      image: ubuntu-2404:current
 
 commands:
   install_android_sdk:
-    description: "Install Android SDK in macOS machine"
+    description: "Install Android SDK"
     steps:
-      - run: brew install wget
-      - run: wget --quiet --output-document="$HOME/android-commandline.zip" https://dl.google.com/android/repository/commandlinetools-mac-10406996_latest.zip
+      - run: wget --quiet --output-document="$HOME/android-commandline.zip" https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
       - run: (cp .circleci/android_sdk_checksum $HOME/checksum; cd $HOME; shasum -a256 -c checksum)
       - run: set +o pipefail
       - run: unzip "$HOME/android-commandline.zip" -d "$HOME"
       - run: mkdir "$HOME/android-sdk"
-      - run: echo y | $HOME/cmdline-tools/bin/sdkmanager --sdk_root="$HOME/android-sdk" "platforms;android-33" > /dev/null
+      - run: echo y | $HOME/cmdline-tools/bin/sdkmanager --sdk_root="$HOME/android-sdk" "platforms;android-35" > /dev/null
       - run: echo y | $HOME/cmdline-tools/bin/sdkmanager --sdk_root="$HOME/android-sdk" "platform-tools" > /dev/null
-      - run: echo y | $HOME/cmdline-tools/bin/sdkmanager --sdk_root="$HOME/android-sdk" "build-tools;33.0.2" > /dev/null
+      - run: echo y | $HOME/cmdline-tools/bin/sdkmanager --sdk_root="$HOME/android-sdk" "build-tools;35.0.0" > /dev/null
       - run: (yes || true) | $HOME/cmdline-tools/bin/sdkmanager --sdk_root="$HOME/android-sdk" --licenses
       - run: echo 'export ANDROID_HOME="$HOME/android-sdk"' >> "$BASH_ENV"
       - run: set -o pipefail
 
-jobs:
   setup:
-    executor: apple-ci-arm-medium
+    description: "Setup project for security scan"
     steps:
       - checkout
-      - node/install:
-          install-yarn: true
-          node-version: 'latest'
       - install_android_sdk
-      - run: brew install git-lfs
-      - run: git lfs install
-      - run: git lfs pull
       - run: yarn install --frozen-lockfile
-      - run: yarn build
-      - run: gem install cocoapods
+      - run: (cd android; ./gradlew assembleDebug) # Avoid gradle build during snyk scan
       - run: (cd e2e; yarn install --frozen-lockfile)
-      - run: (cd android; ./gradlew assembleDebug)
-      - run: (cd dist; yarn install)
-      - run: (cd dist/android; ./gradlew assembleDebug)
-      - run: (cd e2e/android; echo "signInRedirectUri=com.example.redirect:/login" > okta.properties; ./gradlew assembleDebug)
-      - run: (cd ios; pod install)
-      - run: (cd e2e/ios; pod install)
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
+      - run: (cd e2e/android; echo "signInRedirectUri=com.example.redirect:/login" > okta.properties; ./gradlew assembleDebug) # Avoid gradle build during snyk scan
 
+jobs:
   snyk-scan:
-    executor: apple-ci-arm-medium
+    executor: linux
     steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          name: Install rosetta # Needed for snyk to work on M1 machines.
-          command: softwareupdate --install-rosetta --agree-to-license
-      - install_android_sdk
+      - setup
+      - run: pip install setuptools
       - general-platform-helpers/step-load-dependencies
       - general-platform-helpers/step-run-snyk-monitor:
           run-on-non-main: true
-          scan-all-projects: true
-          skip-unresolved: false
-          os: macos
-          additional-arguments: --prune-repeated-subdependencies
+          additional-arguments: --exclude=dist
 
 workflows:
   security-scan:
     jobs:
-      - setup:
-           filters:
-            branches:
-              only:
-                - master
       - snyk-scan:
           name: execute-snyk
           context:
             - static-analysis
           filters:
-            branches:
-              only:
-                - master
-          requires:
-            - setup
+           branches:
+             only:
+               - master
