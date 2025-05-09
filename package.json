@@ -76,7 +76,8 @@
     "@okta/okta-auth-js": "7.8.1",
     "jscodeshift": "^0.15.2",
     "jwt-decode": "^4.0.0",
-    "url-parse": "^1.5.10"
+    "url-parse": "^1.5.10",
+    "ws": "^8.18.0"
   },
   "resolutions": {
     "jscodeshift": "^0.15.2",
