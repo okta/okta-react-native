@@ -1,3 +1,6 @@
+# 2.18.0
+- Update JS libraries in SDK and E2E app
+
 # 2.17.0
 - Don't follow redirects for OkHttp. This fixes MFA issues when using classic Okta and session token login.
 

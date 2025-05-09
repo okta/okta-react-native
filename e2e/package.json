@@ -23,7 +23,8 @@
     "react-native-reanimated": "^3.11.0",
     "react-native-safe-area-context": "4.12.0",
     "react-native-screens": "~4.4.0",
-    "semver": "^7.6.2"
+    "semver": "^7.6.2",
+    "ws": "^8.18.0"
   },
   "resolutions": {
     "glob": "^9.3.5",
