@@ -1,5 +1,5 @@
 [versions]
-commons-fileupload = "1.5"
+commons-fileupload = "1.6.0"
 gradle = "7.4.2"
 guava = "32.1.3-android"
 kotlin-gradle-plugin = "1.8.10"
