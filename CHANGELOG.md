@@ -1,3 +1,6 @@
+# 2.17.1
+- [#460](https://github.com/okta/okta-react-native/pull/460) fix: enables React 19
+
 # 2.17.0
 - Don't follow redirects for OkHttp. This fixes MFA issues when using classic Okta and session token login.
 
