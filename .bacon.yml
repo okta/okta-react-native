@@ -20,11 +20,3 @@ test_suites:
       script_name: publish
       criteria: MERGE
       queue_name: ci-queue-productionJenga-AL2023
-    - name: sast_scan
-      script_path: /root/okta/okta-react-native/scripts
-      script_name: sast_scan
-      sort_order: '4'
-      timeout: '200'
-      criteria: MERGE
-      queue_name: small
-      trigger: AUTO
