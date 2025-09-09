@@ -2,9 +2,9 @@ def forceVersions(ConfigurationContainer configurations) {
     configurations.configureEach { configuration ->
         configuration.resolutionStrategy {
             force 'org.bouncycastle:bcprov-jdk18on:1.78.1'
-            force 'io.netty:netty-handler:4.1.124.Final'
-            force 'io.netty:netty-codec-http:4.1.124.Final'
-            force 'io.netty:netty-codec-http2:4.1.124.Final'
+            force 'io.netty:netty-handler:4.1.125.Final'
+            force 'io.netty:netty-codec-http:4.1.125.Final'
+            force 'io.netty:netty-codec-http2:4.1.125.Final'
             force 'com.google.protobuf:protobuf-java:4.29.3'
         }
     }

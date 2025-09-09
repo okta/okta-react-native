@@ -13,9 +13,9 @@ def forceVersions(ConfigurationContainer configurations) {
             force 'junit:junit:4.13.2'
             force 'commons-io:commons-io:2.15.1'
             force 'commons-codec:commons-codec:1.17.0'
-            force 'io.netty:netty-handler:4.1.124.Final'
-            force 'io.netty:netty-codec-http:4.1.124.Final'
-            force 'io.netty:netty-codec-http2:4.1.124.Final'
+            force 'io.netty:netty-handler:4.1.125.Final'
+            force 'io.netty:netty-codec-http:4.1.125.Final'
+            force 'io.netty:netty-codec-http2:4.1.125.Final'
             force 'com.google.protobuf:protobuf-java:3.25.6'
         }
     }
