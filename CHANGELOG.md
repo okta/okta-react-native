@@ -1,3 +1,6 @@
+# 2.17.2
+- [#467](https://github.com/okta/okta-react-native/pull/467) fix: upgrades `node-forge` to `1.3.3`
+
 # 2.17.1
 - [#460](https://github.com/okta/okta-react-native/pull/460) fix: enables React 19
 
