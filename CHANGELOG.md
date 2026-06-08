@@ -1,3 +1,6 @@
+# 2.19.0
+-[#475](https://github.com/okta/okta-react-native/pull/475) Update AGP and gradle libraries in SDK and E2E app
+
 # 2.18.0
 - Update JS libraries in SDK and E2E app
 
@@ -10,10 +13,7 @@
 # 2.15.0
 
 ### Bug Fix
-- [#437](https://github.com/okta/okta-react-native/pull/437) Update OktaOidc to 3.11.7 to fix xcprivacy compile errors on iOS
-
-# 2.13.0
-
+- [#437](
 ### Other
 - [#431](https://github.com/okta/okta-react-native/pull/431) Use OkHttp for networking calls in Android
 
