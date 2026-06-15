@@ -77,7 +77,7 @@
     "jscodeshift": "^0.15.2",
     "jwt-decode": "^4.0.0",
     "url-parse": "^1.5.10",
-    "ws": "^8.18.0"
+    "ws": "^8.21.0"
   },
   "resolutions": {
     "jscodeshift": "^0.15.2",
@@ -85,7 +85,7 @@
     "tar": "^6.2.1",
     "micromatch": "^4.0.7",
     "braces": "^3.0.3",
-    "ws": "^8.18.0"
+    "ws": "^8.21.0"
   },
   "jest": {
     "coverageDirectory": "<rootDir>/test-reports/coverage",
