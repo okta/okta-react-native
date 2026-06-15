@@ -1,7 +1,16 @@
 
+# 2.18.1
+- Backports `2.17.1` and `2.17.2` into `2.18.x`
+
 # 2.18.0
 - Update JS libraries in SDK and E2E app
 - [#475](https://github.com/okta/okta-react-native/pull/475) Update AGP and gradle
+
+# 2.17.2
+- [#467](https://github.com/okta/okta-react-native/pull/467) fix: upgrades `node-forge` to `1.3.3`
+
+# 2.17.1
+- [#460](https://github.com/okta/okta-react-native/pull/460) fix: enables React 19
 
 # 2.17.0
 - Don't follow redirects for OkHttp. This fixes MFA issues when using classic Okta and session token login.
