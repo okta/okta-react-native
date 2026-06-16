@@ -21,12 +21,13 @@ struct OktaSdkConstant {
     static let AUTHENTICATED_KEY = "authenticated"
     static let ERROR_CODE_KEY = "error_code";
     static let ERROR_MSG_KEY = "error_message";
-    
+    static let DEVICE_SECRET_KEY = "device_secret";
+
     /** ======== Values ======== **/
     static let AUTHORIZED = "authorized"
     static let SIGNED_OUT = "signed_out"
     static let CANCELLED = "cancelled"
-    
+
     /** ======== Event names ======== **/
     static let SIGN_IN_SUCCESS = "signInSuccess";
     static let ON_ERROR = "onError";

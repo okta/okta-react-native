@@ -74,6 +74,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
     private LastRequestType mLastRequestType;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor sharedPreferencesEditor;
+    public static String latestDeviceSecret = null;
 
     public OktaSdkBridgeModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -248,12 +249,12 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                         WritableMap params = Arguments.createMap();
                         params.putString(OktaSdkConstant.RESOLVE_TYPE_KEY, OktaSdkConstant.AUTHORIZED);
                         params.putString(OktaSdkConstant.ACCESS_TOKEN_KEY, token);
-                        sendEvent(reactContext, OktaSdkConstant.SIGN_IN_SUCCESS, params);
+                        params.putString(OktaSdkConstant.ID_TOKEN_KEY, tokens.getIdToken());
+                        params.putString(OktaSdkConstant.REFRESH_TOKEN_KEY, tokens.getRefreshToken());
+                        injectDeviceSecret(params);
 
-                        params = Arguments.createMap();
-                        params.putString(OktaSdkConstant.RESOLVE_TYPE_KEY, OktaSdkConstant.AUTHORIZED);
-                        params.putString(OktaSdkConstant.ACCESS_TOKEN_KEY, token);
-                        promise.resolve(params);
+                        sendEvent(reactContext, OktaSdkConstant.SIGN_IN_SUCCESS, params);
+                        promise.resolve(params.copy());
                     } catch (AuthorizationException e) {
                         sharedPreferencesEditor.clear().apply();
                         WritableMap params = Arguments.createMap();
@@ -535,6 +536,10 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                         Tokens tokens = localSessionClient.getTokens();
                         params.putString(OktaSdkConstant.RESOLVE_TYPE_KEY, OktaSdkConstant.AUTHORIZED);
                         params.putString(OktaSdkConstant.ACCESS_TOKEN_KEY, tokens.getAccessToken());
+                        params.putString(OktaSdkConstant.ID_TOKEN_KEY, tokens.getIdToken());
+                        params.putString(OktaSdkConstant.REFRESH_TOKEN_KEY, tokens.getRefreshToken());
+                        injectDeviceSecret(params);
+
                         if (promise != null) {
                             promise.resolve(params.copy());
                         }
@@ -749,4 +754,12 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
         SIGN_IN,
         SIGN_OUT
     }
+
+    private void injectDeviceSecret(WritableMap params) {
+    if (latestDeviceSecret != null) {
+      params.putString(OktaSdkConstant.DEVICE_SECRET_KEY, latestDeviceSecret);
+      // Important: Clear it so it doesn't persist to the next user session
+      latestDeviceSecret = null;
+    }
+  }
 }
