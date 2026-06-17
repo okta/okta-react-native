@@ -26,5 +26,5 @@ test_suites:
       sort_order: '4'
       timeout: '200'
       criteria: MAINLINE
-      queue_name: small
+      queue_name: ci-queue-productionJenga-AL2023
       trigger: AUTO
