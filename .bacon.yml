@@ -20,3 +20,11 @@ test_suites:
       script_name: publish
       criteria: MERGE
       queue_name: ci-queue-productionJenga-AL2023
+    - name: snyk
+      script_path: /root/okta/okta-react-native/scripts
+      script_name: snyk
+      sort_order: '4'
+      timeout: '200'
+      criteria: MAINLINE
+      queue_name: small
+      trigger: AUTO
