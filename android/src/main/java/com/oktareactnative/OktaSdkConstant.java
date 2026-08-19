@@ -61,6 +61,7 @@ final class OktaSdkConstant {
 
     static final String UID_KEY = "uid";
 
+    static final String DEVICE_SECRET_KEY = "device_secret";
     /** ======== Values ======== **/
 
     static final String AUTHORIZED = "authorized";

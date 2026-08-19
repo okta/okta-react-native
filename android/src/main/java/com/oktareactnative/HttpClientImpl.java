@@ -36,6 +36,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.json.JSONObject;
 
 public class HttpClientImpl implements OktaHttpClient {
     private final String userAgentTemplate;
@@ -106,6 +107,20 @@ public class HttpClientImpl implements OktaHttpClient {
             @Override
             public void onResponse(Call call, Response response) {
                 mResponse = response;
+                try {
+                    if (response.isSuccessful() && response.body() != null) {
+                        // We use peekBody so the original stream remains unread for the Okta SDK
+                        String bodyString = response.peekBody(1024 * 1024).string();
+                        if (bodyString.contains(OktaSdkConstant.DEVICE_SECRET_KEY)) {
+                            JSONObject json = new JSONObject(bodyString);
+                            if (json.has(OktaSdkConstant.DEVICE_SECRET_KEY)) {
+                                OktaSdkBridgeModule.latestDeviceSecret = json.getString(OktaSdkConstant.DEVICE_SECRET_KEY);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    // Silent catch to ensure we don't break the auth flow if parsing fails
+                }
                 latch.countDown();
             }
         });
