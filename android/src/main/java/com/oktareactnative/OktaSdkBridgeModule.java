@@ -58,6 +58,7 @@ import com.okta.oidc.util.AuthorizationException;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Optional;
 
 public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements ActivityEventListener {
 
@@ -101,7 +102,8 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
             ReadableMap timeouts,
             Boolean browserMatchAll,
             Callback successCallback,
-            Callback errorCallback
+            Callback errorCallback,
+            Optional<String> issuer
     ) {
 
         try {
@@ -119,7 +121,7 @@ public class OktaSdkBridgeModule extends ReactContextBaseJavaModule implements A
                     .redirectUri(redirectUri)
                     .endSessionRedirectUri(endSessionRedirectUri)
                     .scopes(scopeArray)
-                    .discoveryUri(discoveryUri)
+                    .discoveryUri((issuer.isPresent()) ? issuer.get() : discoveryUri)
                     .create();
 
             Okta.WebAuthBuilder webAuthBuilder = new Okta.WebAuthBuilder();

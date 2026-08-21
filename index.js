@@ -124,12 +124,18 @@ export function createConfigWithCallbacks(
   onSuccess,
   onError
 ) {
-  assertIssuer(discoveryUri);
   assertClientId(clientId);
   assertRedirectUri(redirectUri);
   assertRedirectUri(endSessionRedirectUri);
 
+  if (issuer) {
+    assertIssuer(issuer);
+  }
+
   const { origin } = new Url(discoveryUri);
+  if (!issuer && discoveryUri) {
+    assertIssuer(origin);
+  }
 
   oktaAuthConfig = {
     ...oktaAuthConfig,
@@ -168,7 +174,8 @@ export function createConfigWithCallbacks(
       userAgentTemplate,
       httpConnectionTimeout,
       onSuccess,
-      onError
+      onError,
+      issuer
     );
   } else {
 
@@ -189,7 +196,8 @@ export function createConfigWithCallbacks(
       timeouts,
       browserMatchAll,
       onSuccess,
-      onError
+      onError,
+      issuer
     );
   }
 }
