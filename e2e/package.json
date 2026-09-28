@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@okta/okta-react-native": "file:../dist",
-    "@react-navigation/native": "^6.1.17",
+    "@react-navigation/native": "^7.4.1",
     "@react-navigation/native-stack": "^6.9.26",
     "expo": "^52.0.31",
     "expo-splash-screen": "~0.29.21",
