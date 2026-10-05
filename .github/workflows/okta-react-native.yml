@@ -50,7 +50,7 @@ jobs:
           xcodebuild \
           -workspace ios/ReactNativeOktaSdkBridge.xcworkspace \
           -scheme "ReactNativeOktaSdkBridge" \
-          -destination "platform=iOS Simulator,OS=26.5,name=iPhone 17" \
+          -destination "platform=iOS Simulator,OS=latest,name=iPhone 17" \
           clean test | xcpretty
     # iOSUITests:
     #   runs-on: macos-12
