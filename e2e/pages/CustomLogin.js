@@ -32,11 +32,12 @@ export default class CustomLogin extends React.Component {
   
   constructor(props) {
     super(props);
-    this.state = { 
+    this._signInInFlight = false;
+    this.state = {
       isLoading: false,
       username: '',
       password: '',
-    };  
+    };
   }
   
   async componentDidMount() {
@@ -44,6 +45,12 @@ export default class CustomLogin extends React.Component {
   }
 
   signInCustom = () => {
+    // Guard against concurrent sign-in calls. setState is async so isLoading
+    // alone cannot prevent a second call from entering before the first render.
+    if (this._signInInFlight) {
+      return;
+    }
+    this._signInInFlight = true;
     this.setState({ isLoading: true });
     signIn({ username: this.state.username, password: this.state.password })
       .then(() => {
@@ -51,14 +58,16 @@ export default class CustomLogin extends React.Component {
           .then(idToken => {
             this.props.navigation.navigate('ProfilePage', { idToken: idToken, isBrowserScenario: false });
           }).finally(() => {
-            this.setState({ 
+            this._signInInFlight = false;
+            this.setState({
               isLoading: false,
-              username: '', 
+              username: '',
               password: '',
             });
           });
       })
       .catch(error => {
+        this._signInInFlight = false;
         // For some reason the app crashes when only one button exist (only with loaded bundle, debug is OK) 🤦‍♂️
         Alert.alert(
           "Error",
@@ -72,7 +81,6 @@ export default class CustomLogin extends React.Component {
             { text: "OK", onPress: () => console.log("OK Pressed") }
           ]
         );
-    
 
         this.setState({
           isLoading: false
